@@ -1,0 +1,117 @@
+@import './base.css';
+
+#app {
+  margin: 0 auto;
+  padding: 2rem;
+  font-weight: normal;
+}
+
+a, .green {
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+}
+
+* {
+  font-family: 'Roboto', sans-serif;
+  box-sizing: border-box;
+
+  &::selection {
+    background: #000;
+    color: #fff;
+  }
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+p, input, button, li {
+  margin: 0;
+  word-wrap: break-word;
+  font-size: 14px;
+}
+
+hr {
+  height: 1px;
+  background: #000;
+  border: none;
+}
+
+body {
+  display: flex;
+  place-items: center;
+
+  &::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #202020;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #fff;
+  }
+}
+
+form {
+  display: flex;
+}
+
+input {
+  min-width: 230px;
+  padding: 10px 15px 10px 15px;
+  margin: 10px;
+  border-radius: 100px;
+  border: 2px solid var(--color-border);
+  background: var(--color-background-soft);
+  color: var(--color-text);
+  -webkit-text-fill-color: var(--color-text);
+
+  &:focus, &:hover {
+    outline: none;
+    border: 2px solid var(--color-border-hover);
+    background: var(--color-background);
+  }
+
+  &:-webkit-autofill {
+    transition: background-color 9999s ease-in-out 0s;
+  }
+
+  &[type = "password"]:not(:placeholder-shown) {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  }
+}
+
+button {
+  min-width: 230px;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 100px;
+  background: var(--color-background-highlighted);
+  font-weight: bold;
+  color: var(--color-background);
+  border: 2px solid var(--color-background-highlighted);
+  font-family: 'Helvetica', 'Roboto', sans-serif;
+
+  &:hover {
+    background: var(--color-background);
+    color: var(--color-text-highlited);
+    border: 2px solid var(--color-border-hover);
+  }
+
+  &:active, &:focus {
+    outline: none;
+  }
+}
+
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+}
