@@ -1,10 +1,7 @@
 <script setup lang="ts">
-defineProps({
-  hint: {
-    type: String,
-    default: undefined
-  }
-})
+defineProps<{
+  hint: string
+}>()
 </script>
 
 <template>
@@ -12,7 +9,7 @@ defineProps({
     <div>
       <slot/>
     </div>
-    <div v-if="hint" class="overlay">
+    <div v-if="hint.length > 0" class="overlay">
       <div class="content">
         <img alt="" src="../assets/long-arrow.svg" class="arrow"/>
         <p>{{ hint }}</p>

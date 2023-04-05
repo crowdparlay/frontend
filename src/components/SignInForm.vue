@@ -2,36 +2,53 @@
 import {reactive} from "vue";
 import AuthService from "@/api/services/AuthService";
 import Hinted from "./Hinted.vue";
+import type SignInResult from "@/api/types/SignInResult";
+import type SignInRequest from "@/api/types/SignInRequest";
 
-const props = defineProps({
-  handleResult: {type: Function}
-})
+const emit = defineEmits<{
+  (e: 'signInAttempt', result: SignInResult, request: SignInRequest): void
+}>()
 
 const state = reactive({
   username: '',
   password: '',
-  passwordHint: null as String | null
+  passwordHint: ''
 })
 
 async function handleSubmit() {
-  const result = await AuthService.signIn(state.username, state.password)
+  const request = {
+    username: state.username,
+    password: state.password
+  }
 
-  if (!result.success && result.userExists === true)
-    state.passwordHint = 'Не подходит'
+  const result = await AuthService.signIn(request)
 
-  props.handleResult && props.handleResult(result)
+  if (!result.success) {
+    if (result.userExists === true)
+      state.passwordHint = 'Не подходит'
+  }
+
+  emit('signInAttempt', result, request)
 }
 
 function handleCredentialsChange() {
-  state.passwordHint = null
+
+  state.passwordHint = ''
 }
 </script>
 
 <template>
   <form @submit.prevent>
-    <input v-model="state.username" v-on:input="handleCredentialsChange()" placeholder="Логин"/>
+    <input
+        v-model="state.username"
+        v-on:input="handleCredentialsChange()"
+        placeholder="Логин"/>
     <Hinted v-bind:hint=state.passwordHint>
-      <input v-model="state.password" v-on:input="handleCredentialsChange()" placeholder="Пароль" type="password"/>
+      <input
+          v-model="state.password"
+          v-on:input="handleCredentialsChange()"
+          placeholder="Пароль"
+          type="password"/>
     </Hinted>
     <button type="submit" @click="handleSubmit()">Войти</button>
   </form>

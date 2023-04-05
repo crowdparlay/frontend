@@ -1,14 +1,29 @@
 import http from "../common";
-import type SignInResult from "../types/SignInResult";
+import type SignInResult from "@/api/types/SignInResult";
 import type {AxiosError, AxiosResponse} from "axios";
+import type SignUpResult from "@/api/types/SignUpResult";
+import type SignInRequest from "@/api/types/SignInRequest";
+import type SignUpRequest from "@/api/types/SignUpRequest";
 
 export default class AuthService {
-  static async signIn(username: string, password: string): Promise<SignInResult> {
+  static async signUp(request: SignUpRequest): Promise<SignUpResult> {
+    const handleSuccess = () => {
+      return {success: true}
+    }
+
+    const handleError = () => {
+      return {success: false}
+    }
+
+    return await http.post('/api/users/register', request).then(handleSuccess, handleError);
+  }
+
+  static async signIn({username, password}: SignInRequest): Promise<SignInResult> {
     const body = {
       scope: "offline_access",
       grant_type: "password",
-      username: username,
-      password: password
+      username,
+      password
     }
 
     const handleSuccess = (response: AxiosResponse) => {
@@ -21,22 +36,14 @@ export default class AuthService {
     }
 
     const handleError = (error: AxiosError) => {
-      switch (error.request.status) {
-        case 403:
-          return {
-            success: false,
-            userExists: true
-          }
-        case 404:
-          return {
-            success: false,
-            userExists: false
-          }
-        default:
-          return {success: false}
+      return {
+        success: false,
+        userExists: error.request.status === 403
       }
     }
 
-    return await http.post('/connect/token', body).then(handleSuccess, handleError);
+    return await http.post('/connect/token', body, {
+      headers: {"Content-Type": "application/x-www-form-urlencoded"}
+    }).then(handleSuccess, handleError)
   }
 }
