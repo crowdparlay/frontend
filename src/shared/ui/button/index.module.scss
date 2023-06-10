@@ -1,4 +1,32 @@
 .button {
+  padding: 10px 25px 11px;
+  font: var(--font-s);
+  border-radius: 10px;
+  transition: 150ms;
+}
+
+.primary {
   color: var(--color-black);
-  background: var(--color-white);
+  background: var(--color-gray);
+
+  &:hover {
+    background: var(--color-white);
+  }
+}
+
+.clear {
+  color: var(--color-white);
+  background: transparent;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.disabled {
+  opacity: 0.5;
+}
+
+.full-width {
+  width: 100%;
 }

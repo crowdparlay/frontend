@@ -6,8 +6,13 @@
   --font-line-s: 16px;
   --font-s: var(--font-weight-s) var(--font-size-s) / var(--font-line-s) var(--font-family-main);
 
+  --font-weight-m: 700;
+  --font-size-m: 14px;
+  --font-line-m: 17px;
+  --font-m: var(--font-weight-m) var(--font-size-m) / var(--font-line-m) var(--font-family-main);
+
+  --color-gray: #d9d9d9;
   --color-white: #fff;
   --color-black: #000;
   --color-black11: #111;
-  --color-primary: #787878;
 }
