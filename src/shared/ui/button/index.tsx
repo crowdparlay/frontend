@@ -23,7 +23,7 @@ export const Button = (props: ButtonProps) => {
     variant = ButtonVariant.PRIMARY,
     fullWidth,
     children,
-    type = 'button',
+    type,
     className,
     disabled,
     ...otherProps
