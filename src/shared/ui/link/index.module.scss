@@ -2,33 +2,6 @@
   position: relative;
 }
 
-.link {
-  display: inline-block;
-  font: var(--font-s);
-  background: transparent;
-  transition: 150ms;
-
-  &:hover {
-    opacity: 0.8;
-  }
-}
-
-.disabled {
-  opacity: 0.5;
-}
-
-.primary {
-  color: #848484;
-}
-
-.clear {
-  color: var(--color-white);
-}
-
-.navigation {
-  color: var(--color-white);
-}
-
 .active {
   position: absolute;
   right: 0;
