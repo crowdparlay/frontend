@@ -1,6 +1,8 @@
 import type {Preview} from '@storybook/react';
 import '~/app/styles/index.scss';
 
+import {StyleDecorator} from './style.decorator';
+
 const preview: Preview = {
   parameters: {
     backgrounds: {
@@ -20,6 +22,7 @@ const preview: Preview = {
       },
     },
   },
+  decorators: [StyleDecorator],
 };
 
 export default preview;
