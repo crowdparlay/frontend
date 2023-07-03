@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import {ButtonHTMLAttributes, FC, ReactNode, SVGProps} from 'react';
 
+import {Badge} from '../badge';
 import cls from './index.module.scss';
 
 export enum ButtonVariant {
@@ -46,7 +47,7 @@ export const Button = (props: ButtonProps) => {
 
       <div className={cls.wrapper}>
         {children}
-        {badge !== undefined && <span className={cls.badge}>{badge}</span>}
+        {badge !== undefined && <Badge>{badge}</Badge>}
       </div>
     </button>
   );

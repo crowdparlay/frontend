@@ -14,24 +14,6 @@
   position: relative;
 }
 
-.badge {
-  $size: 20px;
-
-  position: absolute;
-  right: -12px;
-  bottom: -12px;
-  box-sizing: border-box;
-  width: $size;
-  height: $size;
-  padding: 0 4px;
-  font: var(--font-s);
-  color: var(--color-black);
-  text-align: center;
-  background: var(--color-white);
-  border: 2px solid var(--color-black);
-  border-radius: 50%;
-}
-
 .primary {
   color: var(--color-black);
   background: var(--color-gray);
