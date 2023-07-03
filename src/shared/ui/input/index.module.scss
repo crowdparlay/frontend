@@ -1,19 +1,58 @@
-.input {
-  max-width: 240px;
-  padding: 10px 16px;
-  font: var(--font-s);
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 16px;
-  color: var(--color-primary);
-  background: var(--color-black11);
-  border: 2px solid transparent;
-  border-radius: 70px;
+.focus {
+  background: transparent !important;
+  border-color: #141414 !important;
+}
 
-  &:focus {
+.hover {
+  background: #1a1a1a !important;
+  border-color: #848484 !important;
+}
+
+.input {
+  width: 100%;
+  padding: 9px 14px 10px;
+  font: var(--font-s);
+  font-size: 16px;
+  line-height: 19px;
+  color: var(--color-white);
+  background: #1a1a1a;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  transition: 150ms;
+
+  &:not(:placeholder-shown) {
     background: transparent;
-    border-color: var(--color-primary);
+    border-color: #141414;
   }
+}
+
+.wrapper {
+  position: relative;
+  max-width: 350px;
+
+  &:hover {
+    .input {
+      border-color: #848484;
+    }
+  }
+}
+
+.password {
+  padding-right: 49px;
+}
+
+.passwordButton {
+  position: absolute;
+  top: 0;
+  right: 16px;
+  bottom: 0;
+  height: 19px;
+  margin: auto 0;
+  color: #848484;
+}
+
+.customType {
+  color: var(--color-white);
 }
 
 .disabled {
@@ -21,7 +60,7 @@
 }
 
 .invalid {
-  border-color: var(--red-dark) !important;
+  border-color: red !important;
 }
 
 .center {
