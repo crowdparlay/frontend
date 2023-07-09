@@ -6,25 +6,53 @@ const meta: Meta<typeof Input> = {
   title: 'shared/Input',
   component: Input,
   tags: ['autodocs'],
-  decorators: [
-    (Story) => (
-      <div style={{background: 'var(--color-black)', padding: '3rem'}}>
-        {/* 👇 Decorators in Storybook also accept a function. Replace <Story/> with Story() to enable it  */}
-        <Story />
-      </div>
-    ),
-  ],
 };
 
 export default meta;
 type Story = StoryObj<typeof Input>;
 
 export const Default: Story = {
-  args: {},
+  args: {
+    placeholder: 'Email',
+  },
 };
 
-export const Focused: Story = {
+export const Password: Story = {
   args: {
-    autoFocus: true,
+    placeholder: 'Password',
+    defaultValue: 'toor',
+    type: 'password',
+  },
+};
+
+export const PasswordShown: Story = {
+  args: {
+    placeholder: 'Password',
+    defaultValue: 'toor',
+    type: 'password',
+    alwaysShown: true,
+  },
+};
+
+export const Hover: Story = {
+  args: {
+    hover: true,
+    placeholder: 'Email',
+  },
+};
+
+export const WithValue: Story = {
+  args: {
+    focus: true,
+    placeholder: 'Email',
+    defaultValue: 'mere1y@split-team.com',
+  },
+};
+
+export const HoverWithValue: Story = {
+  args: {
+    hover: true,
+    placeholder: 'Email',
+    defaultValue: 'mere1y@split-team.com',
   },
 };

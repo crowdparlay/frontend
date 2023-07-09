@@ -1,4 +1,44 @@
 .button {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: center;
+  padding: 10px 25px 11px;
+  font: var(--font-s);
+  line-height: 19px;
+  border-radius: 10px;
+  transition: 150ms;
+}
+
+.wrapper {
+  position: relative;
+}
+
+.primary {
   color: var(--color-black);
-  background: var(--color-white);
+  background: var(--color-gray);
+
+  &:hover {
+    background: var(--color-white);
+  }
+}
+
+.clear {
+  color: var(--color-white);
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.disabled {
+  opacity: 0.5;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.center {
+  justify-content: center;
 }
