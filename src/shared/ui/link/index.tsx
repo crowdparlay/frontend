@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import {AnchorHTMLAttributes, FC, SVGProps} from 'react';
+import {AnchorHTMLAttributes, ElementType, FC, SVGProps} from 'react';
 
 import {Badge} from '../badge';
 import cls from './index.module.scss';
@@ -19,7 +19,7 @@ export enum LinkVariant {
 export interface LinkProps extends ComponentProps {
   active?: boolean;
   variant?: LinkVariant;
-  Component?: FC<ComponentProps>;
+  Component?: ElementType<ComponentProps>;
   Icon?: FC<SVGProps<SVGSVGElement>>;
   badge?: number;
   fullWidth?: boolean;
@@ -42,6 +42,8 @@ export const Link = (props: LinkProps) => {
     ...otherProps
   } = props;
 
+  const Wrapper = Component || 'a';
+
   const mods = {
     [cls[variant]]: true,
     [cls.disabled]: disabled,
@@ -49,28 +51,8 @@ export const Link = (props: LinkProps) => {
     [cls.center]: center,
   };
 
-  if (Component) {
-    return (
-      <Component
-        to={to}
-        disabled={disabled}
-        aria-disabled={disabled}
-        className={classNames(cls.link, mods, className)}
-        {...otherProps}
-      >
-        {Icon !== undefined && <Icon />}
-
-        <div className={cls.wrapper}>
-          {children}
-          {badge !== undefined && <Badge>{badge}</Badge>}
-          {active && <div className={cls.active} />}
-        </div>
-      </Component>
-    );
-  }
-
   return (
-    <a
+    <Wrapper
       href={to}
       aria-disabled={disabled}
       className={classNames(cls.link, mods, className)}
@@ -83,6 +65,6 @@ export const Link = (props: LinkProps) => {
         {badge !== undefined && <Badge>{badge}</Badge>}
         {variant === LinkVariant.NAVIGATION && active && <div className={cls.active} />}
       </div>
-    </a>
+    </Wrapper>
   );
 };
