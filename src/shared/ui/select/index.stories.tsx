@@ -1,6 +1,7 @@
 import {Meta, StoryObj} from '@storybook/react';
 
 import {Select, SelectOption} from '.';
+import {PaddingDecorator} from '../../decorators';
 
 const meta: Meta<typeof Select> = {
   title: 'shared/Select',
@@ -29,13 +30,7 @@ const options: SelectOption[] = [
 ];
 
 export const Bottom: Story = {
-  decorators: [
-    (Story) => (
-      <div style={{paddingBottom: 300}}>
-        <Story />
-      </div>
-    ),
-  ],
+  decorators: [PaddingDecorator(0, 300)],
   args: {
     options,
     position: 'bottom',
@@ -43,13 +38,7 @@ export const Bottom: Story = {
 };
 
 export const Top: Story = {
-  decorators: [
-    (Story) => (
-      <div style={{paddingTop: 300}}>
-        <Story />
-      </div>
-    ),
-  ],
+  decorators: [PaddingDecorator(300, 0)],
   args: {
     options,
     position: 'top',

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import {CSSProperties, MouseEvent, useCallback, useRef, useState} from 'react';
 
-import ArrowIcon from './arrow.svg';
+import ArrowIcon from '../icon/assets/arrow.svg';
 import cls from './index.module.scss';
 
 export type SelectDropdownPosition = 'top' | 'bottom';
