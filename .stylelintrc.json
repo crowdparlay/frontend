@@ -1,6 +1,16 @@
 {
-  "extends": ["stylelint-config-standard-scss", "stylelint-config-recess-order"],
+  "extends": ["stylelint-config-standard-scss", "stylelint-config-idiomatic-order"],
+  "plugins": ["stylelint-order"],
   "rules": {
-    "selector-class-pattern": null
+    "no-empty-source": null,
+    "selector-class-pattern": null,
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": ["global"]
+      }
+    ],
+    "order/order": ["custom-properties", "declarations"],
+    "order/properties-order": ["width", "height"]
   }
 }
