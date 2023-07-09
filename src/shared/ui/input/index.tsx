@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import {InputHTMLAttributes, useCallback, useState} from 'react';
 
-import EyeIcon from './eye.svg';
+import EyeIcon from './assets/eye.svg';
 import cls from './index.module.scss';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
