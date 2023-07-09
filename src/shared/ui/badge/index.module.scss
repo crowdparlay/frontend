@@ -1,12 +1,12 @@
 .badge {
   $size: 20px;
 
+  width: $size;
+  height: $size;
   position: absolute;
   right: -12px;
   bottom: -12px;
   box-sizing: border-box;
-  width: $size;
-  height: $size;
   padding: 0 4px;
   font: var(--font-s);
   color: var(--color-black);
