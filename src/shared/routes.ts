@@ -6,7 +6,10 @@ import {appStarted} from '~/shared/config/init';
 
 export const routes = {
   home: createRoute(),
-  auth: createRoute(),
+  auth: {
+    signIn: createRoute(),
+    signUp: createRoute(),
+  },
 };
 
 export const controls = createRouterControls();
@@ -18,8 +21,12 @@ export const router = createHistoryRouter({
       route: routes.home,
     },
     {
-      path: '/auth',
-      route: routes.auth,
+      path: '/sign-in',
+      route: routes.auth.signIn,
+    },
+    {
+      path: '/sign-up',
+      route: routes.auth.signUp,
     },
   ],
   controls,
