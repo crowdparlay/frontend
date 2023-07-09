@@ -19,7 +19,7 @@ export interface TextProps extends ComponentProps {
 }
 
 export const Text = (props: TextProps) => {
-  const {Component, children, size = TextSize.M, center, ...otherProps} = props;
+  const {Component, children, className, size = TextSize.M, center, ...otherProps} = props;
 
   const Wrapper = Component || 'p';
 
@@ -29,7 +29,7 @@ export const Text = (props: TextProps) => {
   };
 
   return (
-    <Wrapper className={classNames(cls.text, mods)} {...otherProps}>
+    <Wrapper className={classNames(cls.text, mods, className)} {...otherProps}>
       {children}
     </Wrapper>
   );
