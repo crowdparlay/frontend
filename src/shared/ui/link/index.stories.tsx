@@ -1,8 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/react';
 
-import AddIcon from '~/shared/assets/icons/add.svg';
-
 import {Link, LinkVariant} from '.';
+import AddIcon from '../icon/assets/add.svg';
 
 const meta: Meta<typeof Link> = {
   title: 'shared/Link',
@@ -31,9 +30,7 @@ export const Icon: Story = {
   args: {
     children: 'щитпост',
     variant: LinkVariant.PRIMARY,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    Icon: AddIcon,
+    Icon: () => <AddIcon />,
   },
 };
 
