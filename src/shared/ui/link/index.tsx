@@ -54,6 +54,7 @@ export const Link = (props: LinkProps) => {
   return (
     <Wrapper
       href={to}
+      to={to}
       aria-disabled={disabled}
       className={classNames(cls.link, mods, className)}
       {...otherProps}
