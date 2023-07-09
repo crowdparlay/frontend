@@ -1,8 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/react';
 
-import AddIcon from '~/shared/assets/icons/add.svg';
-
 import {Button, ButtonVariant} from '.';
+import AddIcon from '../icon/assets/add.svg';
 
 const meta: Meta<typeof Button> = {
   title: 'shared/Button',
@@ -31,9 +30,7 @@ export const Icon: Story = {
   args: {
     children: 'щитпост',
     variant: ButtonVariant.PRIMARY,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    Icon: AddIcon,
+    Icon: () => <AddIcon />,
   },
 };
 
