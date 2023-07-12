@@ -1,0 +1,44 @@
+.header {
+  border: 1px solid rgba($color: #676767, $alpha: 25%);
+  background: rgba($color: #000, $alpha: 30%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 24px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  & > * {
+    min-width: max-content;
+  }
+}
+
+.linksContainer {
+  display: flex;
+  gap: 35px;
+}
+
+.icon {
+  color: var(--color-white);
+}
+
+.button {
+  $size: 60px;
+
+  min-width: $size;
+  width: $size;
+  height: $size;
+  padding: 0;
+  justify-content: center;
+  border-radius: 0;
+
+  &:hover {
+    background: var(--color-white);
+    color: var(--color-black);
+    opacity: 1;
+  }
+}
