@@ -10,6 +10,10 @@ export const routes = {
     signIn: createRoute(),
     signUp: createRoute(),
   },
+  explore: createRoute(),
+  bets: createRoute(),
+  events: createRoute(),
+  bookmarks: createRoute(),
 };
 
 export const controls = createRouterControls();
@@ -27,6 +31,22 @@ export const router = createHistoryRouter({
     {
       path: '/sign-up',
       route: routes.auth.signUp,
+    },
+    {
+      path: '/explore',
+      route: routes.explore,
+    },
+    {
+      path: '/bets',
+      route: routes.bets,
+    },
+    {
+      path: '/events',
+      route: routes.events,
+    },
+    {
+      path: '/bookmarks',
+      route: routes.bookmarks,
     },
   ],
   controls,

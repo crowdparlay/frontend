@@ -1,8 +1,10 @@
 .wrapper {
+  display: flex;
   position: relative;
 }
 
-.active {
+.activeLine {
+  display: none;
   width: 42px;
   height: 2px;
   position: absolute;
@@ -22,6 +24,12 @@
   line-height: 19px;
   border-radius: 10px;
   transition: 150ms;
+
+  &.active {
+    .activeLine {
+      display: block;
+    }
+  }
 }
 
 .primary {
@@ -32,10 +40,6 @@
   &:hover {
     background: var(--color-white);
   }
-}
-
-.disabled {
-  opacity: 0.5;
 }
 
 .raw {
@@ -58,6 +62,7 @@
 
 .navigation {
   color: var(--color-white);
+  height: 60px;
 
   &:hover {
     opacity: 0.8;
