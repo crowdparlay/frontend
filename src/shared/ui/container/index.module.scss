@@ -1,0 +1,23 @@
+$padding: 20px;
+
+.container {
+  width: 100%;
+  padding: 0 $padding;
+  margin: 0 auto;
+}
+
+.s {
+  max-width: calc(#{$padding} * 2 + #{var(--container-width-s)});
+}
+
+.m {
+  max-width: calc(#{$padding} * 2 + #{var(--container-width-m)});
+}
+
+.l {
+  max-width: calc(#{$padding} * 2 + #{var(--container-width-l)});
+}
+
+.xl {
+  max-width: calc(#{$padding} * 2 + #{var(--container-width-xl)});
+}
