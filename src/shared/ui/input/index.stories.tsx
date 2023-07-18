@@ -2,10 +2,13 @@ import type {Meta, StoryObj} from '@storybook/react';
 
 import {Input} from '~/shared/ui';
 
+import {PaddingDecorator} from '../../decorators';
+
 const meta: Meta<typeof Input> = {
   title: 'shared/Input',
   component: Input,
   tags: ['autodocs'],
+  decorators: [PaddingDecorator(40, 40)],
 };
 
 export default meta;
@@ -49,10 +52,21 @@ export const WithValue: Story = {
   },
 };
 
-export const HoverWithValue: Story = {
+export const Invalid: Story = {
   args: {
-    hover: true,
     placeholder: 'Email',
-    defaultValue: 'mere1y@split-team.com',
+    defaultValue: 'mere1y@',
+    isInvalid: true,
+    errorMessage: 'Invalid mail provider',
+  },
+};
+
+export const PasswordInvalid: Story = {
+  args: {
+    placeholder: 'Email',
+    defaultValue: 'toor',
+    type: 'password',
+    isInvalid: true,
+    errorMessage: 'Password must be unique',
   },
 };
