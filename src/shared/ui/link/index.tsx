@@ -44,11 +44,15 @@ export const Link = (props: LinkProps) => {
     [cls.active]: forceActive,
   };
 
+  const activeMods = {
+    [cls.active]: variant === LinkVariant.NAVIGATION,
+  };
+
   return (
     <AtomicLink
       to={to}
       className={classNames(cls.link, mods, className)}
-      activeClassName={classNames(cls.link, mods, cls.active, activeClassName)}
+      activeClassName={classNames(cls.link, mods, activeMods, activeClassName)}
       {...otherProps}
     >
       {Icon !== undefined && <Icon />}
