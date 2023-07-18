@@ -28,25 +28,15 @@ export const Password: Story = {
   },
 };
 
-export const PasswordShown: Story = {
-  args: {
-    placeholder: 'Password',
-    defaultValue: 'toor',
-    type: 'password',
-    alwaysShown: true,
-  },
-};
-
 export const Hover: Story = {
   args: {
-    hover: true,
+    forceHover: true,
     placeholder: 'Email',
   },
 };
 
 export const WithValue: Story = {
   args: {
-    focus: true,
     placeholder: 'Email',
     defaultValue: 'mere1y@split-team.com',
   },

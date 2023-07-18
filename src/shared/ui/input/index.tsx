@@ -11,8 +11,8 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   isInvalid?: boolean;
   errorMessage?: string;
   center?: boolean;
-  focus?: boolean;
-  hover?: boolean;
+  forceFocus?: boolean;
+  forceHover?: boolean;
   alwaysShown?: boolean;
 }
 
@@ -20,8 +20,8 @@ export const Input = (props: InputProps) => {
   const {
     alwaysShown,
     className,
-    hover,
-    focus,
+    forceHover,
+    forceFocus,
     disabled,
     isInvalid,
     errorMessage,

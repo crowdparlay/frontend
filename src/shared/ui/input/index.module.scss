@@ -1,6 +1,6 @@
 .focus {
-  background: transparent !important;
-  border-color: #141414 !important;
+  background: var(--color-black) !important;
+  border-color: #141414;
 }
 
 .hover {
@@ -17,7 +17,7 @@
 .input {
   width: 100%;
   padding: 9px 14px 10px;
-  font: var(--font-s);
+  font: var(--font-m);
   font-size: 16px;
   line-height: 19px;
   color: var(--color-white);
@@ -26,8 +26,17 @@
   border-radius: 10px;
   transition: 150ms;
 
-  &:not(:placeholder-shown) {
-    background: transparent;
+  &::-ms-clear,
+  &::-ms-reveal {
+    display: none;
+  }
+
+  &:not(:placeholder-shown, .invalid) {
+    border-color: #141414;
+  }
+
+  &:focus {
+    background: var(--color-black);
     border-color: #141414;
   }
 }
@@ -78,7 +87,9 @@
   bottom: 0;
   height: 19px;
   margin: auto 0;
-  color: #848484;
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .errorContainer {
