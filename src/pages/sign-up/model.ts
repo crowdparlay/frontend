@@ -1,7 +1,6 @@
 import {attach, sample} from 'effector';
 import {createForm} from 'effector-forms';
 import {or} from 'patronum';
-import {isValidElement} from 'react';
 
 import * as api from '~/shared/api';
 import {routes} from '~/shared/routes';
@@ -55,8 +54,6 @@ export const $form = createForm({
   },
   validateOn: ['submit'],
 });
-
-console.log($form.fields.password.changed);
 
 sample({
   clock: $form.fields.password.changed,
