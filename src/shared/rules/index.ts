@@ -44,14 +44,14 @@ export const rules = {
   }),
   minValue: (min: number): Rule<number> => ({
     name: 'minValue',
-    validator: (value: any) => ({
+    validator: (value: number) => ({
       isValid: value >= min,
       errorText: `Min value is ${min}`,
     }),
   }),
   maxValue: (max: number): Rule<number> => ({
     name: 'maxValue',
-    validator: (value: any) => ({
+    validator: (value: number) => ({
       isValid: value <= max,
       errorText: `Max value is ${max}`,
     }),
