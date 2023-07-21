@@ -56,6 +56,11 @@ export const $form = createForm({
 });
 
 sample({
+  clock: $form.fields.password.changed,
+  target: $form.fields.confirm.validate,
+});
+
+sample({
   clock: anonymousRoute.closed,
   target: $form.reset,
 });
