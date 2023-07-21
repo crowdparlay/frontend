@@ -2,11 +2,11 @@ import classNames from 'classnames';
 import {HTMLAttributes} from 'react';
 import stc from 'string-to-color';
 
-import {getLuminance} from '~/shared/lib';
 import {Text, TextSize} from '~/shared/ui';
 
 import VerifiedIcon from './assets/verified.svg';
 import cls from './index.module.scss';
+import {getLuminance} from './lib';
 
 export interface ProfilePreviewProps extends HTMLAttributes<HTMLDivElement> {
   displayName?: string;
