@@ -39,7 +39,7 @@ export const rules = {
     name: 'maxLength',
     validator: (value: string | T[]) => ({
       isValid: value.length <= max,
-      errorText: `Min length is ${max}`,
+      errorText: `Max length is ${max}`,
     }),
   }),
   minValue: (min: number): Rule<number> => ({
