@@ -58,7 +58,7 @@ export const $form = createForm({
 sample({
   clock: $form.fields.password.changed,
   source: $form.fields.confirm.$isDirty,
-  filter: (confirmDirty) => confirmDirty,
+  filter: (isConfirmDirty) => isConfirmDirty,
   target: $form.fields.confirm.validate,
 });
 
