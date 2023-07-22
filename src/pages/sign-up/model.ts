@@ -56,6 +56,13 @@ export const $form = createForm({
 });
 
 sample({
+  clock: $form.fields.password.changed,
+  source: $form.fields.confirm.$isDirty,
+  filter: (isConfirmDirty) => isConfirmDirty,
+  target: $form.fields.confirm.validate,
+});
+
+sample({
   clock: anonymousRoute.closed,
   target: $form.reset,
 });
