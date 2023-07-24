@@ -11,18 +11,17 @@
 }
 
 .post:hover {
-  border: 1px solid transparent;
   background-clip: padding-box;
+  border-color: transparent;
 }
 
 .post:hover::after {
   content: '';
   position: absolute;
   inset: -1px;
-  background-image: linear-gradient(to top right, #FFA800, #FF007A, #BD00FF, #00FFC2);
   z-index: -1;
   border-radius: inherit;
-  box-shadow: 0 0 110px rgb(255 0 117 / 25%);
+  background-image: conic-gradient(#FFA800, #FF007A, #BD00FF, #00FFC2, #FFA800);
 }
 
 .content {
