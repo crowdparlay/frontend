@@ -25,10 +25,14 @@
   --container-width-xl: 1920px;
   --font-xl: var(--font-weight-xl) var(--font-size-xl) / var(--font-line-xl) var(--font-family-main);
 
-  --color-gray: #d9d9d9;
   --color-white: #fff;
+  --color-gray-lightest: #d9d9d9;
+  --color-gray-lighter: #848484;
+  --color-gray-light: #444444;
+  --color-gray-dark: #1a1a1a;
   --color-black: #000;
-  --color-black11: #111;
+  --color-black-dark: #111;
+  --color-black-darkest: #101010;
 
   --z-index-dropdown: 2;
 }
