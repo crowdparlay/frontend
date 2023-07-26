@@ -6,6 +6,7 @@ import cls from './index.module.scss';
 
 export enum ButtonVariant {
   PRIMARY = 'primary',
+  SECONDARY = 'secondary',
   CLEAR = 'clear',
 }
 
@@ -41,17 +42,20 @@ export const Button = (props: ButtonProps) => {
 
   return (
     <button
-      className={classNames(cls.button, mods, className)}
+      className={classNames(cls.button, mods, className, children === undefined && cls.singleIcon)}
       disabled={disabled}
       type={type}
       {...otherProps}
     >
-      {Icon !== undefined && <Icon />}
+      {Icon !== undefined && <Icon/>}
 
-      <div className={cls.wrapper}>
-        {children}
-        {badge !== undefined && <Badge>{badge}</Badge>}
-      </div>
+      {
+        children !== undefined &&
+        <div className={cls.wrapper}>
+          {children}
+          {badge !== undefined && <Badge>{badge}</Badge>}
+        </div>
+      }
     </button>
   );
 };
