@@ -1,10 +1,10 @@
-import cls from "~/widgets/thread/index.module.scss";
-import inlineAvatarsCls from "~/widgets/inline-avatars/index.module.scss";
-import classNames from "classnames";
-import {Text, TextSize} from "~/shared/ui";
-import {HTMLAttributes, useState} from "react";
-import {ProfilePreview, ProfilePreviewProps} from "~/widgets/profile-preview";
-import {InlineAvatars} from "~/widgets/inline-avatars";
+import cls from './index.module.scss';
+import inlineAvatarsCls from '../inline-avatars/index.module.scss';
+import classNames from 'classnames';
+import {Text, TextSize} from '~/shared/ui';
+import {HTMLAttributes, useState} from 'react';
+import {ProfilePreview, ProfilePreviewProps} from '../profile-preview';
+import {InlineAvatars} from '../inline-avatars';
 
 export interface ThreadProps extends HTMLAttributes<HTMLDivElement> {
   author?: ProfilePreviewProps;
@@ -18,8 +18,8 @@ export const Thread = (props: ThreadProps) => {
   const [replyThreads, setReplyThreads] = useState<ThreadProps[]>([]);
 
   const expandReplies = () => {
-    // Fetch replies
-    // setReplyThreads(replies)
+    // TODO: fetch replies
+    setReplyThreads([])
 
     setRepliesExpanded(true);
   }
