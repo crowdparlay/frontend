@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import {ButtonHTMLAttributes, ReactNode} from 'react';
+
 import cls from './index.module.scss';
 
 export enum ButtonVariant {

@@ -17,6 +17,6 @@ export const Default: Story = {
       'https://source.unsplash.com/random/100x100?sig=1',
       'https://source.unsplash.com/random/100x100?sig=2',
       'https://source.unsplash.com/random/100x100?sig=3',
-    ]
+    ],
   },
 };

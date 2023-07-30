@@ -12,7 +12,8 @@
   background: #260c0c !important;
   border-color: transparent !important;
 
-  &, &::placeholder {
+  &,
+  &::placeholder {
     color: red !important;
   }
 

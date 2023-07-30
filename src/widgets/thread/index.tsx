@@ -1,9 +1,11 @@
-import cls from './index.module.scss';
 import classNames from 'classnames';
-import {Text, TextSize} from '~/shared/ui';
 import {HTMLAttributes, useState} from 'react';
-import {ProfilePreview, ProfilePreviewProps} from '../profile-preview';
+
+import {Text, TextSize} from '~/shared/ui';
+
 import {InlineAvatars} from '../inline-avatars';
+import {ProfilePreview, ProfilePreviewProps} from '../profile-preview';
+import cls from './index.module.scss';
 
 export interface ThreadProps extends HTMLAttributes<HTMLDivElement> {
   author?: ProfilePreviewProps;
@@ -18,10 +20,10 @@ export const Thread = (props: ThreadProps) => {
 
   const expandReplies = () => {
     // TODO: fetch replies
-    setReplyThreads([])
+    setReplyThreads([]);
 
     setIsThreadExpanded(true);
-  }
+  };
 
   const repliesCount = replyAvatarUrls.length;
 
@@ -30,25 +32,26 @@ export const Thread = (props: ThreadProps) => {
       <div className={cls.post}>
         <div className={cls.content}>
           <Text size={TextSize.M}>{content}</Text>
-          <ProfilePreview {...author}/>
+          <ProfilePreview {...author} />
         </div>
 
-        {!isThreadExpanded &&
+        {!isThreadExpanded && (
           <div className={cls.epilogue} onClick={expandReplies}>
-            <InlineAvatars avatarUrls={replyAvatarUrls}/>
-            <Text size={TextSize.S}>{repliesCount} {repliesCount === 1 ? 'reply' : 'replies'}</Text>
+            <InlineAvatars avatarUrls={replyAvatarUrls} />
+            <Text size={TextSize.S}>
+              {repliesCount} {repliesCount === 1 ? 'reply' : 'replies'}
+            </Text>
           </div>
-        }
+        )}
       </div>
 
       {isThreadExpanded &&
-        replyThreads.map(replyThread =>
+        replyThreads.map((replyThread) => (
           <div>
-            <div className={cls.connector}/>
-            <Thread {...replyThread}/>
+            <div className={cls.connector} />
+            <Thread {...replyThread} />
           </div>
-        )
-      }
+        ))}
     </div>
   );
 };

@@ -1,6 +1,7 @@
-import cls from './index.module.scss';
 import classNames from 'classnames';
 import {HTMLAttributes} from 'react';
+
+import cls from './index.module.scss';
 
 export interface InlineAvatarsProps extends HTMLAttributes<HTMLDivElement> {
   avatarUrls: string[];
@@ -11,11 +12,11 @@ export const InlineAvatars = (props: InlineAvatarsProps) => {
 
   return (
     <div className={classNames(cls.avatars, className)} {...otherProps}>
-      {avatarUrls.map(avatarUrl =>
+      {avatarUrls.map((avatarUrl) => (
         <span className={cls.avatar}>
-          <img src={avatarUrl} alt=''/>
+          <img src={avatarUrl} alt="" />
         </span>
-      )}
+      ))}
     </div>
   );
 };

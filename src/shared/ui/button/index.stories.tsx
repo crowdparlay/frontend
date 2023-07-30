@@ -25,7 +25,7 @@ export const PrimaryWithIcon: Story = {
     variant: ButtonVariant.PRIMARY,
     children: <AddIcon />,
   },
-}
+};
 
 export const PrimarySingleIcon: Story = {
   args: {
