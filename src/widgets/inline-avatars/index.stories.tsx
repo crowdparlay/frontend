@@ -14,9 +14,9 @@ type Story = StoryObj<typeof InlineAvatars>;
 export const Default: Story = {
   args: {
     avatarUrls: [
-      'https://picsum.photos/70',
-      'https://picsum.photos/80',
-      'https://picsum.photos/90',
+      'https://source.unsplash.com/random/100x100?sig=1',
+      'https://source.unsplash.com/random/100x100?sig=2',
+      'https://source.unsplash.com/random/100x100?sig=3',
     ]
   },
 };
