@@ -23,6 +23,8 @@ export const Thread = (props: ThreadProps) => {
     setIsThreadExpanded(true);
   }
 
+  const repliesCount = replyAvatarUrls.length;
+
   return (
     <div className={classNames(cls.thread, className)} {...otherProps}>
       <div className={cls.post}>
@@ -34,7 +36,7 @@ export const Thread = (props: ThreadProps) => {
         {!isThreadExpanded &&
           <div className={cls.epilogue} onClick={expandReplies}>
             <InlineAvatars avatarUrls={replyAvatarUrls}/>
-            <Text size={TextSize.S}>{replyAvatarUrls.length} {replyAvatarUrls.length === 1 ? 'reply' : 'replies'}</Text>
+            <Text size={TextSize.S}>{repliesCount} {repliesCount === 1 ? 'reply' : 'replies'}</Text>
           </div>
         }
       </div>
