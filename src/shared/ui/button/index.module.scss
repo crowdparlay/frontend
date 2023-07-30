@@ -4,25 +4,18 @@
   flex-direction: row;
   gap: 16px;
   align-items: center;
-  padding: 12px 25px;
+  justify-content: center;
+  padding: 0 25px;
   font: var(--font-m);
   line-height: 19px;
   border-radius: 10px;
   transition: 150ms;
 }
 
-.singleIcon {
+.equilateral {
   width: 40px;
-  padding: 12px;
-}
-
-.wrapper {
-  display: flex;
-  position: relative;
-}
-
-svg > path {
-  transition: 150ms;
+  padding: 0;
+  gap: 0;
 }
 
 .primary {
@@ -32,39 +25,19 @@ svg > path {
   &:hover {
     background: var(--color-white);
   }
-
-  svg > path {
-    fill: var(--color-black);
-  }
 }
 
 .secondary {
   color: var(--color-gray-lighter);
   background: var(--color-gray-dark);
 
-  svg > path {
-    fill: var(--color-gray-lighter);
-  }
-}
-
-.secondary:hover {
-  color: var(--color-white);
-  background: var(--color-gray-light);
-
-  svg > path {
-    fill: var(--color-white);
-  }
-}
-
-.secondary:active {
-  background: var(--color-gray-dark);
-}
-
-.clear {
-  color: var(--color-white);
-
   &:hover {
-    opacity: 0.8;
+    color: var(--color-white);
+    background: var(--color-gray-light);
+  }
+
+  &:active {
+    background: var(--color-gray-dark);
   }
 }
 
@@ -74,8 +47,4 @@ svg > path {
 
 .fullWidth {
   width: 100%;
-}
-
-.center {
-  justify-content: center;
 }
