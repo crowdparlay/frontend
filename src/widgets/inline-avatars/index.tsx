@@ -11,13 +11,11 @@ export const InlineAvatars = (props: InlineAvatarsProps) => {
 
   return (
     <div className={classNames(cls.avatars, className)} {...otherProps}>
-      {
-        avatarUrls?.map(avatarUrl =>
-          <span className={cls.avatar}>
-            <img src={avatarUrl} alt=''/>
-          </span>
-        )
-      }
+      {avatarUrls.map(avatarUrl =>
+        <span className={cls.avatar}>
+          <img src={avatarUrl} alt=''/>
+        </span>
+      )}
     </div>
   );
 };
