@@ -10,8 +10,15 @@
 
 .invalid {
   background: #260c0c !important;
-  border-color: transparent;
-  color: red !important;
+  border-color: transparent !important;
+
+  &, &::placeholder {
+    color: red !important;
+  }
+
+  &:hover {
+    border-color: red !important;
+  }
 }
 
 .input {
@@ -58,6 +65,11 @@
 
 .password {
   padding-right: 40px;
+
+  &:not(:placeholder-shown) {
+    font-family: ui-monospace;
+    letter-spacing: 6px;
+  }
 }
 
 .showMods {

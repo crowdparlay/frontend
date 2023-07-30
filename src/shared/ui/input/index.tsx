@@ -1,10 +1,9 @@
 import classNames from 'classnames';
-import {InputHTMLAttributes, useCallback, useState} from 'react';
+import {InputHTMLAttributes, useState} from 'react';
 
 import {Text, TextSize} from '~/shared/ui';
 
 import ErrorIcon from './assets/error.svg';
-import EyeIcon from './assets/eye.svg';
 import cls from './index.module.scss';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -30,38 +29,24 @@ export const Input = (props: InputProps) => {
     ...otherProps
   } = props;
 
-  const isPasswordMode = type === 'password';
-
-  const customTypeInitial = isPasswordMode && alwaysShown ? 'text' : type;
-  const [customType, setCustomType] = useState(customTypeInitial);
+  const customTypeInitial = alwaysShown ? 'text' : type;
+  const [customType] = useState(customTypeInitial);
 
   const [isErrorIconHovered, setIsErrorIconHovered] = useState(false);
 
   const mods = {
+    [cls.password]: type === 'password',
     [cls.disabled]: disabled,
     [cls.invalid]: isInvalid,
     [cls.center]: center,
     [cls.focus]: forceFocus,
     [cls.hover]: forceHover,
-    [cls.showMods]: isPasswordMode || isInvalid,
-    [cls.showMods2]: isPasswordMode && isInvalid,
-  };
-
-  const passwordMods = {
-    [cls.customType]: customType !== type,
+    [cls.showMods]: isInvalid,
   };
 
   const tooltipMods = {
     [cls.tooltipVisible]: isErrorIconHovered,
   };
-
-  const onPasswordButtonClick = useCallback(() => {
-    if (alwaysShown) {
-      return;
-    }
-
-    setCustomType((prevState) => (prevState === 'password' ? 'text' : 'password'));
-  }, [alwaysShown]);
 
   return (
     <div className={cls.wrapper}>
@@ -73,16 +58,6 @@ export const Input = (props: InputProps) => {
       />
 
       <div className={cls.mods}>
-        {isPasswordMode && (
-          <button
-            type={'button'}
-            className={classNames(cls.passwordButton, passwordMods)}
-            onClick={onPasswordButtonClick}
-          >
-            <EyeIcon />
-          </button>
-        )}
-
         {isInvalid && (
           <div
             className={cls.errorContainer}
