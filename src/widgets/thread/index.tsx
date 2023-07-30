@@ -1,5 +1,4 @@
 import cls from './index.module.scss';
-import inlineAvatarsCls from '../inline-avatars/index.module.scss';
 import classNames from 'classnames';
 import {Text, TextSize} from '~/shared/ui';
 import {HTMLAttributes, useState} from 'react';
@@ -14,14 +13,14 @@ export interface ThreadProps extends HTMLAttributes<HTMLDivElement> {
 export const Thread = (props: ThreadProps) => {
   const {author, replyAvatarUrls, content, className, ...otherProps} = props;
 
-  const [repliesExpanded, setRepliesExpanded] = useState(false);
+  const [isThreadExpanded, setIsThreadExpanded] = useState(false);
   const [replyThreads, setReplyThreads] = useState<ThreadProps[]>([]);
 
   const expandReplies = () => {
     // TODO: fetch replies
     setReplyThreads([])
 
-    setRepliesExpanded(true);
+    setIsThreadExpanded(true);
   }
 
   return (
@@ -31,16 +30,16 @@ export const Thread = (props: ThreadProps) => {
           <Text size={TextSize.M}>{content}</Text>
           <ProfilePreview {...author}/>
         </div>
-        {
-          !repliesExpanded &&
+
+        {!isThreadExpanded &&
           <div className={cls.epilogue} onClick={expandReplies}>
-            <InlineAvatars className={inlineAvatarsCls.avatars} avatarUrls={replyAvatarUrls}/>
+            <InlineAvatars avatarUrls={replyAvatarUrls}/>
             <Text size={TextSize.S}>{replyAvatarUrls.length} {replyAvatarUrls.length === 1 ? 'reply' : 'replies'}</Text>
           </div>
         }
       </div>
-      {
-        repliesExpanded &&
+
+      {isThreadExpanded &&
         replyThreads.map(replyThread =>
           <div>
             <div className={cls.connector}/>

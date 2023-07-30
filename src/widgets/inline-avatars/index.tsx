@@ -1,6 +1,6 @@
-import cls from "~/widgets/inline-avatars/index.module.scss";
-import classNames from "classnames";
-import {HTMLAttributes} from "react";
+import cls from './index.module.scss';
+import classNames from 'classnames';
+import {HTMLAttributes} from 'react';
 
 export interface InlineAvatarsProps extends HTMLAttributes<HTMLDivElement> {
   avatarUrls: string[];

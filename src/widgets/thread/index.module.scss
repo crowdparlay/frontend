@@ -20,20 +20,20 @@
   border: 1px solid var(--color-black-darkest);
   border-radius: 12px;
   width: 400px;
-}
 
-.post:hover {
-  background-clip: padding-box;
-  border-color: transparent;
-}
+  &:hover {
+    background-clip: padding-box;
+    border-color: transparent;
+  }
 
-.post:hover::after {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  z-index: -1;
-  border-radius: inherit;
-  background-image: conic-gradient(#FFA800, #FF007A, #BD00FF, #00FFC2, #FFA800);
+  &:hover::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    border-radius: inherit;
+    background-image: conic-gradient(#FFA800, #FF007A, #BD00FF, #00FFC2, #FFA800);
+  }
 }
 
 .content {
