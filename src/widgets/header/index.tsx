@@ -3,7 +3,7 @@ import {useUnit} from 'effector-react';
 import {User} from '~/shared/api';
 import {routes} from '~/shared/routes';
 import {$user} from '~/shared/session';
-import {Button, ButtonVariant, Input, Link, LinkVariant} from '~/shared/ui';
+import {Button, Input, Link, LinkVariant} from '~/shared/ui';
 import ArrowIcon from '~/shared/ui/icon/assets/arrow.svg';
 
 import Avatar from './assets/avatar.png';
@@ -25,7 +25,7 @@ export const Header = (props: HeaderProps) => {
     <header className={cls.header}>
       <div className={cls.row}>
         <Link variant={LinkVariant.CLEAR} style={{padding: 0}} to={routes.home}>
-          <Logo />
+          <Logo/>
         </Link>
 
         <Input
@@ -53,12 +53,12 @@ export const Header = (props: HeaderProps) => {
 
       {forceUser ?? user ? (
         <div className={cls.row} style={{alignItems: 'normal'}}>
-          <Button className={cls.button} variant={ButtonVariant.CLEAR}>
-            <NotificationIcon />
+          <Button className={cls.button}>
+            <NotificationIcon/>
           </Button>
-          <img src={Avatar} alt="avatar" />
-          <Button className={cls.button} variant={ButtonVariant.CLEAR}>
-            <ArrowIcon />
+          <img src={Avatar} alt="avatar"/>
+          <Button className={cls.button}>
+            <ArrowIcon/>
           </Button>
         </div>
       ) : (
