@@ -1,31 +1,28 @@
 import classNames from 'classnames';
-import {ButtonHTMLAttributes, FC, ReactNode, SVGProps} from 'react';
+import {ButtonHTMLAttributes, ReactNode} from 'react';
 
-import {Badge} from '../badge';
 import cls from './index.module.scss';
 
 export enum ButtonVariant {
   PRIMARY = 'primary',
-  CLEAR = 'clear',
+  SECONDARY = 'secondary',
 }
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   variant?: ButtonVariant;
-  Icon?: FC<SVGProps<SVGSVGElement>>;
-  badge?: number;
+  text?: string;
   fullWidth?: boolean;
   center?: boolean;
 }
 
 export const Button = (props: ButtonProps) => {
   const {
-    Icon,
-    badge,
-    variant = ButtonVariant.PRIMARY,
-    fullWidth,
-    center,
     children,
+    variant = ButtonVariant.PRIMARY,
+    text,
+    fullWidth,
+    center = true,
     type,
     className,
     disabled,
@@ -33,6 +30,7 @@ export const Button = (props: ButtonProps) => {
   } = props;
 
   const mods = {
+    [cls.equilateral]: text == undefined,
     [cls.disabled]: disabled,
     [cls[variant]]: true,
     [cls.fullWidth]: fullWidth,
@@ -46,12 +44,8 @@ export const Button = (props: ButtonProps) => {
       type={type}
       {...otherProps}
     >
-      {Icon !== undefined && <Icon />}
-
-      <div className={cls.wrapper}>
-        {children}
-        {badge !== undefined && <Badge>{badge}</Badge>}
-      </div>
+      {children}
+      {text}
     </button>
   );
 };

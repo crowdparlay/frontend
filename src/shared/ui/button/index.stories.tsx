@@ -14,30 +14,44 @@ type Story = StoryObj<typeof Button>;
 
 export const Primary: Story = {
   args: {
-    children: 'Sign In',
+    text: 'Sign in',
     variant: ButtonVariant.PRIMARY,
   },
 };
 
-export const Clear: Story = {
+export const PrimaryWithIcon: Story = {
   args: {
-    children: 'Sign Up',
-    variant: ButtonVariant.CLEAR,
-  },
-};
-
-export const Icon: Story = {
-  args: {
-    children: 'щитпост',
+    text: 'щитпост',
     variant: ButtonVariant.PRIMARY,
-    Icon: () => <AddIcon />,
+    children: <AddIcon />,
   },
 };
 
-export const Badge: Story = {
+export const PrimarySingleIcon: Story = {
   args: {
-    children: 'My bets',
-    variant: ButtonVariant.CLEAR,
-    badge: 2,
+    variant: ButtonVariant.PRIMARY,
+    children: <AddIcon />,
+  },
+};
+
+export const Secondary: Story = {
+  args: {
+    text: 'Sign in',
+    variant: ButtonVariant.SECONDARY,
+  },
+};
+
+export const SecondaryWithIcon: Story = {
+  args: {
+    text: 'щитпост',
+    variant: ButtonVariant.SECONDARY,
+    children: <AddIcon />,
+  },
+};
+
+export const SecondarySingleIcon: Story = {
+  args: {
+    variant: ButtonVariant.SECONDARY,
+    children: <AddIcon />,
   },
 };
