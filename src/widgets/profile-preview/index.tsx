@@ -41,14 +41,18 @@ export const ProfilePreview = (props: ProfilePreviewProps) => {
 
       <div className={cls.list}>
         <div className={cls.nameContainer}>
-          <Text className={cls.name}>{displayName || 'Display name'}</Text>
+          <Text className={classNames(cls.name, cls.maxWidth)}>
+            {displayName || 'Display name'}
+          </Text>
 
           {verified && <VerifiedIcon />}
         </div>
         {showDate && date ? (
           <Text size={TextSize.S}>{date.toLocaleTimeString()}</Text>
         ) : (
-          <Text size={TextSize.S}>@{username || 'username'}</Text>
+          <Text className={cls.maxWidth} size={TextSize.S}>
+            @{username || 'username'}
+          </Text>
         )}
       </div>
     </div>
