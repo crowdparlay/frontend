@@ -11,6 +11,7 @@ export const routes = {
     signUp: createRoute(),
     resetPassword: createRoute(),
   },
+  profile: createRoute(),
   explore: createRoute(),
   bets: createRoute(),
   events: createRoute(),
@@ -36,6 +37,10 @@ export const router = createHistoryRouter({
     {
       path: '/reset-password',
       route: routes.auth.resetPassword,
+    },
+    {
+      path: '/profile',
+      route: routes.profile,
     },
     {
       path: '/explore',
