@@ -21,7 +21,7 @@ export const ProfilePage = () => {
 
         <Form className={cls.grid} onSubmit={submit}>
           <Input
-            top="Display name"
+            label="Display name"
             placeholder="Display name"
             value={fields.displayName?.value}
             onChange={(e) => fields.displayName?.onChange(e.target.value)}
@@ -29,7 +29,7 @@ export const ProfilePage = () => {
             errorMessage={fields.displayName?.errorText()}
           />
           <Input
-            top="Username"
+            label="Username"
             placeholder="Username"
             value={fields.username?.value}
             onChange={(e) => fields.username?.onChange(e.target.value)}
@@ -38,7 +38,7 @@ export const ProfilePage = () => {
           />
 
           <Input
-            top="Current password"
+            label="Current password"
             placeholder="Current password"
             value={fields.password?.value}
             onChange={(e) => fields.password?.onChange(e.target.value)}
@@ -48,7 +48,7 @@ export const ProfilePage = () => {
             name="password"
           />
           <Input
-            top="New password"
+            label="New password"
             placeholder="New password"
             value={fields.newPassword?.value}
             onChange={(e) => fields.newPassword?.onChange(e.target.value)}
@@ -59,7 +59,7 @@ export const ProfilePage = () => {
           />
 
           <Input
-            top="Avatar URL"
+            label="Avatar URL"
             placeholder="Avatar URL"
             readOnly={true}
             value={fields.avatarUrl?.value}
