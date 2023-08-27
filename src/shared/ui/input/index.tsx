@@ -1,10 +1,9 @@
 import classNames from 'classnames';
-import {InputHTMLAttributes, useCallback, useState} from 'react';
+import {InputHTMLAttributes, useState} from 'react';
 
 import {Text, TextSize} from '~/shared/ui';
 
 import ErrorIcon from './assets/error.svg';
-import EyeIcon from './assets/eye.svg';
 import FileIcon from './assets/file.svg';
 import cls from './index.module.scss';
 
@@ -47,8 +46,6 @@ export const Input = (props: InputProps) => {
     customType = 'text';
   }
 
-  const [customType, setCustomType] = useState(customTypeInitial);
-
   const [isErrorIconHovered, setIsErrorIconHovered] = useState(false);
 
   const wrapperMods = {
@@ -65,21 +62,9 @@ export const Input = (props: InputProps) => {
     [cls.showMods2]: (isPasswordMode || isFileMode) && isInvalid,
   };
 
-  const passwordMods = {
-    [cls.customType]: customType !== type,
-  };
-
   const tooltipMods = {
     [cls.tooltipVisible]: isErrorIconHovered,
   };
-
-  const onPasswordButtonClick = useCallback(() => {
-    if (alwaysShown) {
-      return;
-    }
-
-    setCustomType((prevState) => (prevState === 'password' ? 'text' : 'password'));
-  }, [alwaysShown]);
 
   return (
     <div className={classNames(cls.wrapper, wrapperMods, className)} data-top={label}>
@@ -118,16 +103,6 @@ export const Input = (props: InputProps) => {
               }}
             />
           </>
-        )}
-
-        {isPasswordMode && (
-          <button
-            type={'button'}
-            className={classNames(cls.passwordButton, passwordMods)}
-            onClick={onPasswordButtonClick}
-          >
-            <EyeIcon />
-          </button>
         )}
 
         {isInvalid && (
