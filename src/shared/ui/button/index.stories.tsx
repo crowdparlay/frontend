@@ -55,3 +55,10 @@ export const SecondarySingleIcon: Story = {
     children: <AddIcon />,
   },
 };
+
+export const Inline: Story = {
+  args: {
+    text: 'Show more',
+    variant: ButtonVariant.INLINE,
+  },
+};

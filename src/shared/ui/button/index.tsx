@@ -6,10 +6,11 @@ import cls from './index.module.scss';
 export enum ButtonVariant {
   PRIMARY = 'primary',
   SECONDARY = 'secondary',
+  INLINE = 'inline'
 }
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: ReactNode;
+  children?: ReactNode;
   variant?: ButtonVariant;
   text?: string;
   fullWidth?: boolean;

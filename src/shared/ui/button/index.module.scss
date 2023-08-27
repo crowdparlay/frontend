@@ -10,6 +10,7 @@
   line-height: 19px;
   border-radius: 10px;
   transition: 150ms;
+  white-space: nowrap;
 }
 
 .equilateral {
@@ -27,7 +28,15 @@
   }
 }
 
-.secondary {
+.secondary, .inline {
+  &.inline {
+    height: 24px;
+    padding: 0 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    background: var(--color-black-darkest);
+  }
+
   color: var(--color-gray-lighter);
   background: var(--color-gray-dark);
 
