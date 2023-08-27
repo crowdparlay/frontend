@@ -9,7 +9,7 @@ import FileIcon from './assets/file.svg';
 import cls from './index.module.scss';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  top?: string;
+  label?: string;
   isInvalid?: boolean;
   errorMessage?: string;
   center?: boolean;
@@ -21,7 +21,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export const Input = (props: InputProps) => {
   const {
-    top,
+    label,
     alwaysShown,
     className,
     forceHover,
@@ -39,12 +39,12 @@ export const Input = (props: InputProps) => {
   const isFileMode = type === 'file';
   const isPasswordMode = type === 'password';
 
-  let customTypeInitial = type;
+  let customType = type;
   if (isPasswordMode && alwaysShown) {
-    customTypeInitial = 'text';
+    customType = 'text';
   }
   if (isFileMode) {
-    customTypeInitial = 'text';
+    customType = 'text';
   }
 
   const [customType, setCustomType] = useState(customTypeInitial);
@@ -52,7 +52,7 @@ export const Input = (props: InputProps) => {
   const [isErrorIconHovered, setIsErrorIconHovered] = useState(false);
 
   const wrapperMods = {
-    [cls.top]: Boolean(top),
+    [cls.top]: Boolean(label),
   };
 
   const mods = {
@@ -82,7 +82,7 @@ export const Input = (props: InputProps) => {
   }, [alwaysShown]);
 
   return (
-    <div className={classNames(cls.wrapper, wrapperMods, className)} data-top={top}>
+    <div className={classNames(cls.wrapper, wrapperMods, className)} data-top={label}>
       <input
         className={classNames(cls.input, mods)}
         disabled={disabled}
@@ -103,7 +103,7 @@ export const Input = (props: InputProps) => {
               id="file_upload"
               name="file_upload"
               onChange={(e) => {
-                const file = e.target.files![0];
+                const file = e.target.files?.[0];
                 if (file && onFileChanged) {
                   const reader = new FileReader();
 

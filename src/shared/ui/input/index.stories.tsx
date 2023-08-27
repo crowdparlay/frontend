@@ -61,10 +61,10 @@ export const PasswordInvalid: Story = {
   },
 };
 
-export const Top: Story = {
+export const WithLabel: Story = {
   args: {
     placeholder: 'Email',
     defaultValue: 'mere1y@split-team.com',
-    top: 'Email',
+    label: 'Email',
   },
 };
