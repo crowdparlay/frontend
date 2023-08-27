@@ -3,7 +3,7 @@ import {Meta, StoryObj} from '@storybook/react';
 import {InlineAvatars} from './index';
 
 const meta: Meta<typeof InlineAvatars> = {
-  title: 'widgets/InlineAvatars',
+  title: 'features/InlineAvatars',
   component: InlineAvatars,
   tags: ['autodocs'],
 };

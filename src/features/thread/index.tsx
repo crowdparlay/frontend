@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import {HTMLAttributes, useState} from 'react';
-import {InlineAvatars} from 'src/features/inline-avatars';
+import {InlineAvatars} from '../inline-avatars';
 
 import {Button, ButtonVariant, Text, TextSize} from '~/shared/ui';
 
