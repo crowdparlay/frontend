@@ -133,3 +133,29 @@
 .center {
   text-align: center;
 }
+
+.top {
+  &::before {
+    display: block;
+    content: attr(data-top);
+    margin-bottom: 12px;
+    font: var(--font-s);
+    color: #848484;
+  }
+
+  .mods {
+    top: 28px;
+  }
+}
+
+.file {
+  display: none;
+
+  &::file-selector-button {
+    display: none;
+  }
+}
+
+.fileLabel {
+  cursor: pointer;
+}

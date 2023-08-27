@@ -60,3 +60,11 @@ export const PasswordInvalid: Story = {
     errorMessage: 'Password must be unique',
   },
 };
+
+export const WithLabel: Story = {
+  args: {
+    placeholder: 'Email',
+    defaultValue: 'mere1y@split-team.com',
+    label: 'Email',
+  },
+};
