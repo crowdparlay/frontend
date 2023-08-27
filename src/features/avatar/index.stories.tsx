@@ -2,7 +2,6 @@ import {Meta, StoryObj} from '@storybook/react';
 
 import {Avatar, AvatarVariant} from './index';
 
-
 const meta: Meta<typeof Avatar> = {
   title: 'features/Avatar',
   component: Avatar,
@@ -23,7 +22,7 @@ export const Userpic: Story = {
   args: {
     username: 'mere1y',
     displayName: 'Me-re-ly!',
-    avatarUrl: 'https://source.unsplash.com/random/100x100?sig=1'
+    avatarUrl: 'https://source.unsplash.com/random/100x100?sig=1',
   },
 };
 

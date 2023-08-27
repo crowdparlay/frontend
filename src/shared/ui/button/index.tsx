@@ -6,7 +6,7 @@ import cls from './index.module.scss';
 export enum ButtonVariant {
   PRIMARY = 'primary',
   SECONDARY = 'secondary',
-  INLINE = 'inline'
+  INLINE = 'inline',
 }
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

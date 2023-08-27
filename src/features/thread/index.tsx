@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import {HTMLAttributes, useState} from 'react';
-
 import {InlineAvatars} from 'src/features/inline-avatars';
 
 import {Button, ButtonVariant, Text, TextSize} from '~/shared/ui';
@@ -8,28 +7,26 @@ import {Button, ButtonVariant, Text, TextSize} from '~/shared/ui';
 import {ProfilePreview} from '../profile-preview';
 import cls from './index.module.scss';
 
-
 export interface ThreadProps extends HTMLAttributes<HTMLDivElement>, Post {
-  replyCount?: number,
-  repliers?: Author[],
+  replyCount?: number;
+  repliers?: Author[];
   onExpanded?: () => void;
 }
 
 interface Author {
-  username: string,
-  displayName: string,
-  avatarUrl?: string,
-  verified: true,
+  username: string;
+  displayName: string;
+  avatarUrl?: string;
+  verified: true;
 }
 
 interface Post {
-  content: string,
-  author: Author,
+  content: string;
+  author: Author;
 }
 
 export const Thread = (props: ThreadProps) => {
-  const {author, replyCount, repliers, onExpanded, content, className, ...otherProps} =
-    props;
+  const {author, replyCount, repliers, onExpanded, content, className, ...otherProps} = props;
 
   const [isThreadExpanded, setIsThreadExpanded] = useState(false);
   const [replies, setReplies] = useState<Post[]>([]);
@@ -45,7 +42,7 @@ export const Thread = (props: ThreadProps) => {
           displayName: 'Crowd Parlay',
           avatarUrl: 'https://i.imgur.com/xGN9UzF.png',
           verified: true,
-        }
+        },
       },
       {
         content: 'второй понский',
@@ -54,7 +51,7 @@ export const Thread = (props: ThreadProps) => {
           displayName: 'Crowd Parlay',
           avatarUrl: null,
           verified: true,
-        }
+        },
       },
     ];
     setReplies([...replies, ...newReplies]);
@@ -92,7 +89,7 @@ export const Thread = (props: ThreadProps) => {
       {isThreadExpanded && (
         <div>
           <div className={cls.connector} />
-          <Button className={cls.showMore} variant={ButtonVariant.INLINE} text={'show more'}/>
+          <Button className={cls.showMore} variant={ButtonVariant.INLINE} text={'show more'} />
         </div>
       )}
     </div>

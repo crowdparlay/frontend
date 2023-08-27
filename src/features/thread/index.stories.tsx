@@ -26,12 +26,12 @@ export const Default: Story = {
       {
         username: 'zendet',
         displayName: 'Z E N D E T',
-        avatarUrl: 'https://source.unsplash.com/random/100x100?sig=2'
+        avatarUrl: 'https://source.unsplash.com/random/100x100?sig=2',
       },
       {
         username: 'crowdparlay',
-        displayName: 'Crowd Parlay'
+        displayName: 'Crowd Parlay',
       },
-    ]
+    ],
   },
 };

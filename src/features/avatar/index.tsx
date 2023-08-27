@@ -1,9 +1,10 @@
 import classNames from 'classnames';
 import {HTMLAttributes} from 'react';
+import stc from 'string-to-color';
+
+import {getLuminance} from '~/features/avatar/lib';
 
 import cls from './index.module.scss';
-import stc from "string-to-color";
-import {getLuminance} from "~/features/avatar/lib";
 
 export enum AvatarVariant {
   DEFAULT = 'default',
@@ -27,7 +28,7 @@ export const Avatar = (props: AvatarProps) => {
     ...otherProps
   } = props;
 
-  const backgroundColor = stc(displayName + ' ' +username);
+  const backgroundColor = stc(displayName + ' ' + username);
   const luminance = getLuminance(backgroundColor);
   const theme = luminance > 0.5 ? 'dark' : 'light';
 
@@ -37,9 +38,18 @@ export const Avatar = (props: AvatarProps) => {
   };
 
   return avatarUrl ? (
-    <img className={classNames(cls.avatar, mods, className)} src={avatarUrl} alt={username} {...otherProps}/>
+    <img
+      className={classNames(cls.avatar, mods, className)}
+      src={avatarUrl}
+      alt={username}
+      {...otherProps}
+    />
   ) : (
-    <div style={{backgroundColor}} className={classNames(cls.avatar, mods, className)} {...otherProps}>
+    <div
+      style={{backgroundColor}}
+      className={classNames(cls.avatar, mods, className)}
+      {...otherProps}
+    >
       {displayName.length > 0 && displayName[0].toUpperCase()}
     </div>
   );
