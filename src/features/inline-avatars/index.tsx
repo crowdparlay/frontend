@@ -1,21 +1,27 @@
 import classNames from 'classnames';
 import {HTMLAttributes} from 'react';
 
+import {Avatar, AvatarVariant} from '~/features/avatar';
+
 import cls from './index.module.scss';
 
 export interface InlineAvatarsProps extends HTMLAttributes<HTMLDivElement> {
-  avatarUrls: string[];
+  users: User[];
+}
+
+export interface User {
+  username: string;
+  displayName: string;
+  avatarUrl?: string;
 }
 
 export const InlineAvatars = (props: InlineAvatarsProps) => {
-  const {avatarUrls, className, ...otherProps} = props;
+  const {users, className, ...otherProps} = props;
 
   return (
     <div className={classNames(cls.avatars, className)} {...otherProps}>
-      {avatarUrls.map((avatarUrl) => (
-        <span className={cls.avatar}>
-          <img src={avatarUrl} alt="" />
-        </span>
+      {users.map((user) => (
+        <Avatar className={cls.avatar} variant={AvatarVariant.INLINE} {...user} />
       ))}
     </div>
   );

@@ -1,14 +1,3 @@
-.preview {
-  display: flex;
-  gap: 11px;
-}
-
-.list {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
 .avatar {
   $size: 40px;
 
@@ -32,16 +21,13 @@
   color: var(--color-black);
 }
 
-.nameContainer {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
+.inline {
+  $size: 20px;
 
-.name {
-  overflow: hidden;
-  color: var(--color-white);
-  max-width: 299px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  width: $size;
+  height: $size;
+  display: block;
+  border-radius: 50%;
+  font-size: 12px;
+  line-height: $size;
 }

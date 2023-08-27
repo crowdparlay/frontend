@@ -1,9 +1,9 @@
 import {Meta, StoryObj} from '@storybook/react';
 
-import {ProfilePreview} from '.';
+import {ProfilePreview} from './index';
 
 const meta: Meta<typeof ProfilePreview> = {
-  title: 'widgets/ProfilePreview',
+  title: 'features/ProfilePreview',
   component: ProfilePreview,
   tags: ['autodocs'],
 };
@@ -12,13 +12,16 @@ export default meta;
 type Story = StoryObj<typeof ProfilePreview>;
 
 export const SignUp: Story = {
-  args: {},
+  args: {
+    username: 'mere1y',
+    displayName: 'Me-re-ly!',
+  },
 };
 
 export const User: Story = {
   args: {
     username: 'mere1y',
-    displayName: 'devyoursite',
+    displayName: 'Me-re-ly!',
     avatarUrl: 'https://source.unsplash.com/random/100x100?sig=1',
   },
 };
