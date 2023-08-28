@@ -1,6 +1,7 @@
 import {useForm} from 'effector-forms';
 import {useUnit} from 'effector-react';
-import {ProfilePreview} from 'src/features/profile-preview';
+
+import {ProfilePreview} from '~/features/profile-preview';
 
 import {routes} from '~/shared/routes';
 import {

@@ -2,16 +2,15 @@ import classNames from 'classnames';
 import {HTMLAttributes} from 'react';
 import stc from 'string-to-color';
 
-import {getLuminance} from '~/features/avatar/lib';
-
 import cls from './index.module.scss';
+import {getLuminance} from './lib';
 
 export enum AvatarVariant {
   DEFAULT = 'default',
   INLINE = 'inline',
 }
 
-export interface AvatarProps extends HTMLAttributes<HTMLDivElement>, Post {
+export interface AvatarProps extends HTMLAttributes<HTMLDivElement> {
   username: string;
   displayName: string;
   avatarUrl?: string;

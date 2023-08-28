@@ -1,6 +1,6 @@
 import {Meta, StoryObj} from '@storybook/react';
 
-import {ProfilePreview} from './index';
+import {ProfilePreview} from '.';
 
 const meta: Meta<typeof ProfilePreview> = {
   title: 'features/ProfilePreview',

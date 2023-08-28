@@ -1,32 +1,26 @@
 import classNames from 'classnames';
 import {HTMLAttributes, useState} from 'react';
-import {InlineAvatars} from '../inline-avatars';
+
+import {InlineAvatars, User} from '~/features/inline-avatars';
+import {ProfilePreview} from '~/features/profile-preview';
 
 import {Button, ButtonVariant, Text, TextSize} from '~/shared/ui';
 
-import {ProfilePreview} from '../profile-preview';
 import cls from './index.module.scss';
+
+interface Post {
+  text: string;
+  author: User;
+}
 
 export interface ThreadProps extends HTMLAttributes<HTMLDivElement>, Post {
   replyCount?: number;
-  repliers?: Author[];
+  replyAuthors?: User[];
   onExpanded?: () => void;
 }
 
-interface Author {
-  username: string;
-  displayName: string;
-  avatarUrl?: string;
-  verified: true;
-}
-
-interface Post {
-  content: string;
-  author: Author;
-}
-
 export const Thread = (props: ThreadProps) => {
-  const {author, replyCount, repliers, onExpanded, content, className, ...otherProps} = props;
+  const {author, replyCount, replyAuthors, onExpanded, text, className, ...otherProps} = props;
 
   const [isThreadExpanded, setIsThreadExpanded] = useState(false);
   const [replies, setReplies] = useState<Post[]>([]);
@@ -36,41 +30,39 @@ export const Thread = (props: ThreadProps) => {
 
     const newReplies: Post[] = [
       {
-        content: 'Первый ответ реплай',
+        text: 'Первый ответ реплай',
         author: {
           username: 'crowdparlay',
           displayName: 'Crowd Parlay',
           avatarUrl: 'https://i.imgur.com/xGN9UzF.png',
-          verified: true,
         },
       },
       {
-        content: 'второй понский',
+        text: 'второй понский',
         author: {
           username: 'crowdparlay',
           displayName: 'Crowd Parlay',
-          avatarUrl: null,
-          verified: true,
+          avatarUrl: undefined,
         },
       },
     ];
     setReplies([...replies, ...newReplies]);
 
     setIsThreadExpanded(true);
-    onExpanded && onExpanded();
+    onExpanded?.();
   };
 
   return (
     <div className={classNames(cls.thread, className)} {...otherProps}>
       <div className={cls.post}>
         <div className={cls.content}>
-          <Text size={TextSize.M}>{content}</Text>
+          <Text size={TextSize.M}>{text}</Text>
           <ProfilePreview {...author} />
         </div>
 
-        {!isThreadExpanded && replyCount > 0 && (
+        {!isThreadExpanded && replyAuthors && replyCount && replyCount > 0 && (
           <div className={cls.epilogue} onClick={expandReplies}>
-            <InlineAvatars users={repliers} />
+            <InlineAvatars users={replyAuthors} />
             <Text size={TextSize.S}>
               {replyCount} {replyCount === 1 ? 'reply' : 'replies'}
             </Text>
@@ -89,7 +81,9 @@ export const Thread = (props: ThreadProps) => {
       {isThreadExpanded && (
         <div>
           <div className={cls.connector} />
-          <Button className={cls.showMore} variant={ButtonVariant.INLINE} text={'show more'} />
+          <Button className={cls.showMore} variant={ButtonVariant.INLINE}>
+            show more
+          </Button>
         </div>
       )}
     </div>
