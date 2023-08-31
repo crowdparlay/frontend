@@ -36,14 +36,18 @@ export const Avatar = (props: AvatarProps) => {
     [cls[variant]]: true,
   };
 
-  return avatarUrl ? (
-    <img
-      className={classNames(cls.avatar, mods, className)}
-      src={avatarUrl}
-      alt={username}
-      {...otherProps}
-    />
-  ) : (
+  if (avatarUrl) {
+    return (
+      <img
+        className={classNames(cls.avatar, mods, className)}
+        src={avatarUrl}
+        alt={username}
+        {...otherProps}
+      />
+    );
+  }
+
+  return (
     <div
       style={{backgroundColor}}
       className={classNames(cls.avatar, mods, className)}
