@@ -16,8 +16,16 @@
 
 .l {
   font: var(--font-l);
+  color: var(--color-gray-lightest);
 }
 
 .xl {
   font: var(--font-xl);
+  color: var(--color-gray-lightest);
+}
+
+.accent {
+  font-family: var(--font-family-accent);
+  font-weight: var(--font-weight-xl);
+  color: var(--color-gray-lightest);
 }
