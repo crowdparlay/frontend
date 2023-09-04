@@ -1,16 +1,16 @@
 import classNames from 'classnames';
 import {HTMLAttributes} from 'react';
-import stc from 'string-to-color';
+
+import {Avatar} from '~/features/avatar';
 
 import {Text, TextSize} from '~/shared/ui';
 
 import VerifiedIcon from './assets/verified.svg';
 import cls from './index.module.scss';
-import {getLuminance} from './lib';
 
 export interface ProfilePreviewProps extends HTMLAttributes<HTMLDivElement> {
-  displayName?: string;
   username?: string;
+  displayName?: string;
   avatarUrl?: string;
   date?: Date;
   showDate?: boolean;
@@ -18,27 +18,12 @@ export interface ProfilePreviewProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export const ProfilePreview = (props: ProfilePreviewProps) => {
-  const {verified, displayName, username, avatarUrl, showDate, date, className, ...otherProps} =
+  const {verified, username, displayName, avatarUrl, showDate, date, className, ...otherProps} =
     props;
-
-  const backgroundColor = stc(displayName ?? 'Display name');
-  const luminance = getLuminance(backgroundColor);
-  const theme = luminance > 0.5 ? 'dark' : 'light';
-
-  const mods = {
-    [cls[theme]]: true,
-  };
 
   return (
     <div className={classNames(cls.preview, className)} {...otherProps}>
-      {avatarUrl ? (
-        <img className={cls.avatar} src={avatarUrl} alt={username} />
-      ) : (
-        <div style={{backgroundColor}} className={classNames(cls.avatar, mods)}>
-          {displayName ? displayName[0].toUpperCase() : 'D'}
-        </div>
-      )}
-
+      <Avatar username={username} displayName={displayName} avatarUrl={avatarUrl} />
       <div className={cls.list}>
         <div className={cls.nameContainer}>
           <Text className={classNames(cls.name, cls.maxWidth)}>

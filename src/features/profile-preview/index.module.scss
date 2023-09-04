@@ -1,0 +1,24 @@
+.preview {
+  display: flex;
+  gap: 11px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.nameContainer {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.name {
+  overflow: hidden;
+  color: var(--color-white);
+  max-width: 299px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

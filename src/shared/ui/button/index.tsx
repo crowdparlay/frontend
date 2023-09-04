@@ -6,13 +6,19 @@ import cls from './index.module.scss';
 export enum ButtonVariant {
   PRIMARY = 'primary',
   SECONDARY = 'secondary',
+  INLINE = 'inline',
+}
+
+export enum ButtonShape {
+  DEFAULT = 'default',
+  FULL_WIDTH = 'fullWidth',
+  EQUILATERAL = 'equilateral',
 }
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: ReactNode;
+  children?: ReactNode;
   variant?: ButtonVariant;
-  text?: string;
-  fullWidth?: boolean;
+  shape?: ButtonShape;
   center?: boolean;
 }
 
@@ -20,8 +26,7 @@ export const Button = (props: ButtonProps) => {
   const {
     children,
     variant = ButtonVariant.PRIMARY,
-    text,
-    fullWidth,
+    shape = ButtonShape.DEFAULT,
     center = true,
     type,
     className,
@@ -30,10 +35,9 @@ export const Button = (props: ButtonProps) => {
   } = props;
 
   const mods = {
-    [cls.equilateral]: text == undefined,
     [cls.disabled]: disabled,
     [cls[variant]]: true,
-    [cls.fullWidth]: fullWidth,
+    [cls[shape]]: true,
     [cls.center]: center,
   };
 
@@ -45,7 +49,6 @@ export const Button = (props: ButtonProps) => {
       {...otherProps}
     >
       {children}
-      {text}
     </button>
   );
 };

@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/react';
 
-import {Button, ButtonVariant} from '.';
+import {Button, ButtonShape, ButtonVariant} from '.';
 import AddIcon from '../icon/assets/add.svg';
 
 const meta: Meta<typeof Button> = {
@@ -14,37 +14,37 @@ type Story = StoryObj<typeof Button>;
 
 export const Primary: Story = {
   args: {
-    text: 'Sign in',
     variant: ButtonVariant.PRIMARY,
+    children: <p>Sign in</p>,
   },
 };
 
 export const PrimaryWithIcon: Story = {
   args: {
-    text: 'щитпост',
     variant: ButtonVariant.PRIMARY,
-    children: <AddIcon />,
+    children: [<AddIcon />, <p>щитпост</p>],
   },
 };
 
 export const PrimarySingleIcon: Story = {
   args: {
     variant: ButtonVariant.PRIMARY,
+    shape: ButtonShape.EQUILATERAL,
     children: <AddIcon />,
   },
 };
 
 export const Secondary: Story = {
   args: {
-    text: 'Sign in',
     variant: ButtonVariant.SECONDARY,
+    children: <p>Sign in</p>,
   },
 };
 
 export const SecondaryWithIcon: Story = {
   args: {
-    text: 'щитпост',
     variant: ButtonVariant.SECONDARY,
+    shape: ButtonShape.EQUILATERAL,
     children: <AddIcon />,
   },
 };
@@ -52,6 +52,13 @@ export const SecondaryWithIcon: Story = {
 export const SecondarySingleIcon: Story = {
   args: {
     variant: ButtonVariant.SECONDARY,
-    children: <AddIcon />,
+    children: [<AddIcon />, <p>щитпост</p>],
+  },
+};
+
+export const Inline: Story = {
+  args: {
+    variant: ButtonVariant.INLINE,
+    children: <p>show more</p>,
   },
 };

@@ -1,0 +1,33 @@
+.avatar {
+  $size: 40px;
+
+  width: $size;
+  height: $size;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: var(--font-l);
+  font-weight: 400;
+  text-align: center;
+  transition: 500ms ease-out;
+}
+
+.light {
+  color: var(--color-white);
+}
+
+.dark {
+  color: var(--color-black);
+}
+
+.inline {
+  $size: 20px;
+
+  width: $size;
+  height: $size;
+  display: block;
+  border-radius: 50%;
+  font-size: 12px;
+  line-height: $size;
+}

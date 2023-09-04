@@ -1,0 +1,13 @@
+.avatars {
+  display: inline-flex;
+  flex-direction: row;
+}
+
+.avatar {
+  outline: 4px solid var(--color-black-darkest);
+  overflow: hidden;
+
+  &:not(:first-child) {
+    margin-left: -2px;
+  }
+}

@@ -19,7 +19,7 @@
   background: var(--color-black);
   border: 1px solid var(--color-black-darkest);
   border-radius: 12px;
-  width: 400px;
+  width: 100%;
 
   &:hover {
     background-clip: padding-box;
@@ -32,7 +32,7 @@
     inset: -1px;
     z-index: -1;
     border-radius: inherit;
-    background-image: conic-gradient(#ffa800, #ff007a, #bd00ff, #00ffc2, #ffa800);
+    background: linear-gradient(to right top, #ffa800, #ff007a, #bd00ff, #00ffc2);
   }
 }
 
@@ -52,4 +52,8 @@
   padding: 0 10px;
   align-items: center;
   cursor: pointer;
+}
+
+.showMore {
+  margin: 0 auto;
 }
