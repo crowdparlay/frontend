@@ -68,7 +68,7 @@ export const ProfilePage = () => {
             type="file"
             accept="image/png, image/jpeg"
             name="avatar_url"
-            onFileChanged={(data) => onAvatarFileChanged(data)}
+            onFileChanged={onAvatarFileChanged}
           />
           <div className={cls.row}>
             <ProfilePreview
