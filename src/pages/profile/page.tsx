@@ -1,7 +1,7 @@
 import {useForm} from 'effector-forms';
 import {useUnit} from 'effector-react/effector-react.mjs';
 
-import {ProfilePreview} from '~/widgets/profile-preview';
+import {ProfilePreview} from '~/features/profile-preview';
 
 import {Button, Container, ContainerSize, Form, Input, Page, Text, TextSize} from '~/shared/ui';
 
@@ -68,7 +68,7 @@ export const ProfilePage = () => {
             type="file"
             accept="image/png, image/jpeg"
             name="avatar_url"
-            onFileChanged={(data) => onAvatarFileChanged(data)}
+            onFileChanged={onAvatarFileChanged}
           />
           <div className={cls.row}>
             <ProfilePreview

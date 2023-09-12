@@ -16,16 +16,18 @@ export interface TextProps extends ComponentProps {
   Component?: ElementType<ComponentProps>;
   size?: TextSize;
   center?: boolean;
+  accent?: boolean;
 }
 
 export const Text = (props: TextProps) => {
-  const {Component, children, className, size = TextSize.M, center, ...otherProps} = props;
+  const {Component, children, className, size = TextSize.M, center, accent, ...otherProps} = props;
 
   const Wrapper = Component || 'p';
 
   const mods = {
     [cls[size]]: true,
     [cls.center]: center,
+    [cls.accent]: accent,
   };
 
   return (

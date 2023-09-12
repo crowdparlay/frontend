@@ -21,8 +21,6 @@
   gap: 16px;
   align-items: center;
   font: var(--font-s);
-  line-height: 19px;
-  border-radius: 10px;
   transition: 150ms;
 
   &.active {
@@ -33,12 +31,10 @@
 }
 
 .primary {
-  padding: 10px 25px 11px;
-  color: var(--color-black);
-  background: var(--color-gray-lightest);
+  color: var(--color-gray-lighter);
 
   &:hover {
-    background: var(--color-white);
+    color: var(--color-white);
   }
 }
 
