@@ -15,7 +15,7 @@ export const Footer = (props: FooterProps) => {
     <footer className={classNames(cls.footer, className)} {...otherProps}>
       <Container className={cls.row}>
         <div className={cls.column}>
-          <Text size={TextSize.S} accent Component="h4">
+          <Text size={TextSize.S} accent={true} Component="h4">
             Legal
           </Text>
           <Link variant={LinkVariant.PRIMARY} to={''}>
@@ -29,7 +29,7 @@ export const Footer = (props: FooterProps) => {
           </Link>
         </div>
         <div className={cls.column}>
-          <Text size={TextSize.S} accent Component="h4">
+          <Text size={TextSize.S} accent={true} Component="h4">
             Contacts
           </Text>
           <Link variant={LinkVariant.PRIMARY} to={''}>
@@ -43,7 +43,7 @@ export const Footer = (props: FooterProps) => {
           </Link>
         </div>
         <div className={cls.column}>
-          <Text size={TextSize.S} accent Component="h4">
+          <Text size={TextSize.S} accent={true} Component="h4">
             Developers
           </Text>
           <Link variant={LinkVariant.PRIMARY} to={''}>
