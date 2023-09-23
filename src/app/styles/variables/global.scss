@@ -1,6 +1,7 @@
 :root {
   --font-family-main: 'Roboto';
   --font-family-accent: 'Inter';
+  --font-family-serif: 'Times New Roman';
 
   --font-weight-s: 400;
   --font-size-s: 14px;
@@ -25,6 +26,13 @@
   --font-line-xl: 44px;
   --container-width-xl: 1920px;
   --font-xl: var(--font-weight-xl) var(--font-size-xl) / var(--font-line-xl)
+    var(--font-family-accent);
+
+  --font-weight-xxl: 100;
+  --font-size-xxl: 52px;
+  --font-line-xxl: 44px;
+  --container-width-xxl: 1920px;
+  --font-xxl: var(--font-weight-xxl) var(--font-size-xxl) / var(--font-line-xxl)
     var(--font-family-accent);
 
   --color-white: #fff;

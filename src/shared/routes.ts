@@ -16,6 +16,10 @@ export const routes = {
   bets: createRoute(),
   events: createRoute(),
   bookmarks: createRoute(),
+  problems: {
+    notFound: createRoute(),
+    forbidden: createRoute(),
+  },
 };
 
 export const controls = createRouterControls();
@@ -58,7 +62,12 @@ export const router = createHistoryRouter({
       path: '/bookmarks',
       route: routes.bookmarks,
     },
+    {
+      path: '/forbidden',
+      route: routes.problems.forbidden,
+    },
   ],
+  notFoundRoute: routes.problems.notFound,
   controls,
 });
 

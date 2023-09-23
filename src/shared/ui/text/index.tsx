@@ -8,6 +8,7 @@ export enum TextSize {
   M = 'm',
   L = 'l',
   XL = 'xl',
+  XXL = 'xxl',
 }
 
 type ComponentProps = HTMLAttributes<HTMLParagraphElement | HTMLDivElement | HTMLHeadingElement>;
@@ -17,10 +18,12 @@ export interface TextProps extends ComponentProps {
   size?: TextSize;
   center?: boolean;
   accent?: boolean;
+  serif?: boolean;
+  italic?: boolean;
 }
 
 export const Text = (props: TextProps) => {
-  const {Component, children, className, size = TextSize.M, center, accent, ...otherProps} = props;
+  const {Component, children, className, size = TextSize.M, center, accent, serif, italic, ...otherProps} = props;
 
   const Wrapper = Component || 'p';
 
@@ -28,6 +31,8 @@ export const Text = (props: TextProps) => {
     [cls[size]]: true,
     [cls.center]: center,
     [cls.accent]: accent,
+    [cls.serif]: serif,
+    [cls.italic]: italic,
   };
 
   return (
