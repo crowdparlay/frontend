@@ -25,7 +25,7 @@ export const SignInPage = () => {
     <Page>
       <Container size={ContainerSize.S} className={cls.container}>
         <Text center={true} size={TextSize.XL} className={cls.title} Component="h1">
-          Sign In
+          Sign in
         </Text>
 
         <Form onSubmit={submit} className={cls.list}>
