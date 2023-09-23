@@ -25,7 +25,7 @@ export const Header = (props: HeaderProps) => {
     <header className={cls.header}>
       <div className={cls.row}>
         <Link variant={LinkVariant.CLEAR} style={{padding: 0}} to={routes.home}>
-          <Logo />
+          <Logo/>
         </Link>
 
         <Input
@@ -54,11 +54,11 @@ export const Header = (props: HeaderProps) => {
       {forceUser ?? user ? (
         <div className={cls.row} style={{alignItems: 'normal'}}>
           <Button className={cls.button}>
-            <NotificationIcon />
+            <NotificationIcon/>
           </Button>
-          <img src={Avatar} alt="avatar" />
+          <img src={Avatar} alt="avatar"/>
           <Button className={cls.button}>
-            <ArrowIcon />
+            <ArrowIcon/>
           </Button>
         </div>
       ) : (
