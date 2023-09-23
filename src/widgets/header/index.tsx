@@ -64,10 +64,10 @@ export const Header = (props: HeaderProps) => {
       ) : (
         <div className={cls.row}>
           <Link variant={LinkVariant.PRIMARY} to={routes.auth.signIn}>
-            Sign In
+            Sign in
           </Link>
           <Link style={{marginLeft: 14}} variant={LinkVariant.CLEAR} to={routes.auth.signUp}>
-            Sign Up
+            Sign up
           </Link>
         </div>
       )}

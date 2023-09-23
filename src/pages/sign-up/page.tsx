@@ -27,7 +27,7 @@ export const SignUpPage = () => {
     <Page>
       <Container size={ContainerSize.S} className={cls.container}>
         <Text center={true} size={TextSize.XL} className={cls.title} Component="h1">
-          Sign Up
+          Sign up
         </Text>
 
         <Form onSubmit={submit} className={cls.list}>

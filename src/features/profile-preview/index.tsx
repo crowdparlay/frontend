@@ -9,8 +9,8 @@ import VerifiedIcon from './assets/verified.svg';
 import cls from './index.module.scss';
 
 export interface ProfilePreviewProps extends HTMLAttributes<HTMLDivElement> {
-  username?: string;
-  displayName?: string;
+  username: string;
+  displayName: string;
   avatarUrl?: string;
   date?: Date;
   showDate?: boolean;
