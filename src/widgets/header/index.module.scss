@@ -4,7 +4,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 24px;
 }
 
 .row {
@@ -41,4 +40,10 @@
     color: var(--color-black);
     opacity: 1;
   }
+}
+
+.logo {
+  height: 60px;
+  padding: 20px;
+  opacity: 1 !important;
 }

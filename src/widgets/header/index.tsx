@@ -24,14 +24,14 @@ export const Header = (props: HeaderProps) => {
   return (
     <header className={cls.header}>
       <div className={cls.row}>
-        <Link variant={LinkVariant.CLEAR} style={{padding: 0}} to={routes.home}>
+        <Link className={cls.logo} variant={LinkVariant.CLEAR} to={routes.home}>
           <Logo/>
         </Link>
 
         <Input
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
-          style={{width: 300, marginLeft: 20}}
+          style={{width: 300}}
           placeholder="Search"
         />
 
