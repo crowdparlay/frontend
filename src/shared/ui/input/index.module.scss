@@ -34,13 +34,13 @@
     display: none;
   }
 
-  &:not(:placeholder-shown, .invalid) {
-    border-color: #141414;
-  }
-
   &:focus {
     background: var(--color-black);
     border-color: #141414;
+  }
+
+  &:-webkit-autofill {
+    transition: all 100000000s;
   }
 }
 
