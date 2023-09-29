@@ -24,8 +24,21 @@
   color: var(--color-gray-lightest);
 }
 
+.xxl {
+  font: var(--font-xxl);
+  color: var(--color-white);
+}
+
 .accent {
   font-family: var(--font-family-accent);
   font-weight: var(--font-weight-xl);
   color: var(--color-gray-lightest);
+}
+
+.serif {
+  font-family: var(--font-family-serif);
+}
+
+.italic {
+  font-style: italic;
 }

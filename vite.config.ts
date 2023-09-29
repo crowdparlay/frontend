@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [
     babel({extensions: ['.ts', '.tsx'], babelHelpers: 'bundled', skipPreflightCheck: true}),
     svgr({
-      exportAsDefault: true,
+      include: '**/*.svg'
     }),
     stylelint({
       fix: true,

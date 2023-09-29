@@ -78,7 +78,7 @@ export const Input = (props: InputProps) => {
 
       <div className={cls.mods}>
         {isFileMode && (
-          <>
+          <div>
             <label className={cls.fileLabel} htmlFor="file_upload">
               <FileIcon />
             </label>
@@ -103,7 +103,7 @@ export const Input = (props: InputProps) => {
                 }
               }}
             />
-          </>
+          </div>
         )}
 
         {isInvalid && (
@@ -113,15 +113,15 @@ export const Input = (props: InputProps) => {
             onMouseLeave={() => setIsErrorIconHovered(false)}
           >
             <ErrorIcon />
-
-            {errorMessage && (
-              <Text size={TextSize.S} className={classNames(cls.tooltip, tooltipMods)}>
-                {errorMessage}
-              </Text>
-            )}
           </div>
         )}
       </div>
+
+      {errorMessage && (
+        <Text size={TextSize.S} className={classNames(cls.tooltip, tooltipMods)}>
+          {errorMessage}
+        </Text>
+      )}
     </div>
   );
 };

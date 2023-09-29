@@ -1,10 +1,9 @@
 .header {
-  border: 1px solid rgba($color: #676767, $alpha: 25%);
+  border-bottom: 1px solid rgba($color: #676767, $alpha: 25%);
   background: rgba($color: #000, $alpha: 30%);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 24px;
 }
 
 .row {
@@ -41,4 +40,10 @@
     color: var(--color-black);
     opacity: 1;
   }
+}
+
+.logo {
+  height: 60px;
+  padding: 20px;
+  opacity: 1 !important;
 }

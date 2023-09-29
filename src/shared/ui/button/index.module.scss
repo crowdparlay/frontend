@@ -23,7 +23,7 @@
   color: var(--color-black);
   background: var(--color-gray-lightest);
 
-  &:hover {
+  &:not(.disabled):hover {
     background: var(--color-white);
   }
 }

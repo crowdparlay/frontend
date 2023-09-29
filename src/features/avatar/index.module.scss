@@ -11,6 +11,8 @@
   font-weight: 400;
   text-align: center;
   transition: 500ms ease-out;
+  -webkit-touch-callout: none;
+  user-select: none;
 }
 
 .light {
