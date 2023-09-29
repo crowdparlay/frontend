@@ -1,6 +1,6 @@
 import {Container, ContainerSize, Page, Text, TextSize} from '~/shared/ui';
 
-import Legs from './assets/legs.png';
+import Legs from './assets/legs.webp';
 import cls from './page.module.scss';
 
 export const NotFoundPage = () => {
