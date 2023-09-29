@@ -23,7 +23,17 @@ export interface TextProps extends ComponentProps {
 }
 
 export const Text = (props: TextProps) => {
-  const {Component, children, className, size = TextSize.M, center, accent, serif, italic, ...otherProps} = props;
+  const {
+    Component,
+    children,
+    className,
+    size = TextSize.M,
+    center,
+    accent,
+    serif,
+    italic,
+    ...otherProps
+  } = props;
 
   const Wrapper = Component || 'p';
 
