@@ -1,7 +1,7 @@
 import {currentRoute} from './model';
-import {NotFoundPage} from './page';
+import {ForbiddenPage} from './page';
 
 export const ForbiddenRoute = {
-  view: NotFoundPage,
+  view: ForbiddenPage,
   route: currentRoute,
 };

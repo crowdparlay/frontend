@@ -3,7 +3,7 @@ import {Container, ContainerSize, Page, Text, TextSize} from '~/shared/ui';
 import Legs from './assets/legs.webp';
 import cls from './page.module.scss';
 
-export const NotFoundPage = () => {
+export const ForbiddenPage = () => {
   return (
     <Page>
       <Container className={cls.container} size={ContainerSize.M}>

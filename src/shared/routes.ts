@@ -12,6 +12,7 @@ export const routes = {
     resetPassword: createRoute(),
   },
   profile: createRoute(),
+  editProfile: createRoute(),
   explore: createRoute(),
   bets: createRoute(),
   events: createRoute(),
@@ -45,6 +46,10 @@ export const router = createHistoryRouter({
     {
       path: '/profile',
       route: routes.profile,
+    },
+    {
+      path: '/edit-profile',
+      route: routes.editProfile,
     },
     {
       path: '/explore',
