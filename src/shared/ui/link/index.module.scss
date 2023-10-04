@@ -13,6 +13,7 @@
   margin-bottom: -2px;
 
   &.active {
+    color: var(--color-white);
     border-color: var(--color-white);
   }
 }

@@ -36,7 +36,7 @@ export const Header = (props: HeaderProps) => {
         />
 
         <div className={cls.linksContainer} style={{marginLeft: 40}}>
-          <Link variant={LinkVariant.NAVIGATION} forceActive={true} to={routes.explore}>
+          <Link variant={LinkVariant.NAVIGATION} to={routes.explore}>
             Explore
           </Link>
           <Link variant={LinkVariant.NAVIGATION} badge={2} to={routes.bets}>
