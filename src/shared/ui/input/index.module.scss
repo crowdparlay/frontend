@@ -27,7 +27,7 @@
   background: #1a1a1a;
   border: 2px solid transparent;
   border-radius: 10px;
-  transition: 150ms;
+  transition: 150ms, letter-spacing 0ms;
 
   &::-ms-clear,
   &::-ms-reveal {
@@ -129,9 +129,8 @@
   color: red;
   opacity: 0;
   visibility: collapse;
-  transition:
-    left 150ms cubic-bezier(0, 0.7, 0.65, 1.25),
-    opacity 150ms ease-out;
+  transition: left 150ms cubic-bezier(0, 0.7, 0.65, 1.25),
+  opacity 150ms ease-out;
   padding: 0 12px;
   left: calc(100% - 100px);
 
