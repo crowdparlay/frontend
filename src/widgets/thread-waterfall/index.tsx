@@ -47,7 +47,14 @@ export const ThreadWaterfall = (props: ThreadWaterfallProps) => {
   };
 
   const appendMoreThreads = () => {
-    setThreads([...threads, createThread(), createThread(), createThread(), createThread(), createThread()]);
+    setThreads([
+      ...threads,
+      createThread(),
+      createThread(),
+      createThread(),
+      createThread(),
+      createThread(),
+    ]);
   };
 
   return (
@@ -61,10 +68,7 @@ export const ThreadWaterfall = (props: ThreadWaterfallProps) => {
       {...otherProps}
     >
       {...threads.map((props) => <Thread {...props} />)}
-      <Waypoint
-        fireOnRapidScroll={true}
-        scrollableAncestor={window}
-        onEnter={appendMoreThreads}/>
+      <Waypoint fireOnRapidScroll={true} scrollableAncestor={window} onEnter={appendMoreThreads} />
     </StackGrid>
   );
 };
