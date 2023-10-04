@@ -14,7 +14,6 @@ export enum LinkVariant {
 }
 
 export interface LinkProps extends AtomicLinkProps<RouteParams> {
-  forceActive?: boolean;
   variant?: LinkVariant;
   Icon?: FC<SVGProps<SVGSVGElement>>;
   badge?: number;
@@ -29,7 +28,6 @@ export const Link = (props: LinkProps) => {
     to,
     fullWidth,
     center,
-    forceActive,
     badge,
     className,
     activeClassName,
@@ -41,7 +39,6 @@ export const Link = (props: LinkProps) => {
     [cls[variant]]: true,
     [cls.fullWidth]: fullWidth,
     [cls.center]: center,
-    [cls.active]: forceActive,
   };
 
   const activeMods = {
@@ -55,13 +52,11 @@ export const Link = (props: LinkProps) => {
       activeClassName={classNames(cls.link, mods, activeMods, activeClassName)}
       {...otherProps}
     >
-      {Icon !== undefined && <Icon />}
+      {Icon !== undefined && <Icon/>}
 
       <div className={cls.wrapper}>
         {children}
         {badge !== undefined && <Badge>{badge}</Badge>}
-
-        <div className={cls.activeLine} />
       </div>
     </AtomicLink>
   );

@@ -3,30 +3,17 @@
   position: relative;
 }
 
-.activeLine {
-  display: none;
-  width: 42px;
-  height: 2px;
-  position: absolute;
-  right: 0;
-  bottom: -19px;
-  left: 0;
-  margin: 0 auto;
-  background: #d9d9d9;
-}
-
 .link {
   display: inline-flex;
   flex-direction: row;
   gap: 16px;
   align-items: center;
   font: var(--font-s);
-  transition: 150ms;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
 
   &.active {
-    .activeLine {
-      display: block;
-    }
+    border-color: var(--color-white);
   }
 }
 
@@ -39,10 +26,10 @@
 }
 
 .raw {
-  color: #848484;
+  color: var(--color-gray-lighter);
 
   &:hover {
-    color: #949494;
+    color: var(--color-gray-lightest);
   }
 }
 
@@ -56,11 +43,11 @@
 }
 
 .navigation {
-  color: var(--color-white);
+  color: var(--color-gray-lightest);
   height: 60px;
 
   &:hover {
-    opacity: 0.8;
+    color: var(--color-white);
   }
 }
 

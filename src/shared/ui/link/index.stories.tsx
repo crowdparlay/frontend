@@ -62,7 +62,6 @@ export const Navigation: Story = {
   args: {
     children: 'Explore',
     variant: LinkVariant.NAVIGATION,
-    forceActive: true,
     to,
   },
 };
