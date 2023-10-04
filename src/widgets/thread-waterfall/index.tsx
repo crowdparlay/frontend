@@ -28,7 +28,7 @@ export const ThreadWaterfall = (props: ThreadWaterfallProps) => {
       author: {
         username: 'zendet',
         displayName: 'zendet',
-        avatarUrl: 'https://i.imgur.com/xGN9UzF.png',
+        avatarUrl: 'https://github.com/undrcrxwn/undrcrxwn/blob/main/avatar.jpg?raw=true',
       },
       replyCount: 2,
       replyAuthors: [
@@ -39,7 +39,7 @@ export const ThreadWaterfall = (props: ThreadWaterfallProps) => {
         {
           username: 'zendet',
           displayName: 'Z E N D E T',
-          avatarUrl: 'https://i.imgur.com/xGN9UzF.png',
+          avatarUrl: 'https://github.com/undrcrxwn/undrcrxwn/blob/main/avatar.jpg?raw=true',
         },
       ],
       onExpanded: () => setInterval(() => gridRef?.updateLayout()),
@@ -47,21 +47,24 @@ export const ThreadWaterfall = (props: ThreadWaterfallProps) => {
   };
 
   const appendMoreThreads = () => {
-    setThreads([...threads, createThread(), createThread(), createThread()]);
+    setThreads([...threads, createThread(), createThread(), createThread(), createThread(), createThread()]);
   };
 
   return (
     <StackGrid
       gridRef={(grid) => setGridRef(grid)}
       duration={100}
-      columnWidth={400}
+      columnWidth={360}
       gutterWidth={12}
       gutterHeight={12}
       className={classNames(cls.threadWaterfall, className)}
       {...otherProps}
     >
       {...threads.map((props) => <Thread {...props} />)}
-      <Waypoint onEnter={appendMoreThreads} />
+      <Waypoint
+        fireOnRapidScroll={true}
+        scrollableAncestor={window}
+        onEnter={appendMoreThreads}/>
     </StackGrid>
   );
 };

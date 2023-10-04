@@ -34,7 +34,7 @@ export const Thread = (props: ThreadProps) => {
         author: {
           username: 'crowdparlay',
           displayName: 'Crowd Parlay',
-          avatarUrl: 'https://i.imgur.com/xGN9UzF.png',
+          avatarUrl: 'https://github.com/undrcrxwn/undrcrxwn/blob/main/harry.png?raw=true',
         },
       },
       {
