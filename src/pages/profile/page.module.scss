@@ -1,24 +1,26 @@
-.title {
-  font-size: 64px;
-  line-height: 77px;
-  color: var(--color-white);
+.avatar {
+  $size: 65px;
+
+  width: $size;
+  height: $size;
+  margin: 0 auto 10px;
 }
 
-.grid {
-  margin-top: 42px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  column-gap: 30px;
-  grid-template-rows: repeat(3, 1fr);
-  row-gap: 20px;
-}
-
-.row {
-  padding-top: 28px;
+.head {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 30px;
-  max-width: 350px;
-  overflow: hidden;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  margin-top: 50px;
+  margin-bottom: 100px;
+}
+
+.bio {
+  margin: 16px 0;
+  max-width: 85%;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
 }
