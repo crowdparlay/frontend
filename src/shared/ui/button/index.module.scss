@@ -51,6 +51,11 @@
   }
 }
 
+.clear {
+  background: transparent;
+  color: var(--color-white);
+}
+
 .disabled {
   opacity: 0.5;
 }

@@ -3,7 +3,7 @@ import {useUnit} from 'effector-react';
 import {User} from '~/shared/api';
 import {routes} from '~/shared/routes';
 import {$user} from '~/shared/session';
-import {Button, Input, Link, LinkVariant} from '~/shared/ui';
+import {Button, ButtonVariant, Input, Link, LinkVariant} from '~/shared/ui';
 import ArrowIcon from '~/shared/ui/icon/assets/arrow.svg';
 
 import Avatar from './assets/avatar.png';
@@ -25,7 +25,7 @@ export const Header = (props: HeaderProps) => {
     <header className={cls.header}>
       <div className={cls.row}>
         <Link className={cls.logo} variant={LinkVariant.CLEAR} to={routes.home}>
-          <Logo />
+          <Logo/>
         </Link>
 
         <Input
@@ -54,20 +54,20 @@ export const Header = (props: HeaderProps) => {
       {forceUser ?? user ? (
         <div className={cls.row} style={{alignItems: 'normal'}}>
           <Button className={cls.button}>
-            <NotificationIcon />
+            <NotificationIcon/>
           </Button>
-          <img src={Avatar} alt="avatar" />
+          <img src={Avatar} alt="avatar"/>
           <Button className={cls.button}>
-            <ArrowIcon />
+            <ArrowIcon/>
           </Button>
         </div>
       ) : (
-        <div className={cls.row}>
-          <Link variant={LinkVariant.PRIMARY} to={routes.auth.signIn}>
-            Sign in
+        <div>
+          <Link to={routes.auth.signUp}>
+            <Button variant={ButtonVariant.PRIMARY}>Sign up</Button>
           </Link>
-          <Link style={{marginLeft: 14}} variant={LinkVariant.CLEAR} to={routes.auth.signUp}>
-            Sign up
+          <Link to={routes.auth.signIn}>
+            <Button variant={ButtonVariant.CLEAR}>Sign in</Button>
           </Link>
         </div>
       )}

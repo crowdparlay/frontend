@@ -6,6 +6,7 @@ import cls from './index.module.scss';
 export enum ButtonVariant {
   PRIMARY = 'primary',
   SECONDARY = 'secondary',
+  CLEAR = 'clear',
   INLINE = 'inline',
 }
 
