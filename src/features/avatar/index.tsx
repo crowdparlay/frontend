@@ -53,7 +53,7 @@ export const Avatar = (props: AvatarProps) => {
       className={classNames(cls.avatar, mods, className)}
       {...otherProps}
     >
-      {displayName[0]?.toUpperCase() ?? 'D'}
+      <p>{displayName[0]?.toUpperCase() ?? 'D'}</p>
     </div>
   );
 };
