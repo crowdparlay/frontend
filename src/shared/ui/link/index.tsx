@@ -52,7 +52,7 @@ export const Link = (props: LinkProps) => {
       activeClassName={classNames(cls.link, mods, activeMods, activeClassName)}
       {...otherProps}
     >
-      {Icon !== undefined && <Icon/>}
+      {Icon !== undefined && <Icon />}
 
       <div className={cls.wrapper}>
         {children}
