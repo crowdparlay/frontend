@@ -1,11 +1,11 @@
 import {createEvent, sample} from 'effector';
 import {createForm} from 'effector-forms';
 
-import {b64toBlob} from '~/pages/edit-profile/lib';
-
 import {routes} from '~/shared/routes';
 import {rules} from '~/shared/rules';
 import {chainAuthorized} from '~/shared/session';
+
+import {b64toBlob} from './lib';
 
 export const currentRoute = routes.editProfile;
 export const authorizedRoute = chainAuthorized(currentRoute, {

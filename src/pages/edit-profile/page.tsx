@@ -1,5 +1,5 @@
 import {useForm} from 'effector-forms';
-import {useUnit} from 'effector-react/effector-react.mjs';
+import {useUnit} from 'effector-react';
 
 import {ProfilePreview} from '~/features/profile-preview';
 
