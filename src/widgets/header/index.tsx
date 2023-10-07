@@ -3,7 +3,7 @@ import {useUnit} from 'effector-react';
 import {User} from '~/shared/api';
 import {routes} from '~/shared/routes';
 import {$user} from '~/shared/session';
-import {Button, Input, Link, LinkVariant} from '~/shared/ui';
+import {Button, ButtonVariant, Input, Link, LinkVariant} from '~/shared/ui';
 import ArrowIcon from '~/shared/ui/icon/assets/arrow.svg';
 
 import Avatar from './assets/avatar.png';
@@ -36,7 +36,7 @@ export const Header = (props: HeaderProps) => {
         />
 
         <div className={cls.linksContainer} style={{marginLeft: 40}}>
-          <Link variant={LinkVariant.NAVIGATION} forceActive={true} to={routes.explore}>
+          <Link variant={LinkVariant.NAVIGATION} to={routes.explore}>
             Explore
           </Link>
           <Link variant={LinkVariant.NAVIGATION} badge={2} to={routes.bets}>
@@ -62,12 +62,12 @@ export const Header = (props: HeaderProps) => {
           </Button>
         </div>
       ) : (
-        <div className={cls.row}>
-          <Link variant={LinkVariant.PRIMARY} to={routes.auth.signIn}>
-            Sign in
+        <div>
+          <Link to={routes.auth.signUp}>
+            <Button variant={ButtonVariant.PRIMARY}>Sign up</Button>
           </Link>
-          <Link style={{marginLeft: 14}} variant={LinkVariant.CLEAR} to={routes.auth.signUp}>
-            Sign up
+          <Link to={routes.auth.signIn}>
+            <Button variant={ButtonVariant.CLEAR}>Sign in</Button>
           </Link>
         </div>
       )}

@@ -27,7 +27,9 @@
   background: #1a1a1a;
   border: 2px solid transparent;
   border-radius: 10px;
-  transition: 150ms;
+  transition:
+    150ms,
+    letter-spacing 0ms;
 
   &::-ms-clear,
   &::-ms-reveal {

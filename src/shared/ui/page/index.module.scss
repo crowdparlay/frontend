@@ -1,4 +1,9 @@
 .page {
-  overflow-y: auto;
-  padding: 60px 0;
+  min-height: calc(100vh - 195px);
+  padding-top: 120px;
+  padding-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

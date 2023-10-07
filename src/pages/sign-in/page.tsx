@@ -50,8 +50,8 @@ export const SignInPage = () => {
             errorMessage={fields.password?.errorText()}
           />
 
-          <Button disabled={loading || !eachValid} type="submit" center={true}>
-            Sign in
+          <Button disabled={loading || !eachValid} type="submit">
+            Proceed
           </Button>
         </Form>
 

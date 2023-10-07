@@ -13,6 +13,11 @@
   transition: 500ms ease-out;
   -webkit-touch-callout: none;
   user-select: none;
+  container-type: inline-size;
+
+  p {
+    font-size: 60cqw;
+  }
 }
 
 .light {

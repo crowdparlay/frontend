@@ -1,88 +1,58 @@
-import {useForm} from 'effector-forms';
-import {useUnit} from 'effector-react/effector-react.mjs';
+import {ThreadWaterfall} from '~/widgets/thread-waterfall';
 
-import {ProfilePreview} from '~/features/profile-preview';
+import {Avatar} from '~/features/avatar';
 
-import {Button, Container, ContainerSize, Form, Input, Page, Text, TextSize} from '~/shared/ui';
+import {
+  Button,
+  ButtonShape,
+  ButtonVariant,
+  Container,
+  ContainerSize,
+  Page,
+  Text,
+  TextSize,
+} from '~/shared/ui';
 
-import {$form, avatarFileChanged} from './model';
+import ChatIcon from './assets/chat.svg';
+import MoreIcon from './assets/more.svg';
+import ReportIcon from './assets/report.svg';
 import cls from './page.module.scss';
 
 export const ProfilePage = () => {
-  const {fields, eachValid, submit} = useForm($form);
-  const onAvatarFileChanged = useUnit(avatarFileChanged);
-
   return (
     <Page>
-      <Container size={ContainerSize.M}>
-        <Text center={true} size={TextSize.XL} className={cls.title} Component="h1">
-          Profile
+      <Container className={cls.head} size={ContainerSize.M}>
+        <Avatar
+          className={cls.avatar}
+          username={'Bark111'}
+          displayName={'А у нас в квартире газ'}
+        />
+        <Text className={cls.displayName} center={true} size={TextSize.XL}>
+          А у нас в квартире газ
         </Text>
-
-        <Form className={cls.grid} onSubmit={submit}>
-          <Input
-            label="Display name"
-            placeholder="Display name"
-            value={fields.displayName?.value}
-            onChange={(e) => fields.displayName?.onChange(e.target.value)}
-            isInvalid={fields.displayName?.hasError()}
-            errorMessage={fields.displayName?.errorText()}
-          />
-          <Input
-            label="Username"
-            placeholder="Username"
-            value={fields.username?.value}
-            onChange={(e) => fields.username?.onChange(e.target.value)}
-            isInvalid={fields.username?.hasError()}
-            errorMessage={fields.username?.errorText()}
-          />
-
-          <Input
-            label="Current password"
-            placeholder="Current password"
-            value={fields.password?.value}
-            onChange={(e) => fields.password?.onChange(e.target.value)}
-            isInvalid={fields.password?.hasError()}
-            errorMessage={fields.password?.errorText()}
-            type="password"
-            name="password"
-          />
-          <Input
-            label="New password"
-            placeholder="New password"
-            value={fields.newPassword?.value}
-            onChange={(e) => fields.newPassword?.onChange(e.target.value)}
-            isInvalid={fields.newPassword?.hasError()}
-            errorMessage={fields.newPassword?.errorText()}
-            type="password"
-            name="new_password"
-          />
-
-          <Input
-            label="Avatar URL"
-            placeholder="Avatar URL"
-            readOnly={true}
-            value={fields.avatarUrl?.value}
-            isInvalid={fields.avatarUrl?.hasError()}
-            errorMessage={fields.avatarUrl?.errorText()}
-            type="file"
-            accept="image/png, image/jpeg"
-            name="avatar_url"
-            onFileChanged={onAvatarFileChanged}
-          />
-          <div className={cls.row}>
-            <ProfilePreview
-              username={fields.username?.value}
-              displayName={fields.displayName?.value}
-              avatarUrl={fields.avatarUrl?.value}
-              style={{maxWidth: 165}}
-            />
-
-            <Button type="submit" disabled={!eachValid} style={{whiteSpace: 'nowrap'}}>
-              Apply changes
-            </Button>
-          </div>
-        </Form>
+        <Text size={TextSize.M} Component="h1">
+          @Bark111
+        </Text>
+        <Text className={cls.bio} center={true} size={TextSize.M}>
+          Fulltext search in Neo4j is supported by means of fulltext schema indexes. Fulltext schema
+          indexes are created, dropped, and updated transactionally, and are automatically
+          replicated throughout a cluster.
+        </Text>
+        <div className={cls.actions}>
+          <Button>Subscribe</Button>
+          <Button variant={ButtonVariant.SECONDARY} shape={ButtonShape.EQUILATERAL}>
+            <ChatIcon />
+          </Button>
+          <Button variant={ButtonVariant.SECONDARY} shape={ButtonShape.EQUILATERAL}>
+            <ReportIcon />
+          </Button>
+          <Button variant={ButtonVariant.SECONDARY} shape={ButtonShape.EQUILATERAL}>
+            <MoreIcon />
+          </Button>
+        </div>
+      </Container>
+      <Container size={ContainerSize.L}>
+        <ThreadWaterfall />
       </Container>
     </Page>
   );
