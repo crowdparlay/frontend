@@ -1,0 +1,8 @@
+{
+  "file": "./src/shared/api/openapi.yaml",
+  "outputDir": "./src/shared/api/",
+  "templateFileNameCode": "client.ts",
+  "presets": [
+    "openapi-preset-effector"
+  ]
+}
