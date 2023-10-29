@@ -1,7 +1,13 @@
+import * as typed from 'typed-contracts';
 import {chainRoute, redirect, RouteInstance, RouteParams, RouteParamsAndQuery} from 'atomic-router';
 import {attach, createEvent, createStore, Effect, sample} from 'effector';
+import {decodeToken} from 'react-jwt';
 
-import {getSessionFx, logoutFx, User} from '../api';
+import {ApiV1UsersUserIdGet, apiV1UsersUserIdGet, apiV1UsersUserIdGetOk} from '~/shared/api';
+import {logoutFx} from '~/shared/api/auth';
+import {JwtPayload} from '~/shared/api/types';
+import {LOCAL_STORAGE_ACCESS_TOKEN_KEY} from '~/shared/config';
+
 import {routes} from '../routes';
 
 enum AuthStatus {
@@ -11,9 +17,9 @@ enum AuthStatus {
   Authenticated,
 }
 
-export const sessionRequestFx = attach({effect: getSessionFx});
+export const sessionRequestFx = attach({effect: apiV1UsersUserIdGet});
 
-export const $user = createStore<User | null>(null);
+export const $user = createStore<typed.Get<typeof apiV1UsersUserIdGetOk> | null>(null);
 const $authenticationStatus = createStore(AuthStatus.Initial);
 
 $authenticationStatus.on(sessionRequestFx, (status) => {
@@ -21,7 +27,7 @@ $authenticationStatus.on(sessionRequestFx, (status) => {
   return status;
 });
 
-$user.on(sessionRequestFx.doneData, (_, user) => user);
+$user.on(sessionRequestFx.doneData, (_, user) => user.answer);
 $authenticationStatus.on(sessionRequestFx.doneData, () => AuthStatus.Authenticated);
 
 $authenticationStatus.on(sessionRequestFx.fail, () => AuthStatus.Anonymous);
@@ -65,6 +71,23 @@ export function chainAuthorized<Params extends RouteParams>(
     clock: sessionCheckStarted,
     source: $authenticationStatus,
     filter: (status) => status === AuthStatus.Initial,
+    fn: (): ApiV1UsersUserIdGet => {
+      let userId: string = '';
+
+      const accessToken = localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
+      if (accessToken) {
+        const jwtPayload = decodeToken<JwtPayload>(accessToken);
+        if (jwtPayload) {
+          userId = jwtPayload.sub;
+        }
+      }
+
+      return {
+        path: {
+          userId,
+        },
+      };
+    },
     target: sessionRequestFx,
   });
 
@@ -114,6 +137,23 @@ export function chainAnonymous<Params extends RouteParams>(
     clock: sessionCheckStarted,
     source: $authenticationStatus,
     filter: (status) => status === AuthStatus.Initial,
+    fn: (): ApiV1UsersUserIdGet => {
+      let userId: string = '';
+
+      const accessToken = localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
+      if (accessToken) {
+        const jwtPayload = decodeToken<JwtPayload>(accessToken);
+        if (jwtPayload) {
+          userId = jwtPayload.sub;
+        }
+      }
+
+      return {
+        path: {
+          userId,
+        },
+      };
+    },
     target: sessionRequestFx,
   });
 
