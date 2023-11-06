@@ -54,7 +54,17 @@ export interface SignIn {
   password: string;
 }
 
-export const signInFx = createEffect<SignIn, void>((form) => {
+export interface ConnectToken {
+  body: {
+    access_token: string;
+    refresh_token: string;
+    expires_in: number;
+    scope: string;
+    token_type: string;
+  };
+}
+
+export const signInFx = createEffect<SignIn, ConnectToken>((form) => {
   return requestFx({
     method: 'POST',
     path: '/connect/token',

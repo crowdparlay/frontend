@@ -17,7 +17,26 @@ enum AuthStatus {
   Authenticated,
 }
 
-export const sessionRequestFx = attach({effect: apiV1UsersUserIdGet});
+export const sessionRequestFx = attach({
+  effect: apiV1UsersUserIdGet,
+  mapParams: (): ApiV1UsersUserIdGet => {
+    let userId: string = '';
+
+    const accessToken = localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
+    if (accessToken) {
+      const jwtPayload = decodeToken<JwtPayload>(accessToken);
+      if (jwtPayload) {
+        userId = jwtPayload.sub;
+      }
+    }
+
+    return {
+      path: {
+        userId,
+      },
+    };
+  },
+});
 
 export const $user = createStore<typed.Get<typeof apiV1UsersUserIdGetOk> | null>(null);
 const $authenticationStatus = createStore(AuthStatus.Initial);
@@ -71,23 +90,6 @@ export function chainAuthorized<Params extends RouteParams>(
     clock: sessionCheckStarted,
     source: $authenticationStatus,
     filter: (status) => status === AuthStatus.Initial,
-    fn: (): ApiV1UsersUserIdGet => {
-      let userId: string = '';
-
-      const accessToken = localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
-      if (accessToken) {
-        const jwtPayload = decodeToken<JwtPayload>(accessToken);
-        if (jwtPayload) {
-          userId = jwtPayload.sub;
-        }
-      }
-
-      return {
-        path: {
-          userId,
-        },
-      };
-    },
     target: sessionRequestFx,
   });
 
@@ -137,23 +139,6 @@ export function chainAnonymous<Params extends RouteParams>(
     clock: sessionCheckStarted,
     source: $authenticationStatus,
     filter: (status) => status === AuthStatus.Initial,
-    fn: (): ApiV1UsersUserIdGet => {
-      let userId: string = '';
-
-      const accessToken = localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
-      if (accessToken) {
-        const jwtPayload = decodeToken<JwtPayload>(accessToken);
-        if (jwtPayload) {
-          userId = jwtPayload.sub;
-        }
-      }
-
-      return {
-        path: {
-          userId,
-        },
-      };
-    },
     target: sessionRequestFx,
   });
 
