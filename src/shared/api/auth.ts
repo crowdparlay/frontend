@@ -11,7 +11,10 @@ export interface ConnectTokenResponse {
 }
 
 localApi.interceptors.request.use((config) => {
-  config.headers.Authorization = `Bearer ${localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY)}`;
+  const accessToken = localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
   return config;
 });
 
@@ -55,11 +58,11 @@ export const signInFx = createEffect<SignIn, void>((form) => {
   return requestFx({
     method: 'POST',
     path: '/connect/token',
-    body: {
+    body: new URLSearchParams({
       grant_type: 'password',
       scope: 'offline_access',
       ...form,
-    },
+    }),
   });
 });
 
