@@ -53,10 +53,10 @@ export const SignUpPage = () => {
           <Input
             disabled={loading}
             placeholder="Display name"
-            value={fields.displayName?.value}
-            onChange={(e) => fields.displayName?.onChange(e.target.value)}
-            isInvalid={fields.displayName?.hasError()}
-            errorMessage={fields.displayName?.errorText()}
+            value={fields.display_name?.value}
+            onChange={(e) => fields.display_name?.onChange(e.target.value)}
+            isInvalid={fields.display_name?.hasError()}
+            errorMessage={fields.display_name?.errorText()}
           />
           <Input
             disabled={loading}
@@ -73,15 +73,15 @@ export const SignUpPage = () => {
             placeholder="Confirm password"
             type="password"
             name="confirm_password"
-            value={fields.confirm?.value}
-            onChange={(e) => fields.confirm?.onChange(e.target.value)}
-            isInvalid={fields.confirm?.hasError()}
-            errorMessage={fields.confirm?.errorText()}
+            value={fields.confirm_password?.value}
+            onChange={(e) => fields.confirm_password?.onChange(e.target.value)}
+            isInvalid={fields.confirm_password?.hasError()}
+            errorMessage={fields.confirm_password?.errorText()}
           />
 
           <ProfilePreview
             username={fields.username?.value}
-            displayName={fields.displayName?.value}
+            displayName={fields.display_name?.value}
           />
 
           <Button disabled={loading || !eachValid} type="submit" center={true}>

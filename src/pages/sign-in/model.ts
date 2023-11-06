@@ -20,7 +20,7 @@ export const $form = createForm({
   fields: {
     username: {
       init: '',
-      rules: [rules.required(), rules.email()],
+      rules: [rules.required()],
       validateOn: ['blur'],
     },
     password: {
