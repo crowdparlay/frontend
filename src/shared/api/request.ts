@@ -5,7 +5,6 @@ import {API_URL} from '../config';
 
 export const localApi = axios.create({
   baseURL: API_URL,
-  withCredentials: true,
   validateStatus: (status) => status >= 200 && status < 300,
 });
 
