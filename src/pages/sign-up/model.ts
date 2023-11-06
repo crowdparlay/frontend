@@ -26,7 +26,7 @@ export const $form = createForm({
       rules: [rules.required(), rules.email()],
       validateOn: ['blur'],
     },
-    displayName: {
+    display_name: {
       init: '',
       rules: [rules.required(), rules.minLength(4)],
       validateOn: ['blur'],
@@ -41,7 +41,7 @@ export const $form = createForm({
       rules: [rules.required(), rules.minLength(4)],
       validateOn: ['blur'],
     },
-    confirm: {
+    confirm_password: {
       init: '',
       rules: [
         rules.required(),
@@ -61,9 +61,9 @@ export const $form = createForm({
 
 sample({
   clock: $form.fields.password.changed,
-  source: $form.fields.confirm.$isDirty,
+  source: $form.fields.confirm_password.$isDirty,
   filter: (isConfirmDirty) => isConfirmDirty,
-  target: $form.fields.confirm.validate,
+  target: $form.fields.confirm_password.validate,
 });
 
 sample({
