@@ -85,7 +85,41 @@ export type ApiV1UsersRegisterPostDone = {
   status: 'ok';
   answer: typed.Get<typeof apiV1UsersRegisterPostOk>;
 };
-export type ApiV1UsersRegisterPostFail = GenericErrors;
+/* Bad Request */
+export const apiV1UsersRegisterPostBadRequest = typed.object({
+  error_description: typed.string.optional,
+  validation_errors: typed.object({}).optional,
+});
+/* Forbidden */
+export const apiV1UsersRegisterPostForbidden = typed.object({
+  error_description: typed.string.optional,
+});
+/* Conflict */
+export const apiV1UsersRegisterPostConflict = typed.object({
+  error_description: typed.string.optional,
+});
+/* Server Error */
+export const apiV1UsersRegisterPostInternalServerError = typed.object({
+  error_description: typed.string.optional,
+});
+export type ApiV1UsersRegisterPostFail =
+  | {
+      status: 'bad_request';
+      error: typed.Get<typeof apiV1UsersRegisterPostBadRequest>;
+    }
+  | {
+      status: 'forbidden';
+      error: typed.Get<typeof apiV1UsersRegisterPostForbidden>;
+    }
+  | {
+      status: 'conflict';
+      error: typed.Get<typeof apiV1UsersRegisterPostConflict>;
+    }
+  | {
+      status: 'internal_server_error';
+      error: typed.Get<typeof apiV1UsersRegisterPostInternalServerError>;
+    }
+  | GenericErrors;
 export const apiV1UsersRegisterPost = createEffect<
   ApiV1UsersRegisterPost,
   ApiV1UsersRegisterPostDone,
@@ -100,6 +134,10 @@ export const apiV1UsersRegisterPost = createEffect<
     });
     return parseByStatus(name, response, {
       200: ['ok', apiV1UsersRegisterPostOk],
+      400: ['bad_request', apiV1UsersRegisterPostBadRequest],
+      403: ['forbidden', apiV1UsersRegisterPostForbidden],
+      409: ['conflict', apiV1UsersRegisterPostConflict],
+      500: ['internal_server_error', apiV1UsersRegisterPostInternalServerError],
     });
   },
 });
@@ -123,7 +161,24 @@ export type ApiV1UsersUserIdGetDone = {
   status: 'ok';
   answer: typed.Get<typeof apiV1UsersUserIdGetOk>;
 };
-export type ApiV1UsersUserIdGetFail = GenericErrors;
+/* Not Found */
+export const apiV1UsersUserIdGetNotFound = typed.object({
+  error_description: typed.string.optional,
+});
+/* Server Error */
+export const apiV1UsersUserIdGetInternalServerError = typed.object({
+  error_description: typed.string.optional,
+});
+export type ApiV1UsersUserIdGetFail =
+  | {
+      status: 'not_found';
+      error: typed.Get<typeof apiV1UsersUserIdGetNotFound>;
+    }
+  | {
+      status: 'internal_server_error';
+      error: typed.Get<typeof apiV1UsersUserIdGetInternalServerError>;
+    }
+  | GenericErrors;
 export const apiV1UsersUserIdGet = createEffect<
   ApiV1UsersUserIdGet,
   ApiV1UsersUserIdGetDone,
@@ -137,6 +192,8 @@ export const apiV1UsersUserIdGet = createEffect<
     });
     return parseByStatus(name, response, {
       200: ['ok', apiV1UsersUserIdGetOk],
+      404: ['not_found', apiV1UsersUserIdGetNotFound],
+      500: ['internal_server_error', apiV1UsersUserIdGetInternalServerError],
     });
   },
 });
@@ -169,7 +226,41 @@ export type ApiV1UsersUserIdPutDone = {
   status: 'ok';
   answer: typed.Get<typeof apiV1UsersUserIdPutOk>;
 };
-export type ApiV1UsersUserIdPutFail = GenericErrors;
+/* Bad Request */
+export const apiV1UsersUserIdPutBadRequest = typed.object({
+  error_description: typed.string.optional,
+  validation_errors: typed.object({}).optional,
+});
+/* Forbidden */
+export const apiV1UsersUserIdPutForbidden = typed.object({
+  error_description: typed.string.optional,
+});
+/* Not Found */
+export const apiV1UsersUserIdPutNotFound = typed.object({
+  error_description: typed.string.optional,
+});
+/* Server Error */
+export const apiV1UsersUserIdPutInternalServerError = typed.object({
+  error_description: typed.string.optional,
+});
+export type ApiV1UsersUserIdPutFail =
+  | {
+      status: 'bad_request';
+      error: typed.Get<typeof apiV1UsersUserIdPutBadRequest>;
+    }
+  | {
+      status: 'forbidden';
+      error: typed.Get<typeof apiV1UsersUserIdPutForbidden>;
+    }
+  | {
+      status: 'not_found';
+      error: typed.Get<typeof apiV1UsersUserIdPutNotFound>;
+    }
+  | {
+      status: 'internal_server_error';
+      error: typed.Get<typeof apiV1UsersUserIdPutInternalServerError>;
+    }
+  | GenericErrors;
 export const apiV1UsersUserIdPut = createEffect<
   ApiV1UsersUserIdPut,
   ApiV1UsersUserIdPutDone,
@@ -184,6 +275,10 @@ export const apiV1UsersUserIdPut = createEffect<
     });
     return parseByStatus(name, response, {
       200: ['ok', apiV1UsersUserIdPutOk],
+      400: ['bad_request', apiV1UsersUserIdPutBadRequest],
+      403: ['forbidden', apiV1UsersUserIdPutForbidden],
+      404: ['not_found', apiV1UsersUserIdPutNotFound],
+      500: ['internal_server_error', apiV1UsersUserIdPutInternalServerError],
     });
   },
 });
@@ -197,12 +292,43 @@ export type ApiV1UsersUserIdDelete = {
   };
 };
 /* Success */
-export const apiV1UsersUserIdDeleteOk = typed.nul;
+export const apiV1UsersUserIdDeleteOk = typed.object({
+  id: typed.string.optional,
+  username: typed.string.optional,
+  display_name: typed.string.optional,
+  email: typed.string.optional,
+  avatar_url: typed.string.maybe,
+});
 export type ApiV1UsersUserIdDeleteDone = {
   status: 'ok';
   answer: typed.Get<typeof apiV1UsersUserIdDeleteOk>;
 };
-export type ApiV1UsersUserIdDeleteFail = GenericErrors;
+/* Forbidden */
+export const apiV1UsersUserIdDeleteForbidden = typed.object({
+  error_description: typed.string.optional,
+});
+/* Not Found */
+export const apiV1UsersUserIdDeleteNotFound = typed.object({
+  error_description: typed.string.optional,
+});
+/* Server Error */
+export const apiV1UsersUserIdDeleteInternalServerError = typed.object({
+  error_description: typed.string.optional,
+});
+export type ApiV1UsersUserIdDeleteFail =
+  | {
+      status: 'forbidden';
+      error: typed.Get<typeof apiV1UsersUserIdDeleteForbidden>;
+    }
+  | {
+      status: 'not_found';
+      error: typed.Get<typeof apiV1UsersUserIdDeleteNotFound>;
+    }
+  | {
+      status: 'internal_server_error';
+      error: typed.Get<typeof apiV1UsersUserIdDeleteInternalServerError>;
+    }
+  | GenericErrors;
 export const apiV1UsersUserIdDelete = createEffect<
   ApiV1UsersUserIdDelete,
   ApiV1UsersUserIdDeleteDone,
@@ -216,6 +342,9 @@ export const apiV1UsersUserIdDelete = createEffect<
     });
     return parseByStatus(name, response, {
       200: ['ok', apiV1UsersUserIdDeleteOk],
+      403: ['forbidden', apiV1UsersUserIdDeleteForbidden],
+      404: ['not_found', apiV1UsersUserIdDeleteNotFound],
+      500: ['internal_server_error', apiV1UsersUserIdDeleteInternalServerError],
     });
   },
 });
@@ -239,7 +368,33 @@ export type ApiV1UsersResolveGetDone = {
   status: 'ok';
   answer: typed.Get<typeof apiV1UsersResolveGetOk>;
 };
-export type ApiV1UsersResolveGetFail = GenericErrors;
+/* Bad Request */
+export const apiV1UsersResolveGetBadRequest = typed.object({
+  error_description: typed.string.optional,
+  validation_errors: typed.object({}).optional,
+});
+/* Not Found */
+export const apiV1UsersResolveGetNotFound = typed.object({
+  error_description: typed.string.optional,
+});
+/* Server Error */
+export const apiV1UsersResolveGetInternalServerError = typed.object({
+  error_description: typed.string.optional,
+});
+export type ApiV1UsersResolveGetFail =
+  | {
+      status: 'bad_request';
+      error: typed.Get<typeof apiV1UsersResolveGetBadRequest>;
+    }
+  | {
+      status: 'not_found';
+      error: typed.Get<typeof apiV1UsersResolveGetNotFound>;
+    }
+  | {
+      status: 'internal_server_error';
+      error: typed.Get<typeof apiV1UsersResolveGetInternalServerError>;
+    }
+  | GenericErrors;
 export const apiV1UsersResolveGet = createEffect<
   ApiV1UsersResolveGet,
   ApiV1UsersResolveGetDone,
@@ -254,6 +409,9 @@ export const apiV1UsersResolveGet = createEffect<
     });
     return parseByStatus(name, response, {
       200: ['ok', apiV1UsersResolveGetOk],
+      400: ['bad_request', apiV1UsersResolveGetBadRequest],
+      404: ['not_found', apiV1UsersResolveGetNotFound],
+      500: ['internal_server_error', apiV1UsersResolveGetInternalServerError],
     });
   },
 });

@@ -4,7 +4,7 @@ info:
   description: Crowd Parlay's RESTful API.
   version: '1.0'
 servers:
-  - url: http://localhost:8080
+  - url: https://crowdparlay.com
 tags:
   - name: Users
     x-displayName: Users
@@ -44,6 +44,54 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/UsersRegisterResponse'
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ValidationProblem'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblem'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblem'
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '409':
+          description: Conflict
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Server Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
   /api/v1/users/{userId}:
     get:
       tags:
@@ -70,6 +118,30 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/UsersGetByIdResponse'
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Server Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
     put:
       tags:
         - Users
@@ -106,6 +178,54 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/UsersUpdateResponse'
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ValidationProblem'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblem'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblem'
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Server Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
     delete:
       tags:
         - Users
@@ -121,6 +241,52 @@ paths:
       responses:
         '200':
           description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/UsersUpdateResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersUpdateResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/UsersUpdateResponse'
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Server Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
   /api/v1/users/resolve:
     get:
       tags:
@@ -145,6 +311,42 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/UsersGetByUsernameResponse'
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ValidationProblem'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblem'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblem'
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Server Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
   /api/v1/authors/{authorId}:
     get:
       tags:
@@ -410,6 +612,12 @@ paths:
                   $ref: '#/components/schemas/DiscussionDto'
 components:
   schemas:
+    Problem:
+      type: object
+      properties:
+        error_description:
+          type: string
+      additionalProperties: false
     UsersGetByIdResponse:
       type: object
       properties:
@@ -506,6 +714,18 @@ components:
         avatar_url:
           type: string
           nullable: true
+      additionalProperties: false
+    ValidationProblem:
+      type: object
+      properties:
+        error_description:
+          type: string
+        validation_errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
       additionalProperties: false
     AuthorDto:
       type: object
