@@ -1,4 +1,4 @@
-import {attach} from 'effector';
+import {attach, createStore} from 'effector';
 import {sample} from 'effector';
 import {createForm} from 'effector-forms';
 import {or} from 'patronum';
@@ -33,18 +33,46 @@ export const $form = createForm({
   validateOn: ['submit'],
 });
 
+export const $formError = createStore<string | null>(null);
+
 sample({
   clock: anonymousRoute.closed,
-  target: $form.reset,
+  target: [$form.reset, $formError.reinit],
 });
 
 sample({
   clock: $form.formValidated,
-  target: signInFx,
+  target: [signInFx, $formError.reinit],
 });
 
 sample({
   clock: signInFx.doneData,
+  filter: (res) => res.status >= 300 && res.status === 400 && Boolean(res.body.validation_errors),
+  fn: (res) => {
+    return Object.entries(res.body.validation_errors!).map(([field, errorText]) => {
+      return {
+        field,
+        rule: 'backend',
+        errorText: errorText as string,
+      };
+    });
+  },
+  target: $form.addErrors,
+});
+
+sample({
+  clock: signInFx.doneData,
+  filter: (res) =>
+    res.status >= 300 && !(res.status === 400 && Boolean(res.body.validation_errors)),
+  fn: (res) => {
+    return res.body.error_description ?? 'Something went wrong. Try again later.';
+  },
+  target: $formError,
+});
+
+sample({
+  clock: signInFx.doneData,
+  filter: (res) => res.status < 300,
   fn: (data) => {
     localStorage.setItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY, data.body.access_token);
     localStorage.setItem(LOCAL_STORAGE_REFRESH_TOKEN_KEY, data.body.refresh_token);
