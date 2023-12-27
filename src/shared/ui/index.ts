@@ -7,3 +7,4 @@ export * from './page';
 export * from './container';
 export * from './loader';
 export * from './form';
+export * from './attention';

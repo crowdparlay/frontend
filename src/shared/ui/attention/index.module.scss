@@ -1,0 +1,10 @@
+.attention {
+  padding: 12px 15px 13px;
+  border-radius: 10px;
+  background: #260c0c;
+
+  span {
+    font: var(--font-s);
+    color: red;
+  }
+}
