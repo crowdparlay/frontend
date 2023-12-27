@@ -3,7 +3,6 @@ import {createEffect} from 'effector';
 
 import {LOCAL_STORAGE_ACCESS_TOKEN_KEY, LOCAL_STORAGE_REFRESH_TOKEN_KEY} from '../config';
 import {localApi, requestFx} from './request';
-import {User} from './types';
 
 export interface ConnectTokenResponse {
   access_token: string;
