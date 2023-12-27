@@ -3,7 +3,6 @@ import {createEffect} from 'effector';
 
 import {LOCAL_STORAGE_ACCESS_TOKEN_KEY, LOCAL_STORAGE_REFRESH_TOKEN_KEY} from '../config';
 import {localApi, requestFx} from './request';
-import {User} from './types';
 
 export interface ConnectTokenResponse {
   access_token: string;
@@ -55,12 +54,16 @@ export interface SignIn {
 }
 
 export interface ConnectToken {
+  status: number;
   body: {
     access_token: string;
     refresh_token: string;
     expires_in: number;
     scope: string;
     token_type: string;
+
+    validation_errors?: NonNullable<unknown>;
+    error_description?: string;
   };
 }
 
@@ -73,18 +76,6 @@ export const signInFx = createEffect<SignIn, ConnectToken>((form) => {
       scope: 'offline_access',
       ...form,
     }),
-  });
-});
-
-export interface SignUp extends SignIn {
-  displayName: string;
-}
-
-export const signUpFx = createEffect<SignUp, User>((form) => {
-  return requestFx({
-    method: 'POST',
-    path: '/api/users/register',
-    body: form,
   });
 });
 

@@ -5,6 +5,7 @@ import {ProfilePreview} from '~/features/profile-preview';
 
 import {routes} from '~/shared/routes';
 import {
+  Attention,
   Button,
   Container,
   ContainerSize,
@@ -16,12 +17,12 @@ import {
   TextSize,
 } from '~/shared/ui';
 
-import {$form, $loading} from './model';
+import {$form, $formError, $loading} from './model';
 import cls from './page.module.scss';
 
 export const SignUpPage = () => {
   const {fields, submit, eachValid} = useForm($form);
-  const loading = useUnit($loading);
+  const [loading, formError] = useUnit([$loading, $formError]);
 
   return (
     <Page>
@@ -83,6 +84,8 @@ export const SignUpPage = () => {
             username={fields.username?.value}
             displayName={fields.display_name?.value}
           />
+
+          {formError && <Attention>{formError}</Attention>}
 
           <Button disabled={loading || !eachValid} type="submit" center={true}>
             Join

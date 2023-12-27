@@ -1,4 +1,4 @@
-import {attach, sample} from 'effector';
+import {attach, createStore, sample} from 'effector';
 import {createForm} from 'effector-forms';
 import {or} from 'patronum';
 
@@ -55,6 +55,8 @@ export const $form = createForm({
   validateOn: ['submit'],
 });
 
+export const $formError = createStore<string | null>(null);
+
 sample({
   clock: $form.fields.password.changed,
   source: $form.fields.confirm_password.$isDirty,
@@ -64,13 +66,47 @@ sample({
 
 sample({
   clock: anonymousRoute.closed,
-  target: $form.reset,
+  target: [$form.reset, $formError.reinit],
 });
 
 sample({
   clock: $form.formValidated,
   fn: (fields) => ({body: fields}),
-  target: signUpFx,
+  target: [signUpFx, $formError.reinit],
+});
+
+sample({
+  clock: signUpFx.failData,
+  filter: (res) => res.status === 'bad_request' && Boolean(res.error.validation_errors),
+  fn: (res) => {
+    if (res.status !== 'bad_request') {
+      throw new Error();
+    }
+    return Object.entries(res.error.validation_errors!).map(([field, errorText]) => {
+      return {
+        field,
+        rule: 'backend',
+        errorText: errorText as string,
+      };
+    });
+  },
+  target: $form.addErrors,
+});
+
+sample({
+  clock: signUpFx.failData,
+  filter: (res) => !(res.status === 'bad_request' && Boolean(res.error.validation_errors)),
+  fn: (res) => {
+    switch (res.status) {
+      case 'bad_request':
+      case 'forbidden':
+      case 'internal_server_error':
+        return res.error.error_description ?? 'Something went wrong. Try again later.';
+      default:
+        return 'Something went wrong. Try again later.';
+    }
+  },
+  target: $formError,
 });
 
 sample({

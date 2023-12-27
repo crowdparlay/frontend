@@ -3,6 +3,7 @@ import {useUnit} from 'effector-react';
 
 import {routes} from '~/shared/routes';
 import {
+  Attention,
   Button,
   Container,
   ContainerSize,
@@ -14,12 +15,12 @@ import {
   TextSize,
 } from '~/shared/ui';
 
-import {$form, $loading} from './model';
+import {$form, $formError, $loading} from './model';
 import cls from './page.module.scss';
 
 export const SignInPage = () => {
   const {fields, submit, eachValid} = useForm($form);
-  const loading = useUnit($loading);
+  const [loading, formError] = useUnit([$loading, $formError]);
 
   return (
     <Page>
@@ -49,6 +50,8 @@ export const SignInPage = () => {
             isInvalid={fields.password?.hasError()}
             errorMessage={fields.password?.errorText()}
           />
+
+          {formError && <Attention>{formError}</Attention>}
 
           <Button disabled={loading || !eachValid} type="submit">
             Proceed
