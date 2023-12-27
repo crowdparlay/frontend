@@ -4,7 +4,7 @@ info:
   description: Crowd Parlay's RESTful API.
   version: '1.0'
 servers:
-  - url: https://crowdparlay.com
+  - url: https://crowdparlay
 tags:
   - name: Users
     x-displayName: Users
@@ -58,18 +58,6 @@ paths:
                 $ref: '#/components/schemas/ValidationProblem'
         '403':
           description: Forbidden
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/Problem'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '409':
-          description: Conflict
           content:
             text/plain:
               schema:
@@ -411,6 +399,18 @@ paths:
           schema:
             type: string
             format: uuid
+        - name: page
+          in: query
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          style: form
+          schema:
+            type: integer
+            format: int32
       responses:
         '200':
           description: Success
@@ -669,9 +669,9 @@ components:
           format: uuid
         username:
           type: string
-        display_name:
-          type: string
         email:
+          type: string
+        display_name:
           type: string
         avatar_url:
           type: string
@@ -804,10 +804,10 @@ components:
       description: OpenID Connect authentication scheme.
       openIdConnectUrl: /.well-known/openid-configuration
 x-tagGroups:
-  - name: '1'
+  - name: users
     tags:
       - Users
-  - name: '2'
+  - name: social
     tags:
       - Authors
       - Comments
