@@ -7,8 +7,6 @@ import * as typed from 'typed-contracts';
 import { requestFx } from './request';
 
 //#region prebuilt code
-const custom = { any: (valueName: string, value: unknown): any => value }
-
 export type GenericErrors =
   | {
       status: 'unexpected';
