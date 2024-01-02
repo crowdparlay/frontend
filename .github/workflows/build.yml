@@ -1,0 +1,32 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ '*' ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔽 Checkout repository
+        uses: actions/checkout@v2
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 21
+      - uses: pnpm/action-setup@v2
+        name: ⚙️ Setup pnpm
+        with:
+          version: 8
+      - name: ⚒ Build project
+        run: |
+          pnpm build
+        env:
+          VITE_API_URL: https://crowdparlay.com
+      - name: ⬆️ Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: 'dist/**'
