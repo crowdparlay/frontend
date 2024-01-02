@@ -13,11 +13,12 @@ env:
 
 jobs:
   build:
-    name: Report
+    name: Build
     uses: ./.github/workflows/build.yml
     secrets: inherit
   build-and-push:
     name: Docker build & push
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: read
