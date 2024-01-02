@@ -12,7 +12,7 @@ interface Request {
   path: string;
   method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   body?: unknown;
-  params?: unknown;
+  query?: unknown;
 }
 
 export const requestFx = createEffect<Request, any>((request) => {
@@ -20,7 +20,7 @@ export const requestFx = createEffect<Request, any>((request) => {
     method: request.method,
     url: request.path,
     data: request.body,
-    params: request.params,
+    params: request.query,
   })
     .then((response) => ({status: response.status, body: response.data}))
     .catch((response) =>
