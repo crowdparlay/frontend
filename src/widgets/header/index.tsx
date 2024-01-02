@@ -1,6 +1,6 @@
 import {useUnit} from 'effector-react';
 
-import {User} from '~/shared/api';
+import {User} from '~/shared/api/types';
 import {routes} from '~/shared/routes';
 import {$user} from '~/shared/session';
 import {Button, ButtonVariant, Input, Link, LinkVariant} from '~/shared/ui';
