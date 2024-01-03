@@ -1,9 +1,12 @@
 .preview {
+  overflow: hidden;
   display: flex;
+  width: 100%;
   gap: 11px;
 }
 
 .list {
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 1px;
@@ -15,10 +18,12 @@
   align-items: center;
 }
 
-.name {
+.wrapText {
   overflow: hidden;
-  color: var(--color-white);
-  max-width: 299px;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.name {
+  color: var(--color-white);
 }

@@ -26,7 +26,7 @@ export const ProfilePreview = (props: ProfilePreviewProps) => {
       <Avatar username={username} displayName={displayName} avatarUrl={avatarUrl} />
       <div className={cls.list}>
         <div className={cls.nameContainer}>
-          <Text className={classNames(cls.name, cls.maxWidth)}>
+          <Text className={classNames(cls.name, cls.wrapText)}>
             {displayName || 'Display name'}
           </Text>
 
@@ -35,7 +35,7 @@ export const ProfilePreview = (props: ProfilePreviewProps) => {
         {showDate && date ? (
           <Text size={TextSize.S}>{date.toLocaleTimeString()}</Text>
         ) : (
-          <Text className={cls.maxWidth} size={TextSize.S}>
+          <Text className={cls.wrapText} size={TextSize.S}>
             @{username || 'username'}
           </Text>
         )}

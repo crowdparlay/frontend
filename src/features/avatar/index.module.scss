@@ -5,6 +5,7 @@
   height: $size;
   border-radius: 6px;
   display: flex;
+  flex: none;
   align-items: center;
   justify-content: center;
   font: var(--font-l);
@@ -13,11 +14,6 @@
   transition: 500ms ease-out;
   -webkit-touch-callout: none;
   user-select: none;
-  container-type: inline-size;
-
-  p {
-    font-size: 60cqw;
-  }
 }
 
 .light {
