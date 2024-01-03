@@ -167,6 +167,11 @@
     font: var(--font-s);
     color: #848484;
   }
+
+  .errorContainer,
+  .tooltip {
+    margin-top: 28px;
+  }
 }
 
 .file {
