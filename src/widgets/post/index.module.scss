@@ -1,0 +1,105 @@
+.line {
+  border-bottom: 1px solid var(--color-black-darkest);
+}
+
+.post {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 12px;
+  border-radius: 12px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.avatars {
+  & > * {
+    transition: 150ms;
+  }
+}
+
+.replyButton {
+  display: flex;
+  background-color: var(--color-black-darkest);
+  padding: 10px 20px;
+  gap: 12px;
+  align-items: center;
+  border-radius: 30px;
+
+  &:hover {
+    background-color: var(--color-gray-dark);
+
+    .avatars {
+      & > * {
+        outline-color: var(--color-gray-dark);
+      }
+    }
+  }
+
+  &:active {
+    background-color: var(--color-black-darkest);
+
+    .avatars {
+      & > * {
+        outline-color: var(--color-black-darkest);
+      }
+    }
+  }
+}
+
+.collapse {
+  padding: 11px 24px;
+  border: 1px solid #191919;
+  background-color: transparent;
+}
+
+.button {
+  display: flex;
+  padding: 12px 25px 12px 20px;
+  gap: 12px;
+  background-color: transparent;
+  border-radius: 30px;
+
+  &:hover {
+    color: var(--color-gray-lighter);
+    background-color: var(--color-gray-dark);
+  }
+
+  &:active {
+    background-color: var(--color-black-darkest);
+  }
+}
+
+.react {
+  color: var(--color-gray-lighter);
+
+  &.active {
+    color: var(--color-white);
+  }
+}
+
+.dislike {
+  transform: rotate(180deg);
+}
+
+.replyContainer {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.circle {
+  aspect-ratio: 1;
+  width: 14px;
+  height: 14px;
+  margin-top: 20px;
+  border: 3px solid var(--color-gray-dark);
+  border-radius: 50%;
+}
+
+.hidden {
+  display: none;
+}
