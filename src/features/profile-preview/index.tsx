@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import {HTMLAttributes} from 'react';
+import {HTMLAttributes, memo} from 'react';
 
 import {Avatar} from '~/features/avatar';
 
@@ -13,13 +13,11 @@ export interface ProfilePreviewProps extends HTMLAttributes<HTMLDivElement> {
   displayName: string;
   avatarUrl?: string;
   date?: Date;
-  showDate?: boolean;
   verified?: boolean;
 }
 
-export const ProfilePreview = (props: ProfilePreviewProps) => {
-  const {verified, username, displayName, avatarUrl, showDate, date, className, ...otherProps} =
-    props;
+export const ProfilePreview = memo((props: ProfilePreviewProps) => {
+  const {verified, username, displayName, avatarUrl, date, className, ...otherProps} = props;
 
   return (
     <div className={classNames(cls.preview, className)} {...otherProps}>
@@ -32,14 +30,19 @@ export const ProfilePreview = (props: ProfilePreviewProps) => {
 
           {verified && <VerifiedIcon />}
         </div>
-        {showDate && date ? (
-          <Text size={TextSize.S}>{date.toLocaleTimeString()}</Text>
-        ) : (
+
+        <div className={cls.subContainer}>
           <Text className={cls.wrapText} size={TextSize.S}>
             @{username || 'username'}
           </Text>
-        )}
+
+          {date && (
+            <Text className={cls.time} size={TextSize.S}>
+              {date.toLocaleTimeString()}
+            </Text>
+          )}
+        </div>
       </div>
     </div>
   );
-};
+});
