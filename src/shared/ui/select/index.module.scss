@@ -14,11 +14,11 @@
 
 .label {
   font: var(--font-m);
-  color: #848484;
+  color: var(--color-gray-lighter);
 }
 
 .arrow {
-  color: #848484;
+  color: var(--color-gray-lighter);
   transition: 150ms;
 
   &.open {

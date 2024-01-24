@@ -79,7 +79,7 @@
 }
 
 .passwordButton {
-  color: #848484;
+  color: var(--color-gray-lighter);
 }
 
 .customType {
@@ -165,7 +165,7 @@
     content: attr(data-top);
     margin-bottom: 12px;
     font: var(--font-s);
-    color: #848484;
+    color: var(--color-gray-lighter);
   }
 
   .errorContainer,
