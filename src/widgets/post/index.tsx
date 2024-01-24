@@ -58,10 +58,19 @@ export const Post = (props: PostProps) => {
 
   return (
     <div className={classNames(isReply && cls.replyContainer)}>
-      {isReply && <div className={cls.circle} />}
+      {isReply && (
+        <div className={cls.circleContainer}>
+          <div className={cls.circle} />
+        </div>
+      )}
 
       <div style={{width: '100%'}}>
-        <div data-id={id} className={classNames(cls.post, className)} {...otherProps}>
+        <div
+          data-id={id}
+          className={classNames(cls.post, className)}
+          {...otherProps}
+          style={{paddingLeft: isReply ? 0 : '20px'}}
+        >
           <ProfilePreview
             username={author.username}
             displayName={author.displayName}
