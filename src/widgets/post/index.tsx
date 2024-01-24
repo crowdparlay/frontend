@@ -75,7 +75,7 @@ export const Post = (props: PostProps) => {
             <Button
               onClick={onButtonClick}
               className={classNames(
-                cls.replyButton,
+                cls.repliesButton,
                 !collapsed && cls.collapse,
                 commentsCount === 0 && cls.hidden,
               )}
