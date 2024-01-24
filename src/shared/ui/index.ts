@@ -8,3 +8,4 @@ export * from './container';
 export * from './loader';
 export * from './form';
 export * from './attention';
+export * from './avatar';
