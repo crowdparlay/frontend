@@ -1,7 +1,6 @@
 import {ThreadWaterfall} from '~/widgets/thread-waterfall';
 
-import {Avatar} from '~/features/avatar';
-
+import {Avatar} from '~/shared/ui';
 import {
   Button,
   ButtonShape,

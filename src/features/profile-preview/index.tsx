@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import {HTMLAttributes, memo} from 'react';
 
-import {Avatar} from '~/features/avatar';
-
+import {Avatar} from '~/shared/ui';
 import {Text, TextSize} from '~/shared/ui';
 
 import VerifiedIcon from './assets/verified.svg';
