@@ -3,17 +3,18 @@ name: Assert PR
 on:
   pull_request:
     types: [opened, labeled, unlabeled, synchronize]
-    branches: [master]
 
 jobs:
   check:
-    name: Require SemVer label
+    name: Assert SemVer labels
     runs-on: ubuntu-latest
     permissions:
       issues: write
       pull-requests: write
     steps:
-      - uses: mheap/github-action-required-labels@v5
+      - name: ✅ Ensure PR has a SemVer label
+        if: github.ref_name == github.event.repository.default_branch
+        uses: mheap/github-action-required-labels@v5
         with:
           mode: exactly
           count: 1
@@ -24,3 +25,13 @@ jobs:
             - `major` — incompatible API changes;
             - `minor` — backward compatible new functionality;
             - `patch` — backward compatible bug fixes.
+      - name: ❎ Ensure PR has no SemVer labels
+        if: github.ref_name != github.event.repository.default_branch
+        uses: mheap/github-action-required-labels@v5
+        with:
+          mode: exactly
+          count: 0
+          labels: 'major, minor, patch'
+          add_comment: true
+          message: |
+            ⚠️ Merging this PR will not trigger a new release, so it is forbidden that the PR has any of the following labels: `major` `minor` `patch`
