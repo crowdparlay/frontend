@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import {HTMLAttributes} from 'react';
 
-import {Container, Link, LinkVariant, Text, TextSize} from '~/shared/ui';
+import {Container, ContainerSize, Link, LinkVariant, Text, TextSize} from '~/shared/ui';
 
 import Logo from './assets/logo.svg';
 import cls from './index.module.scss';
@@ -13,8 +13,8 @@ export const Footer = (props: FooterProps) => {
 
   return (
     <footer className={classNames(cls.footer, className)} {...otherProps}>
-      <Container className={cls.row}>
-        <div className={cls.column}>
+      <Container size={ContainerSize.L} style={{padding: 0}} className={cls.row}>
+        <Container className={cls.column}>
           <Text size={TextSize.S} accent={true} Component="h4">
             Legal
           </Text>
@@ -27,8 +27,8 @@ export const Footer = (props: FooterProps) => {
           <Link variant={LinkVariant.PRIMARY} to={''}>
             Privacy
           </Link>
-        </div>
-        <div className={cls.column}>
+        </Container>
+        <Container className={cls.column}>
           <Text size={TextSize.S} accent={true} Component="h4">
             Contacts
           </Text>
@@ -41,8 +41,8 @@ export const Footer = (props: FooterProps) => {
           <Link variant={LinkVariant.PRIMARY} to={''}>
             Email
           </Link>
-        </div>
-        <div className={cls.column}>
+        </Container>
+        <Container className={cls.column}>
           <Text size={TextSize.S} accent={true} Component="h4">
             Developers
           </Text>
@@ -55,12 +55,12 @@ export const Footer = (props: FooterProps) => {
           <Link variant={LinkVariant.PRIMARY} to={''}>
             Status
           </Link>
-        </div>
-        <div className={cls.column}>
+        </Container>
+        <Container className={cls.column}>
           <Logo />
-          <Text size={TextSize.S}>Copyright © 2023 Crowd Parlay</Text>
+          <Text size={TextSize.S}>Copyright © 2024 Crowd Parlay</Text>
           <Text size={TextSize.S}>All rights reserved</Text>
-        </div>
+        </Container>
       </Container>
     </footer>
   );
