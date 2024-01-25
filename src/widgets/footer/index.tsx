@@ -21,7 +21,11 @@ export const Footer = (props: FooterProps) => {
           <Link variant={LinkVariant.PRIMARY} to={''}>
             Terms of use
           </Link>
-          <Link variant={LinkVariant.PRIMARY} to={''}>
+          <Link
+            variant={LinkVariant.PRIMARY}
+            to={'https://github.com/crowdparlay/foundation/wiki/Концепция'}
+            target={'_blank'}
+          >
             Platform policies
           </Link>
           <Link variant={LinkVariant.PRIMARY} to={''}>
@@ -32,7 +36,7 @@ export const Footer = (props: FooterProps) => {
           <Text size={TextSize.S} accent={true} Component="h4">
             Contacts
           </Text>
-          <Link variant={LinkVariant.PRIMARY} to={''}>
+          <Link variant={LinkVariant.PRIMARY} to={'https://t.me/crowdparlay'} target={'_blank'}>
             Telegram
           </Link>
           <Link variant={LinkVariant.PRIMARY} to={''}>
@@ -46,10 +50,18 @@ export const Footer = (props: FooterProps) => {
           <Text size={TextSize.S} accent={true} Component="h4">
             Developers
           </Text>
-          <Link variant={LinkVariant.PRIMARY} to={''}>
+          <Link
+            variant={LinkVariant.PRIMARY}
+            to={'https://github.com/crowdparlay'}
+            target={'_blank'}
+          >
             Source code
           </Link>
-          <Link variant={LinkVariant.PRIMARY} to={''}>
+          <Link
+            variant={LinkVariant.PRIMARY}
+            to={'https://bump.sh/undrcrxwn/doc/crowdparlay'}
+            target={'_blank'}
+          >
             API reference
           </Link>
           <Link variant={LinkVariant.PRIMARY} to={''}>
