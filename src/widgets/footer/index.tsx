@@ -70,7 +70,7 @@ export const Footer = (props: FooterProps) => {
         </Container>
         <Container className={cls.column}>
           <Logo />
-          <Text size={TextSize.S}>Copyright © 2024 Crowd Parlay</Text>
+          <Text size={TextSize.S}>Copyright © {new Date().getFullYear()} Crowd Parlay</Text>
           <Text size={TextSize.S}>All rights reserved</Text>
         </Container>
       </Container>
