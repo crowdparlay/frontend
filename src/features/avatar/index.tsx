@@ -59,18 +59,17 @@ export const Avatar = (props: AvatarProps) => {
         viewBox="0 0 40 40"
         preserveAspectRatio="xMinYMid meet"
         xmlns="http://www.w3.org/2000/svg"
-        // @ts-ignore
-        xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
       >
         <text
           x="50%"
           y="54%"
-          font-size="24"
-          dominant-baseline="middle"
-          text-anchor="middle"
+          fontSize="24"
+          dominantBaseline="middle"
+          textAnchor="middle"
           fill="currentColor"
         >
-          {displayName[0]?.toUpperCase() ?? 'D'}
+          {Array.from(displayName)[0]?.toUpperCase() ?? 'D'}
         </text>
       </svg>
     </div>
