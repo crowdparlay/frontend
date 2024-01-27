@@ -8,6 +8,7 @@ export enum ButtonVariant {
   SECONDARY = 'secondary',
   CLEAR = 'clear',
   INLINE = 'inline',
+  ACTION = 'action',
 }
 
 export enum ButtonShape {
