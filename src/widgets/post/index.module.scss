@@ -2,12 +2,23 @@
   border-bottom: 1px solid var(--color-black-darkest);
 }
 
+.hover {
+  opacity: 0;
+  transition: opacity 150ms;
+}
+
 .post {
   display: flex;
   flex-direction: column;
   padding: 20px;
   gap: 15px;
   border-radius: 12px;
+
+  &:hover {
+    .hover {
+      opacity: 1;
+    }
+  }
 }
 
 .actions {
@@ -55,23 +66,6 @@
   padding: 11px 25px;
   border: 1px solid #191919;
   background-color: transparent;
-}
-
-.button {
-  display: flex;
-  padding: 12px 25px 12px 20px;
-  gap: 12px;
-  background-color: transparent;
-  border-radius: 30px;
-
-  &:hover {
-    color: var(--color-gray-lighter);
-    background-color: var(--color-gray-dark);
-  }
-
-  &:active {
-    background-color: var(--color-black-darkest);
-  }
 }
 
 .react {

@@ -25,9 +25,13 @@ export interface PostProps extends HTMLAttributes<HTMLDivElement> {
   canReply: boolean;
   canReport: boolean;
   react?: 'like' | 'dislike';
+  onReplyClicked?: (id: string) => void;
+  onReportClicked?: (id: string) => void;
+  onLikeClicked?: (id: string) => void;
+  onDisLikeClicked?: (id: string) => void;
 }
 
-export const Post = (props: PostProps) => {
+export const Post = memo((props: PostProps) => {
   const {
     id,
     replyId,
@@ -41,6 +45,10 @@ export const Post = (props: PostProps) => {
     react,
     className,
     children,
+    onReplyClicked,
+    onReportClicked,
+    onLikeClicked,
+    onDisLikeClicked,
     ...otherProps
   } = props;
 
@@ -99,13 +107,21 @@ export const Post = (props: PostProps) => {
             </Button>
 
             {canReply && (
-              <Button className={cls.button} variant={ButtonVariant.SECONDARY}>
+              <Button
+                onClick={() => onReplyClicked && onReplyClicked(id)}
+                className={classNames(cls.hover)}
+                variant={ButtonVariant.ACTION}
+              >
                 <ReplyIcon />
                 Reply
               </Button>
             )}
             {canReport && (
-              <Button className={cls.button} variant={ButtonVariant.SECONDARY}>
+              <Button
+                onClick={() => onReportClicked && onReportClicked(id)}
+                className={classNames(cls.hover)}
+                variant={ButtonVariant.ACTION}
+              >
                 <ReportIcon />
                 Report
               </Button>
@@ -114,15 +130,17 @@ export const Post = (props: PostProps) => {
             <div style={{width: '100%'}} />
 
             <Button
-              className={classNames(cls.button, cls.react, react === 'like' && cls.active)}
-              variant={ButtonVariant.SECONDARY}
+              onClick={() => onLikeClicked && onLikeClicked(id)}
+              className={classNames(cls.react, react === 'like' && cls.active)}
+              variant={ButtonVariant.ACTION}
             >
               {react === 'like' ? <LikeFillIcon /> : <LikeOutlineIcon />}
               19
             </Button>
             <Button
-              className={classNames(cls.button, cls.react, react === 'dislike' && cls.active)}
-              variant={ButtonVariant.SECONDARY}
+              onClick={() => onDisLikeClicked && onDisLikeClicked(id)}
+              className={classNames(cls.react, react === 'dislike' && cls.active)}
+              variant={ButtonVariant.ACTION}
             >
               {react === 'dislike' ? (
                 <LikeFillIcon className={cls.dislike} />
@@ -140,4 +158,4 @@ export const Post = (props: PostProps) => {
       </div>
     </div>
   );
-};
+});
