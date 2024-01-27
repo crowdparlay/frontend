@@ -3,7 +3,7 @@ import {useUnit} from 'effector-react';
 import {User} from '~/shared/api/types';
 import {routes} from '~/shared/routes';
 import {$user} from '~/shared/session';
-import {Button, ButtonVariant, Input, Link, LinkVariant} from '~/shared/ui';
+import {Button, ButtonShape, ButtonVariant, Input, Link, LinkVariant} from '~/shared/ui';
 import ArrowIcon from '~/shared/ui/icon/assets/arrow.svg';
 
 import Avatar from './assets/avatar.png';
@@ -35,7 +35,7 @@ export const Header = (props: HeaderProps) => {
           className={cls.search}
         />
 
-        <div className={cls.linksContainer} style={{marginLeft: 40}}>
+        <div className={cls.linksContainer}>
           <Link variant={LinkVariant.NAVIGATION} to={routes.explore}>
             Explore
           </Link>
@@ -52,17 +52,25 @@ export const Header = (props: HeaderProps) => {
       </div>
 
       {forceUser ?? user ? (
-        <div className={cls.row} style={{alignItems: 'normal'}}>
-          <Button className={cls.button}>
+        <div className={cls.row}>
+          <Button
+            variant={ButtonVariant.CLEAR}
+            shape={ButtonShape.EQUILATERAL}
+            className={cls.button}
+          >
             <NotificationIcon />
           </Button>
           <img src={Avatar} alt="avatar" />
-          <Button className={cls.button}>
+          <Button
+            variant={ButtonVariant.CLEAR}
+            shape={ButtonShape.EQUILATERAL}
+            className={cls.button}
+          >
             <ArrowIcon />
           </Button>
         </div>
       ) : (
-        <div>
+        <div className={cls.authorization}>
           <Link to={routes.auth.signUp}>
             <Button variant={ButtonVariant.PRIMARY}>Sign up</Button>
           </Link>

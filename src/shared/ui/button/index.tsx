@@ -8,7 +8,6 @@ export enum ButtonVariant {
   SECONDARY = 'secondary',
   CLEAR = 'clear',
   INLINE = 'inline',
-  ACTION = 'action',
 }
 
 export enum ButtonShape {
@@ -22,6 +21,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   shape?: ButtonShape;
   center?: boolean;
+  round?: boolean;
 }
 
 export const Button = (props: ButtonProps) => {
@@ -30,6 +30,7 @@ export const Button = (props: ButtonProps) => {
     variant = ButtonVariant.PRIMARY,
     shape = ButtonShape.DEFAULT,
     center = true,
+    round = false,
     type,
     className,
     disabled,
@@ -41,6 +42,7 @@ export const Button = (props: ButtonProps) => {
     [cls[variant]]: true,
     [cls[shape]]: true,
     [cls.center]: center,
+    [cls.round]: round,
   };
 
   return (

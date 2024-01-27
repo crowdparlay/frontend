@@ -110,7 +110,8 @@ export const Post = memo((props: PostProps) => {
               <Button
                 onClick={() => onReplyClicked && onReplyClicked(id)}
                 className={classNames(cls.hover)}
-                variant={ButtonVariant.ACTION}
+                variant={ButtonVariant.CLEAR}
+                round={true}
               >
                 <ReplyIcon />
                 Reply
@@ -120,7 +121,8 @@ export const Post = memo((props: PostProps) => {
               <Button
                 onClick={() => onReportClicked && onReportClicked(id)}
                 className={classNames(cls.hover)}
-                variant={ButtonVariant.ACTION}
+                variant={ButtonVariant.CLEAR}
+                round={true}
               >
                 <ReportIcon />
                 Report
@@ -132,7 +134,8 @@ export const Post = memo((props: PostProps) => {
             <Button
               onClick={() => onLikeClicked && onLikeClicked(id)}
               className={classNames(cls.react, react === 'like' && cls.active)}
-              variant={ButtonVariant.ACTION}
+              variant={ButtonVariant.CLEAR}
+              round={true}
             >
               {react === 'like' ? <LikeFillIcon /> : <LikeOutlineIcon />}
               19
@@ -140,7 +143,8 @@ export const Post = memo((props: PostProps) => {
             <Button
               onClick={() => onDisLikeClicked && onDisLikeClicked(id)}
               className={classNames(cls.react, react === 'dislike' && cls.active)}
-              variant={ButtonVariant.ACTION}
+              variant={ButtonVariant.CLEAR}
+              round={true}
             >
               {react === 'dislike' ? (
                 <LikeFillIcon className={cls.dislike} />

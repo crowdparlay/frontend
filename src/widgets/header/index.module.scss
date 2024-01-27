@@ -18,6 +18,7 @@
 .linksContainer {
   display: flex;
   gap: 35px;
+  margin-left: 30px;
 }
 
 .icon {
@@ -33,12 +34,6 @@
   padding: 0;
   justify-content: center;
   border-radius: 0;
-
-  &:hover {
-    background: var(--color-white);
-    color: var(--color-black);
-    opacity: 1;
-  }
 }
 
 .logo {
@@ -58,4 +53,10 @@
       border-color: var(--color-gray-dark) !important;
     }
   }
+}
+
+.authorization {
+  display: flex;
+  gap: 12px;
+  margin-right: 12px;
 }

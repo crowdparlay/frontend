@@ -51,10 +51,9 @@
   }
 }
 
-.action {
+.clear {
   padding: 12px 25px 12px 20px;
   gap: 12px;
-  border-radius: 30px;
   color: var(--color-gray-lighter);
   background-color: transparent;
 
@@ -68,15 +67,14 @@
   }
 }
 
-.clear {
-  background: transparent;
-  color: var(--color-white);
-}
-
 .disabled {
   opacity: 0.5;
 }
 
 .fullWidth {
   width: 100%;
+}
+
+.round {
+  border-radius: 30px;
 }
