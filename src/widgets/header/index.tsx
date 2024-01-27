@@ -31,8 +31,8 @@ export const Header = (props: HeaderProps) => {
         <Input
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
-          style={{width: 300}}
           placeholder="Search"
+          className={cls.search}
         />
 
         <div className={cls.linksContainer} style={{marginLeft: 40}}>

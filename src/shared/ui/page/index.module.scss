@@ -1,7 +1,7 @@
 .page {
-  min-height: calc(100vh - 195px);
+  min-height: 100vh;
   padding-top: 120px;
-  padding-bottom: 60px;
+  padding-bottom: calc(195px + 60px);
   display: flex;
   flex-direction: column;
   justify-content: center;
