@@ -3,6 +3,8 @@ import {FormHTMLAttributes, useCallback, useState} from 'react';
 
 import {Button, ButtonVariant, Form, Text, TextArea, TextSize} from '~/shared/ui';
 
+import DeleteIcon from './assets/delete.svg';
+import FileIcon from './assets/file.svg';
 import cls from './index.module.scss';
 
 // @ts-ignore
@@ -43,8 +45,14 @@ export const ReplyForm = (props: ReplyFormProps) => {
       <div className={cls.actions}>
         <Button type="submit">Send</Button>
 
-        <Button variant={ButtonVariant.ACTION}>Insert media</Button>
-        <Button variant={ButtonVariant.ACTION}>Delete</Button>
+        <Button variant={ButtonVariant.CLEAR}>
+          <FileIcon />
+          Insert media
+        </Button>
+        <Button variant={ButtonVariant.CLEAR}>
+          <DeleteIcon />
+          Cancel
+        </Button>
 
         <div style={{width: '100%'}} />
 
