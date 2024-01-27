@@ -113,6 +113,7 @@ const renderPosts = (posts: typeof POSTS) => {
     return (
       // @ts-ignore
       <Post
+        key={posts.length + post.id}
         {...post}
         commentators={nextPosts.map((p) => p.author)}
         commentsCount={nextPosts.length}

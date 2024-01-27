@@ -20,8 +20,8 @@ export const InlineAvatars = (props: InlineAvatarsProps) => {
 
   return (
     <div className={classNames(cls.avatars, className)} {...otherProps}>
-      {users.map((user) => (
-        <Avatar className={cls.avatar} variant={AvatarVariant.INLINE} {...user} />
+      {users.map((user, index) => (
+        <Avatar key={index} className={cls.avatar} variant={AvatarVariant.INLINE} {...user} />
       ))}
     </div>
   );
