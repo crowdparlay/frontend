@@ -1,6 +1,11 @@
 import classNames from 'classnames';
 import {HTMLAttributes, memo, ReactNode, useCallback, useState} from 'react';
 
+import LikeFillIcon from '~/widgets/post/assets/likeFill.svg';
+import LikeOutlineIcon from '~/widgets/post/assets/likeOutline.svg';
+import ReplyIcon from '~/widgets/post/assets/reply.svg';
+import ReportIcon from '~/widgets/post/assets/report.svg';
+
 import {InlineAvatars} from '~/features/inline-avatars';
 import {ProfilePreview} from '~/features/profile-preview';
 
@@ -8,10 +13,6 @@ import '~/shared/api';
 import {User} from '~/shared/api/types';
 import {Button, ButtonVariant, Text, TextSize} from '~/shared/ui';
 
-import LikeFillIcon from './icons/likeFill.svg';
-import LikeOutlineIcon from './icons/likeOutline.svg';
-import ReplyIcon from './icons/reply.svg';
-import ReportIcon from './icons/report.svg';
 import cls from './index.module.scss';
 
 export interface PostProps extends HTMLAttributes<HTMLDivElement> {
