@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import {HTMLAttributes, ReactNode, useCallback, useState} from 'react';
+import {HTMLAttributes, memo, ReactNode, useCallback, useState} from 'react';
 
 import {InlineAvatars} from '~/features/inline-avatars';
 import {ProfilePreview} from '~/features/profile-preview';
@@ -14,17 +14,13 @@ import ReplyIcon from './icons/reply.svg';
 import ReportIcon from './icons/report.svg';
 import cls from './index.module.scss';
 
-export interface Author extends User {
-  avatarUrl?: string;
-}
-
 export interface PostProps extends HTMLAttributes<HTMLDivElement> {
   id: string;
   replyId?: string;
-  author: Author;
+  author: User;
   date: Date;
   text: ReactNode;
-  commentators: Author[];
+  commentators: User[];
   commentsCount: number;
   canReply: boolean;
   canReport: boolean;
@@ -138,7 +134,7 @@ export const Post = (props: PostProps) => {
           </div>
         </div>
 
-        {children && <div className={cls.line} />}
+        {Boolean(children) && <div className={cls.line} />}
 
         {!collapsed && children}
       </div>
