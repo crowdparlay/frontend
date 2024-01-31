@@ -1,7 +1,7 @@
-import {ThreadWaterfall} from '~/widgets/thread-waterfall';
+import {useUnit} from 'effector-react';
 
-import {Avatar} from '~/shared/ui';
 import {
+  Avatar,
   Button,
   ButtonShape,
   ButtonVariant,
@@ -15,44 +15,60 @@ import {
 import ChatIcon from './assets/chat.svg';
 import MoreIcon from './assets/more.svg';
 import ReportIcon from './assets/report.svg';
+import {$discussions, $user} from './model';
 import cls from './page.module.scss';
 
 export const ProfilePage = () => {
+  const user = useUnit($user);
+  const discussions = useUnit($discussions);
+
   return (
     <Page>
-      <Container className={cls.head} size={ContainerSize.M}>
-        <Avatar
-          className={cls.avatar}
-          username={'Bark111'}
-          displayName={'А у нас в квартире газ'}
-        />
-        <Text className={cls.displayName} center={true} size={TextSize.XL}>
-          А у нас в квартире газ
-        </Text>
-        <Text size={TextSize.M} Component="h1">
-          @Bark111
-        </Text>
-        <Text className={cls.bio} center={true} size={TextSize.M}>
-          Fulltext search in Neo4j is supported by means of fulltext schema indexes. Fulltext schema
-          indexes are created, dropped, and updated transactionally, and are automatically
-          replicated throughout a cluster.
-        </Text>
-        <div className={cls.actions}>
-          <Button>Subscribe</Button>
-          <Button variant={ButtonVariant.SECONDARY} shape={ButtonShape.EQUILATERAL}>
-            <ChatIcon />
-          </Button>
-          <Button variant={ButtonVariant.SECONDARY} shape={ButtonShape.EQUILATERAL}>
-            <ReportIcon />
-          </Button>
-          <Button variant={ButtonVariant.SECONDARY} shape={ButtonShape.EQUILATERAL}>
-            <MoreIcon />
-          </Button>
-        </div>
-      </Container>
-      <Container size={ContainerSize.L}>
-        <ThreadWaterfall />
-      </Container>
+      {user && (
+        <Container className={cls.head} size={ContainerSize.M}>
+          <Avatar
+            className={cls.avatar}
+            avatarUrl={user.avatarUrl}
+            username={user.username}
+            displayName={user.display_name}
+          />
+          <Text className={cls.displayName} center={true} size={TextSize.XL}>
+            {user.username}
+          </Text>
+          <Text size={TextSize.M} Component="h1">
+            @{user.username}
+          </Text>
+          <Text className={cls.bio} center={true} size={TextSize.M}>
+            Fulltext search in Neo4j is supported by means of fulltext schema indexes. Fulltext
+            schema indexes are created, dropped, and updated transactionally, and are automatically
+            replicated throughout a cluster.
+          </Text>
+          <div className={cls.actions}>
+            <Button>Subscribe</Button>
+            <Button variant={ButtonVariant.SECONDARY} shape={ButtonShape.EQUILATERAL}>
+              <ChatIcon />
+            </Button>
+            <Button variant={ButtonVariant.SECONDARY} shape={ButtonShape.EQUILATERAL}>
+              <ReportIcon />
+            </Button>
+            <Button variant={ButtonVariant.SECONDARY} shape={ButtonShape.EQUILATERAL}>
+              <MoreIcon />
+            </Button>
+          </div>
+        </Container>
+      )}
+      {discussions && (
+        <Container size={ContainerSize.M} className={cls.discussions}>
+          {discussions.map((discussion) => (
+            <a href={`/d/${discussion.id}`}>
+              <div className={cls.discussionCard}>
+                <Text size={TextSize.L}>{discussion.title}</Text>
+                <Text size={TextSize.M}>{discussion.description}</Text>
+              </div>
+            </a>
+          ))}
+        </Container>
+      )}
     </Page>
   );
 };

@@ -11,7 +11,7 @@ export const routes = {
     signUp: createRoute(),
     resetPassword: createRoute(),
   },
-  profile: createRoute(),
+  profile: createRoute<{userId: string}>(),
   editProfile: createRoute(),
   explore: createRoute(),
   bets: createRoute(),

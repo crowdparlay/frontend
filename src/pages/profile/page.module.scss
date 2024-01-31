@@ -11,8 +11,7 @@
   flex-direction: column;
   gap: 10px;
   align-items: center;
-  margin-top: 50px;
-  margin-bottom: 100px;
+  margin: 50px 0;
 }
 
 .bio {
@@ -23,4 +22,20 @@
 .actions {
   display: flex;
   gap: 10px;
+}
+
+.discussions {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.discussionCard {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 30px;
+  border: 1px solid rgba(255 255 255 / 8%);
+  border-radius: 15px;
+  backdrop-filter: blur(50px);
 }
