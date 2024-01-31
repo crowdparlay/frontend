@@ -1,15 +1,25 @@
+import * as typed from 'typed-contracts';
 import {chainRoute} from 'atomic-router';
 import {createStore, sample} from 'effector';
+import {attach} from 'effector/compat';
 
-import {apiV1CommentsGet, apiV1DiscussionsDiscussionIdGet} from '~/shared/api';
+import {
+  apiV1CommentsGet,
+  apiV1CommentsGetOk,
+  apiV1DiscussionsDiscussionIdGet,
+  apiV1DiscussionsDiscussionIdGetOk,
+} from '~/shared/api';
 import {routes} from '~/shared/routes';
+
+const getDiscussionFx = attach({effect: apiV1DiscussionsDiscussionIdGet});
+const getCommentsFx = attach({effect: apiV1CommentsGet});
 
 export const currentRoute = routes.discussion;
 
-chainRoute({
+export const dataLoadedRoute = chainRoute({
   route: currentRoute,
   beforeOpen: {
-    effect: apiV1DiscussionsDiscussionIdGet,
+    effect: getDiscussionFx,
     mapParams: ({params}) => {
       return {
         path: {
@@ -20,34 +30,32 @@ chainRoute({
   },
 });
 
-export const $discussion = createStore<any>(null);
+export const $discussion = createStore<typed.Get<typeof apiV1DiscussionsDiscussionIdGetOk> | null>(
+  null,
+);
+
+export const $comments = createStore<typed.Get<typeof apiV1CommentsGetOk>>([]);
 
 sample({
-  clock: apiV1DiscussionsDiscussionIdGet.doneData,
+  clock: getDiscussionFx.doneData,
   fn: (x) => x.answer,
   target: $discussion,
 });
 
-chainRoute({
-  route: currentRoute,
-  beforeOpen: {
-    effect: apiV1CommentsGet,
-    mapParams: ({params}) => {
-      return {
-        query: {
-          discussionId: params.discussionId,
-          size: 10,
-          page: 0,
-        },
-      };
+sample({
+  clock: getDiscussionFx.doneData,
+  fn: ({answer}) => ({
+    query: {
+      discussionId: answer.id!,
+      size: 10,
+      page: 0,
     },
-  },
+  }),
+  target: getCommentsFx,
 });
 
-export const $comments = createStore<any>(null);
-
 sample({
-  clock: apiV1CommentsGet.doneData,
+  clock: getCommentsFx.doneData,
   fn: (x) => x.answer,
   target: $comments,
 });

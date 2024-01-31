@@ -1,7 +1,16 @@
-import {currentRoute} from './model';
+import {RouteInstance, RouteParams} from 'atomic-router';
+import {createRouteView} from 'atomic-router-react';
+
+import {PageLoader} from '~/widgets/page-loader';
+
+import {currentRoute, dataLoadedRoute} from './model';
 import {DiscussionPage} from './page';
 
 export const DiscussionRoute = {
-  view: DiscussionPage,
+  view: createRouteView({
+    route: dataLoadedRoute as unknown as RouteInstance<RouteParams>,
+    view: DiscussionPage,
+    otherwise: PageLoader,
+  }),
   route: currentRoute,
 };
