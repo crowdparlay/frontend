@@ -1,6 +1,8 @@
 import {useList, useUnit} from 'effector-react';
 
-import {Page, Text, TextSize} from '~/shared/ui';
+import {Post} from '~/widgets/post';
+
+import {Container, ContainerSize, Page, Text, TextSize} from '~/shared/ui';
 
 import * as model from './model';
 
@@ -8,7 +10,22 @@ export const DiscussionPage = () => {
   const [discussion] = useUnit([model.$discussion]);
 
   const comments = useList(model.$comments, (comment) => (
-    <Text key={comment.id!}>{comment.content!}</Text>
+    <Post
+      key={comment.id!}
+      id={comment.id!}
+      author={{
+        id: comment.author!.id!,
+        username: comment.author!.username!,
+        displayName: comment.author!.display_name!,
+        avatarUrl: comment.author!.avatar_url!,
+      }}
+      date={new Date(comment.created_at!)}
+      text={comment.content!}
+      commentators={[]}
+      commentsCount={comment.reply_count!}
+      canReply={true}
+      canReport={true}
+    />
   ));
 
   if (!discussion) {
@@ -17,11 +34,10 @@ export const DiscussionPage = () => {
 
   return (
     <Page>
-      <Text>авпыщвпвщап</Text>
       <Text size={TextSize.XL}>{discussion.title!}</Text>
       <Text size={TextSize.M}>{discussion.description!}</Text>
 
-      {comments}
+      <Container size={ContainerSize.M}>{comments}</Container>
     </Page>
   );
 };
