@@ -23,7 +23,12 @@ export const DiscussionPage = () => {
       }}
       date={new Date(comment.created_at!)}
       text={comment.content!}
-      commentators={[]}
+      commentators={comment.first_replies_authors!.map((x) => ({
+        id: x.id!,
+        username: x.username!,
+        displayName: x.display_name!,
+        avatarUrl: x.avatar_url!,
+      }))}
       commentsCount={comment.reply_count!}
       canReply={true}
       canReport={true}
