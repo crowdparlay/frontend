@@ -1,5 +1,5 @@
 .line {
-  border-bottom: 1px solid var(--color-black-darkest);
+  border-bottom: 1px solid rgba(255 255 255 / 7%);
 }
 
 .hover {
@@ -8,6 +8,7 @@
 }
 
 .post {
+  background: var(--color-black);
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -70,6 +71,10 @@
 
 .react {
   color: var(--color-gray-lighter);
+
+  &.hover {
+    opacity: 0.7;
+  }
 
   &.active {
     color: var(--color-white);

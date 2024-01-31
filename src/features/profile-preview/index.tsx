@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import {HTMLAttributes, memo} from 'react';
 
-import {Avatar} from '~/shared/ui';
-import {Text, TextSize} from '~/shared/ui';
+import {Avatar, Text, TextSize} from '~/shared/ui';
 
 import VerifiedIcon from './assets/verified.svg';
 import cls from './index.module.scss';
@@ -23,7 +22,7 @@ export const ProfilePreview = memo((props: ProfilePreviewProps) => {
       <Avatar username={username} displayName={displayName} avatarUrl={avatarUrl} />
       <div className={cls.list}>
         <div className={cls.nameContainer}>
-          <Text className={classNames(cls.name, cls.wrapText)}>
+          <Text size={TextSize.S} className={classNames(cls.name, cls.wrapText)}>
             {displayName || 'Display name'}
           </Text>
 

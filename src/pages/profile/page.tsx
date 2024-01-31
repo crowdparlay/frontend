@@ -11,9 +11,11 @@ import {
   Text,
   TextSize,
 } from '~/shared/ui';
+import {Card, CardSize} from '~/shared/ui/card';
 
 import * as model from './model';
 import ChatIcon from './assets/chat.svg';
+import FollowIcon from './assets/follow.svg';
 import MoreIcon from './assets/more.svg';
 import ReportIcon from './assets/report.svg';
 import cls from './page.module.scss';
@@ -23,10 +25,10 @@ export const ProfilePage = () => {
 
   const discussions = useList(model.$discussions, (discussion) => (
     <a href={`/d/${discussion.id}`}>
-      <div className={cls.discussionCard}>
+      <Card size={CardSize.L} style={{display: 'flex', flexDirection: 'column', gap: 10}}>
         <Text size={TextSize.L}>{discussion.title!}</Text>
         <Text size={TextSize.M}>{discussion.description!}</Text>
-      </div>
+      </Card>
     </a>
   ));
 
@@ -55,7 +57,10 @@ export const ProfilePage = () => {
           replicated throughout a cluster.
         </Text>
         <div className={cls.actions}>
-          <Button>Subscribe</Button>
+          <Button variant={ButtonVariant.PRIMARY}>
+            <FollowIcon />
+            Follow
+          </Button>
           <Button variant={ButtonVariant.SECONDARY} shape={ButtonShape.EQUILATERAL}>
             <ChatIcon />
           </Button>

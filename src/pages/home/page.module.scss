@@ -1,5 +1,5 @@
 .page {
-  // background: url("./assets/bg-light-source.jpg") center no-repeat;
+  // background: url('./assets/bg-light-source.jpg') center no-repeat;
   background-size: cover;
 }
 
@@ -8,28 +8,4 @@
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  margin-bottom: 60px;
-}
-
-.card {
-  backdrop-filter: blur(70px);
-  border: 1px solid rgba($color: #505050, $alpha: 25%);
-  border-radius: 20px;
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.label {
-  padding: 5px 10px;
-  background: var(--color-black-dark);
-  border-radius: 5px;
-  border: 1px solid var(--color-gray-dark);
 }

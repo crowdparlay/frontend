@@ -1,12 +1,12 @@
 .header {
   backdrop-filter: blur(50px);
-  border-bottom: 1px solid rgba($color: #505050, $alpha: 25%);
+  border-bottom: 1px solid rgba(255 255 255 / 7%);
   display: flex;
-  align-items: center;
   justify-content: space-between;
   position: fixed;
   width: 100%;
   z-index: 1;
+  height: 60px;
 }
 
 .row {
@@ -50,7 +50,7 @@
     background: rgba(255 255 255 / 3%);
 
     &:hover {
-      border-color: var(--color-gray-dark) !important;
+      border-color: rgba(255 255 255 / 3%) !important;
     }
   }
 }

@@ -134,7 +134,7 @@ export const Post = memo((props: PostProps) => {
 
             <Button
               onClick={() => onLikeClicked && onLikeClicked(id)}
-              className={classNames(cls.react, react === 'like' && cls.active)}
+              className={classNames(cls.hover, cls.react, react === 'like' && cls.active)}
               variant={ButtonVariant.CLEAR}
               round={true}
             >
@@ -143,7 +143,7 @@ export const Post = memo((props: PostProps) => {
             </Button>
             <Button
               onClick={() => onDisLikeClicked && onDisLikeClicked(id)}
-              className={classNames(cls.react, react === 'dislike' && cls.active)}
+              className={classNames(cls.hover, cls.react, react === 'dislike' && cls.active)}
               variant={ButtonVariant.CLEAR}
               round={true}
             >
@@ -157,7 +157,7 @@ export const Post = memo((props: PostProps) => {
           </div>
         </div>
 
-        {Boolean(children) && <div className={cls.line} />}
+        <div className={cls.line} />
 
         {!collapsed && children}
       </div>

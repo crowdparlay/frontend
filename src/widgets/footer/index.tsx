@@ -18,7 +18,7 @@ export const Footer = (props: FooterProps) => {
           <Text size={TextSize.S} accent={true} Component="h4">
             Legal
           </Text>
-          <Link variant={LinkVariant.PRIMARY} to={''}>
+          <Link variant={LinkVariant.PRIMARY} to={'/terms-of-use'}>
             Terms of use
           </Link>
           <Link
@@ -28,7 +28,7 @@ export const Footer = (props: FooterProps) => {
           >
             Platform policies
           </Link>
-          <Link variant={LinkVariant.PRIMARY} to={''}>
+          <Link variant={LinkVariant.PRIMARY} to={'#'}>
             Privacy
           </Link>
         </Container>
@@ -39,10 +39,10 @@ export const Footer = (props: FooterProps) => {
           <Link variant={LinkVariant.PRIMARY} to={'https://t.me/crowdparlay'} target={'_blank'}>
             Telegram
           </Link>
-          <Link variant={LinkVariant.PRIMARY} to={''}>
+          <Link variant={LinkVariant.PRIMARY} to={'#'}>
             Twitter
           </Link>
-          <Link variant={LinkVariant.PRIMARY} to={''}>
+          <Link variant={LinkVariant.PRIMARY} to={'#'}>
             Email
           </Link>
         </Container>
@@ -64,7 +64,7 @@ export const Footer = (props: FooterProps) => {
           >
             API reference
           </Link>
-          <Link variant={LinkVariant.PRIMARY} to={''}>
+          <Link variant={LinkVariant.PRIMARY} to={'/forbidden'}>
             Status
           </Link>
         </Container>

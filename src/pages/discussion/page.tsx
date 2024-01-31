@@ -3,8 +3,10 @@ import {useList, useUnit} from 'effector-react';
 import {Post} from '~/widgets/post';
 
 import {Container, ContainerSize, Page, Text, TextSize} from '~/shared/ui';
+import {Card, CardSize} from '~/shared/ui/card';
 
 import * as model from './model';
+import cls from './page.module.scss';
 
 export const DiscussionPage = () => {
   const [discussion] = useUnit([model.$discussion]);
@@ -34,8 +36,14 @@ export const DiscussionPage = () => {
 
   return (
     <Page>
-      <Text size={TextSize.XL}>{discussion.title!}</Text>
-      <Text size={TextSize.M}>{discussion.description!}</Text>
+      <Container size={ContainerSize.M}>
+        <Card size={CardSize.L} className={cls.head}>
+          <Text size={TextSize.XL} style={{marginBottom: 20}}>
+            {discussion.title!}
+          </Text>
+          <Text size={TextSize.M}>{discussion.description!}</Text>
+        </Card>
+      </Container>
 
       <Container size={ContainerSize.M}>{comments}</Container>
     </Page>
