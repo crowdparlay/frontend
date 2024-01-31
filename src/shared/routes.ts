@@ -17,6 +17,7 @@ export const routes = {
   bets: createRoute(),
   events: createRoute(),
   bookmarks: createRoute(),
+  discussion: createRoute<{discussionId: string}>(),
   problems: {
     notFound: createRoute(),
     forbidden: createRoute(),
@@ -44,7 +45,7 @@ export const router = createHistoryRouter({
       route: routes.auth.resetPassword,
     },
     {
-      path: '/profile',
+      path: '/u/:userId',
       route: routes.profile,
     },
     {
@@ -66,6 +67,10 @@ export const router = createHistoryRouter({
     {
       path: '/bookmarks',
       route: routes.bookmarks,
+    },
+    {
+      path: '/d/:discussionId',
+      route: routes.discussion,
     },
     {
       path: '/forbidden',
