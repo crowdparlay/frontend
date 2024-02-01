@@ -10,12 +10,12 @@ export interface ProfilePreviewProps extends HTMLAttributes<HTMLDivElement> {
   username: string;
   displayName: string;
   avatarUrl?: string;
-  date?: Date;
+  hint?: string;
   verified?: boolean;
 }
 
 export const ProfilePreview = memo((props: ProfilePreviewProps) => {
-  const {verified, username, displayName, avatarUrl, date, className, ...otherProps} = props;
+  const {verified, username, displayName, avatarUrl, hint, className, ...otherProps} = props;
 
   return (
     <div className={classNames(cls.preview, className)} {...otherProps}>
@@ -34,9 +34,9 @@ export const ProfilePreview = memo((props: ProfilePreviewProps) => {
             @{username || 'username'}
           </Text>
 
-          {date && (
-            <Text className={cls.time} size={TextSize.S}>
-              {date.toLocaleTimeString()}
+          {hint && (
+            <Text size={TextSize.S} style={{opacity: 0.5}}>
+              {hint}
             </Text>
           )}
         </div>

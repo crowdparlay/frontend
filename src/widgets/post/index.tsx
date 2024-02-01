@@ -5,6 +5,7 @@ import LikeFillIcon from '~/widgets/post/assets/likeFill.svg';
 import LikeOutlineIcon from '~/widgets/post/assets/likeOutline.svg';
 import ReplyIcon from '~/widgets/post/assets/reply.svg';
 import ReportIcon from '~/widgets/post/assets/report.svg';
+import {getTimeSince} from '~/widgets/post/lib';
 
 import {InlineAvatars} from '~/features/inline-avatars';
 import {ProfilePreview} from '~/features/profile-preview';
@@ -74,13 +75,13 @@ export const Post = memo((props: PostProps) => {
           data-id={id}
           className={classNames(cls.post, className)}
           {...otherProps}
-          style={{paddingLeft: isReply ? 0 : '20px'}}
+          style={{paddingLeft: isReply ? 0 : 20}}
         >
           <ProfilePreview
             username={author.username}
             displayName={author.displayName}
             avatarUrl={author.avatarUrl}
-            date={date}
+            hint={getTimeSince(date)}
           />
 
           <Text size={TextSize.M}>{text}</Text>
