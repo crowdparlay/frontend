@@ -1,9 +1,9 @@
-import {Loader} from '~/shared/ui';
+import {Loader, Page} from '~/shared/ui';
 
 export const PageLoader = () => {
   return (
-    <div>
+    <Page>
       <Loader />
-    </div>
+    </Page>
   );
 };
