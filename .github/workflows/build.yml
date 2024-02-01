@@ -32,9 +32,9 @@ jobs:
       - name: 📥 Restore dependencies
         run: pnpm install
       - name: ⚒ Build project
-        run: pnpm build
-        env:
-          VITE_API_URL: https://crowdparlay.com
+        run: |
+          echo "VITE_API_URL=${{ vars.VITE_API_URL }}" >> .env
+          pnpm build
       - name: ⬆️ Upload artifact
         uses: actions/upload-artifact@v3
         with:

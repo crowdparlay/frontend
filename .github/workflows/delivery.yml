@@ -48,7 +48,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build
-          path: 'dist/**'
+          path: 'dist/'
       - name: 📦 Build & push Docker image
         id: build-and-push
         uses: docker/build-push-action@v5
