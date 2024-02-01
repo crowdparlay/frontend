@@ -23,7 +23,7 @@
   font: var(--font-m);
   font-size: 16px;
   line-height: 19px;
-  color: var(--color-white);
+  color: var(--color-gray-lightest);
   background: #1a1a1a;
   border: 2px solid transparent;
   border-radius: 10px;
@@ -38,7 +38,7 @@
 
   &:focus {
     background: var(--color-black);
-    border-color: #141414;
+    border-color: var(--color-gray-dark);
   }
 
   &:-webkit-autofill {
@@ -79,11 +79,11 @@
 }
 
 .passwordButton {
-  color: #848484;
+  color: var(--color-gray-lighter);
 }
 
 .customType {
-  color: var(--color-white);
+  color: var(--color-gray-lightest);
 }
 
 .disabled {
@@ -165,7 +165,12 @@
     content: attr(data-top);
     margin-bottom: 12px;
     font: var(--font-s);
-    color: #848484;
+    color: var(--color-gray-lighter);
+  }
+
+  .errorContainer,
+  .tooltip {
+    margin-top: 28px;
   }
 }
 

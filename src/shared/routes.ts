@@ -11,12 +11,13 @@ export const routes = {
     signUp: createRoute(),
     resetPassword: createRoute(),
   },
-  profile: createRoute(),
+  profile: createRoute<{username: string}>(),
   editProfile: createRoute(),
   explore: createRoute(),
   bets: createRoute(),
   events: createRoute(),
   bookmarks: createRoute(),
+  discussion: createRoute<{discussionId: string}>(),
   problems: {
     notFound: createRoute(),
     forbidden: createRoute(),
@@ -44,7 +45,7 @@ export const router = createHistoryRouter({
       route: routes.auth.resetPassword,
     },
     {
-      path: '/profile',
+      path: '/u/:username',
       route: routes.profile,
     },
     {
@@ -66,6 +67,10 @@ export const router = createHistoryRouter({
     {
       path: '/bookmarks',
       route: routes.bookmarks,
+    },
+    {
+      path: '/d/:discussionId',
+      route: routes.discussion,
     },
     {
       path: '/forbidden',

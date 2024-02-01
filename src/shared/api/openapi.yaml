@@ -4,7 +4,7 @@ info:
   description: Crowd Parlay's RESTful API.
   version: '1.0'
 servers:
-  - url: https://crowdparlay
+  - url: https://crowdparlay.com
 tags:
   - name: Users
     x-displayName: Users
@@ -391,8 +391,16 @@ paths:
     get:
       tags:
         - Comments
-      summary: Returns all comments created by author with the specified ID.
+      summary: >-
+        Returns all comments created in discussion or by author with the
+        specified ID.
       parameters:
+        - name: discussionId
+          in: query
+          style: form
+          schema:
+            type: string
+            format: uuid
         - name: authorId
           in: query
           style: form
@@ -401,12 +409,14 @@ paths:
             format: uuid
         - name: page
           in: query
+          required: true
           style: form
           schema:
             type: integer
             format: int32
         - name: size
           in: query
+          required: true
           style: form
           schema:
             type: integer
@@ -525,7 +535,14 @@ paths:
     get:
       tags:
         - Discussions
-      summary: Returns all discussions.
+      summary: Returns all discussions created by author with the specified ID.
+      parameters:
+        - name: authorId
+          in: query
+          style: form
+          schema:
+            type: string
+            format: uuid
       responses:
         '200':
           description: Success
@@ -573,43 +590,6 @@ paths:
             text/json:
               schema:
                 $ref: '#/components/schemas/DiscussionDto'
-  /api/v1/discussions/{authorId}:
-    get:
-      tags:
-        - Discussions
-      summary: Returns all discussions created by author with the specified ID.
-      parameters:
-        - name: authorId
-          in: query
-          style: form
-          schema:
-            type: string
-            format: uuid
-        - name: authorId
-          in: path
-          required: true
-          style: simple
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/DiscussionDto'
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/DiscussionDto'
-            text/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/DiscussionDto'
 components:
   schemas:
     Problem:

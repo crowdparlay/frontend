@@ -31,8 +31,7 @@ export const WithDate: Story = {
     username: 'xIMRANx',
     displayName: 'Imran Akhmedov',
     avatarUrl: 'https://source.unsplash.com/random/100x100?sig=1',
-    date: new Date(),
-    showDate: true,
+    hint: new Date().toString(),
   },
 };
 

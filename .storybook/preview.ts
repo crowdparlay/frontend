@@ -21,6 +21,9 @@ const preview: Preview = {
         date: /Date$/,
       },
     },
+    darkMode: {
+      stylePreview: true,
+    },
   },
   decorators: [StyleDecorator],
 };

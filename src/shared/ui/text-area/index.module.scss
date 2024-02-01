@@ -1,0 +1,17 @@
+.autoresize {
+  resize: none;
+  overflow: hidden hidden;
+}
+
+.textarea {
+  display: flex;
+  width: 100%;
+  height: auto;
+  min-height: 80px;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: var(--color-black);
+  color: var(--color-gray-lightest);
+  font: var(--font-s);
+  border: 1px solid rgba(255 255 255 / 7%);
+}
