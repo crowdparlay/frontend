@@ -52,8 +52,19 @@
 }
 
 .clear {
-  background: transparent;
-  color: var(--color-white);
+  padding: 12px 25px 12px 20px;
+  gap: 12px;
+  color: var(--color-gray-lighter);
+  background-color: transparent;
+
+  &:hover {
+    color: var(--color-gray-lighter);
+    background-color: var(--color-gray-dark);
+  }
+
+  &:active {
+    background-color: var(--color-black-darkest);
+  }
 }
 
 .disabled {
@@ -62,4 +73,8 @@
 
 .fullWidth {
   width: 100%;
+}
+
+.round {
+  border-radius: 30px;
 }

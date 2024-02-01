@@ -11,16 +11,26 @@
   flex-direction: column;
   gap: 10px;
   align-items: center;
-  margin-top: 50px;
-  margin-bottom: 100px;
+  margin: 20px 0 80px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
 }
 
 .bio {
-  margin: 16px 0;
-  max-width: 85%;
+  margin-bottom: 10px;
 }
 
 .actions {
   display: flex;
   gap: 10px;
+}
+
+.discussions {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }

@@ -53,7 +53,25 @@ export const Avatar = (props: AvatarProps) => {
       className={classNames(cls.avatar, mods, className)}
       {...otherProps}
     >
-      <p>{displayName[0]?.toUpperCase() ?? 'D'}</p>
+      <svg
+        width="100%"
+        height="100%"
+        viewBox="0 0 40 40"
+        preserveAspectRatio="xMinYMid meet"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+      >
+        <text
+          x="50%"
+          y="54%"
+          fontSize="24"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          fill="currentColor"
+        >
+          {Array.from(displayName)[0]?.toUpperCase() ?? 'D'}
+        </text>
+      </svg>
     </div>
   );
 };

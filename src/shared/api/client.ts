@@ -461,10 +461,11 @@ export const apiV1CommentsCommentIdGet = createEffect<ApiV1CommentsCommentIdGet,
 /* --- */
 //#region apiV1CommentsGet
 export type ApiV1CommentsGet = {
-  query?: {
+  query: {
+    discussionId?: string;
     authorId?: string;
-    page?: number;
-    size?: number;
+    page: number;
+    size: number;
   };
 };
 /* Success */
@@ -651,7 +652,11 @@ export const apiV1DiscussionsDiscussionIdGet = createEffect<ApiV1DiscussionsDisc
 
 /* --- */
 //#region apiV1DiscussionsGet
-export type ApiV1DiscussionsGet = {};
+export type ApiV1DiscussionsGet = {
+  query?: {
+    authorId?: string;
+  };
+};
 /* Success */
 export const apiV1DiscussionsGetOk = typed.array(typed.object({
   id: typed.string.optional,
@@ -670,11 +675,14 @@ export type ApiV1DiscussionsGetDone = {
 };
 export type ApiV1DiscussionsGetFail = GenericErrors;
 export const apiV1DiscussionsGet = createEffect<ApiV1DiscussionsGet, ApiV1DiscussionsGetDone, ApiV1DiscussionsGetFail>({
-  async handler() {
+  async handler({
+    query
+  }) {
     const name = "apiV1DiscussionsGet.body";
     const response = await requestFx({
       path: "/api/v1/discussions",
-      method: "GET"
+      method: "GET",
+      query
     });
     return parseByStatus(name, response, {
       200: ["ok", apiV1DiscussionsGetOk]
@@ -724,49 +732,4 @@ export const apiV1DiscussionsPost = createEffect<ApiV1DiscussionsPost, ApiV1Disc
   }
 });
 //#endregion apiV1DiscussionsPost
-
-/* --- */
-//#region apiV1DiscussionsAuthorIdGet
-export type ApiV1DiscussionsAuthorIdGet = {
-  query?: {
-    authorId?: string;
-  };
-  path: {
-    authorId: string;
-  };
-};
-/* Success */
-export const apiV1DiscussionsAuthorIdGetOk = typed.array(typed.object({
-  id: typed.string.optional,
-  title: typed.string.optional,
-  description: typed.string.optional,
-  author: typed.object({
-    id: typed.string.optional,
-    username: typed.string.optional,
-    display_name: typed.string.optional,
-    avatar_url: typed.string.maybe
-  }).optional
-}));
-export type ApiV1DiscussionsAuthorIdGetDone = {
-  status: "ok";
-  answer: typed.Get<typeof apiV1DiscussionsAuthorIdGetOk>;
-};
-export type ApiV1DiscussionsAuthorIdGetFail = GenericErrors;
-export const apiV1DiscussionsAuthorIdGet = createEffect<ApiV1DiscussionsAuthorIdGet, ApiV1DiscussionsAuthorIdGetDone, ApiV1DiscussionsAuthorIdGetFail>({
-  async handler({
-    query,
-    path
-  }) {
-    const name = "apiV1DiscussionsAuthorIdGet.body";
-    const response = await requestFx({
-      path: `/api/v1/discussions/${path.authorId}`,
-      method: "GET",
-      query
-    });
-    return parseByStatus(name, response, {
-      200: ["ok", apiV1DiscussionsAuthorIdGetOk]
-    });
-  }
-});
-//#endregion apiV1DiscussionsAuthorIdGet
 

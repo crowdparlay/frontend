@@ -1,12 +1,15 @@
 .preview {
+  overflow: hidden;
   display: flex;
-  gap: 11px;
+  width: 100%;
+  gap: 12px;
 }
 
 .list {
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  justify-content: center;
 }
 
 .nameContainer {
@@ -15,10 +18,18 @@
   align-items: center;
 }
 
-.name {
+.wrapText {
   overflow: hidden;
-  color: var(--color-white);
-  max-width: 299px;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.name {
+  color: var(--color-gray-lightest);
+}
+
+.subContainer {
+  display: flex;
+  gap: 5px;
+  align-items: center;
 }
