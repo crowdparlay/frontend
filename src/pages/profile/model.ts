@@ -50,7 +50,7 @@ sample({
 });
 
 sample({
-  clock: apiV1DiscussionsGet.doneData,
+  clock: getDiscussionsFx.doneData,
   fn: (x) => x.answer,
   target: $discussions,
 });

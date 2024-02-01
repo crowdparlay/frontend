@@ -4,6 +4,7 @@ import {Post} from '~/widgets/post';
 
 import {ReplyForm} from '~/features/reply-form';
 
+import {apiV1CommentsPost} from '~/shared/api';
 import {Container, ContainerSize, Page, Text, TextSize} from '~/shared/ui';
 import {Card, CardSize} from '~/shared/ui/card';
 
@@ -12,6 +13,15 @@ import cls from './page.module.scss';
 
 export const DiscussionPage = () => {
   const [discussion] = useUnit([model.$discussion]);
+
+  const onFormSubmit = async (payload: {postId: string; value: string}) => {
+    await apiV1CommentsPost({
+      body: {
+        discussion_id: payload.postId,
+        content: payload.value,
+      },
+    });
+  };
 
   const comments = useList(model.$comments, (comment) => (
     <Post
@@ -57,7 +67,7 @@ export const DiscussionPage = () => {
       </Container>
 
       <Container size={ContainerSize.M}>
-        <ReplyForm postId={discussion.id!} maxLength={500}></ReplyForm>
+        <ReplyForm postId={discussion.id!} maxLength={500} onSubmit={onFormSubmit} />
       </Container>
     </Page>
   );
