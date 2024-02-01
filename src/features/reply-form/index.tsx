@@ -10,7 +10,7 @@ import cls from './index.module.scss';
 // @ts-ignore
 export interface ReplyFormProps extends FormHTMLAttributes<HTMLFormElement> {
   postId: string;
-  maxLength?: number;
+  maxLength: number;
   onSubmit?: (payload: {postId: string; value: string}) => void;
 }
 

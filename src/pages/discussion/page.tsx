@@ -2,6 +2,8 @@ import {useList, useUnit} from 'effector-react';
 
 import {Post} from '~/widgets/post';
 
+import {ReplyForm} from '~/features/reply-form';
+
 import {Container, ContainerSize, Page, Text, TextSize} from '~/shared/ui';
 import {Card, CardSize} from '~/shared/ui/card';
 
@@ -50,7 +52,13 @@ export const DiscussionPage = () => {
         </Card>
       </Container>
 
-      <Container size={ContainerSize.M}>{comments}</Container>
+      <Container size={ContainerSize.M} style={{marginTop: 50, marginBottom: 20}}>
+        {comments}
+      </Container>
+
+      <Container size={ContainerSize.M}>
+        <ReplyForm postId={discussion.id!} maxLength={500}></ReplyForm>
+      </Container>
     </Page>
   );
 };

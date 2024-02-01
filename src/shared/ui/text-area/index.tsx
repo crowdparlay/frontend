@@ -24,6 +24,10 @@ export const TextArea = (props: TextAreaProps) => {
     <textarea
       className={classNames(cls.autoresize, cls.textarea, className)}
       onInput={onTextareaInput}
+      autoComplete={'off'}
+      autoCorrect={'off'}
+      autoCapitalize={'off'}
+      spellCheck={false}
       {...otherProps}
     />
   );
