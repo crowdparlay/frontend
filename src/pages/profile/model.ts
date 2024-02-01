@@ -5,12 +5,12 @@ import {attach, createStore, sample} from 'effector';
 import {
   apiV1DiscussionsGet,
   apiV1DiscussionsGetOk,
-  apiV1UsersUserIdGet,
-  apiV1UsersUserIdGetOk,
+  apiV1UsersResolveGet,
+  apiV1UsersResolveGetOk,
 } from '~/shared/api';
 import {routes} from '~/shared/routes';
 
-const getUserFx = attach({effect: apiV1UsersUserIdGet});
+const getUserFx = attach({effect: apiV1UsersResolveGet});
 const getDiscussionsFx = attach({effect: apiV1DiscussionsGet});
 
 export const currentRoute = routes.profile;
@@ -21,15 +21,15 @@ export const dataLoadedRoute = chainRoute({
     effect: getUserFx,
     mapParams: ({params}) => {
       return {
-        path: {
-          userId: params.userId,
+        query: {
+          username: params.username,
         },
       };
     },
   },
 });
 
-export const $user = createStore<typed.Get<typeof apiV1UsersUserIdGetOk> | null>(null);
+export const $user = createStore<typed.Get<typeof apiV1UsersResolveGetOk> | null>(null);
 
 export const $discussions = createStore<typed.Get<typeof apiV1DiscussionsGetOk>>([]);
 

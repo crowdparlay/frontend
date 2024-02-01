@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import {HTMLAttributes, memo} from 'react';
 
-import {Avatar, Text, TextSize} from '~/shared/ui';
+import {Avatar, Link, Text, TextSize} from '~/shared/ui';
 
 import VerifiedIcon from './assets/verified.svg';
 import cls from './index.module.scss';
@@ -19,20 +19,26 @@ export const ProfilePreview = memo((props: ProfilePreviewProps) => {
 
   return (
     <div className={classNames(cls.preview, className)} {...otherProps}>
-      <Avatar username={username} displayName={displayName} avatarUrl={avatarUrl} />
+      <Link to={`/u/${username}`}>
+        <Avatar username={username} displayName={displayName} avatarUrl={avatarUrl} />
+      </Link>
       <div className={cls.list}>
         <div className={cls.nameContainer}>
-          <Text size={TextSize.S} className={classNames(cls.name, cls.wrapText)}>
-            {displayName || 'Display name'}
-          </Text>
+          <Link to={`/u/${username}`}>
+            <Text size={TextSize.S} className={classNames(cls.name, cls.wrapText)}>
+              {displayName || 'Display name'}
+            </Text>
+          </Link>
 
           {verified && <VerifiedIcon />}
         </div>
 
         <div className={cls.subContainer}>
-          <Text className={cls.wrapText} size={TextSize.S}>
-            @{username || 'username'}
-          </Text>
+          <Link to={`/u/${username}`}>
+            <Text className={cls.wrapText} size={TextSize.S}>
+              @{username || 'username'}
+            </Text>
+          </Link>
 
           {hint && (
             <Text size={TextSize.S} style={{opacity: 0.5}}>

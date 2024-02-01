@@ -38,19 +38,19 @@ export const ProfilePage = () => {
 
   return (
     <Page>
-      <Container className={cls.head} size={ContainerSize.M}>
+      <Container size={ContainerSize.M} className={cls.head}>
         <Avatar
           className={cls.avatar}
           avatarUrl={user.avatar_url!}
           username={user.username!}
           displayName={user.display_name!}
         />
-        <Text className={cls.displayName} center={true} size={TextSize.XL}>
-          {user.username!}
-        </Text>
-        <Text size={TextSize.M} Component="h1">
-          @{user.username!}
-        </Text>
+        <div className={cls.column}>
+          <Text className={cls.displayName} size={TextSize.XL}>
+            {user.display_name!}
+          </Text>
+          <Text size={TextSize.M}>@{user.username!}</Text>
+        </div>
         <Text className={cls.bio} center={true} size={TextSize.M}>
           Fulltext search in Neo4j is supported by means of fulltext schema indexes. Fulltext schema
           indexes are created, dropped, and updated transactionally, and are automatically
