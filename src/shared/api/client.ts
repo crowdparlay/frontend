@@ -21,7 +21,7 @@ export type GenericErrors =
       error: typed.ValidationError;
     };
 
-type ErrorCodes = 400 | 401 | 402 | 403 | 404 | 405 | 406 | 500 | 501 | 502 | 503 | 503 | 505;
+type ErrorCodes = 400 | 401 | 402 | 403 | 404 | 405 | 406 | 500 | 501 | 502 | 505;
 /**
  * @throws
  */
@@ -559,17 +559,70 @@ export const apiV1CommentsPost = createEffect<ApiV1CommentsPost, ApiV1CommentsPo
 //#endregion apiV1CommentsPost
 
 /* --- */
-//#region apiV1CommentsTargetCommentIdPost
-export type ApiV1CommentsTargetCommentIdPost = {
+//#region apiV1CommentsParentCommentIdRepliesGet
+export type ApiV1CommentsParentCommentIdRepliesGet = {
+  path: {
+    parentCommentId: string;
+  };
+  query: {
+    page: number;
+    size: number;
+  };
+};
+/* Success */
+export const apiV1CommentsParentCommentIdRepliesGetOk = typed.array(typed.object({
+  id: typed.string.optional,
+  content: typed.string.optional,
+  author: typed.object({
+    id: typed.string.optional,
+    username: typed.string.optional,
+    display_name: typed.string.optional,
+    avatar_url: typed.string.maybe
+  }).optional,
+  created_at: typed.string.optional,
+  reply_count: typed.number.optional,
+  first_replies_authors: typed.array(typed.object({
+    id: typed.string.optional,
+    username: typed.string.optional,
+    display_name: typed.string.optional,
+    avatar_url: typed.string.maybe
+  })).optional
+}));
+export type ApiV1CommentsParentCommentIdRepliesGetDone = {
+  status: "ok";
+  answer: typed.Get<typeof apiV1CommentsParentCommentIdRepliesGetOk>;
+};
+export type ApiV1CommentsParentCommentIdRepliesGetFail = GenericErrors;
+export const apiV1CommentsParentCommentIdRepliesGet = createEffect<ApiV1CommentsParentCommentIdRepliesGet, ApiV1CommentsParentCommentIdRepliesGetDone, ApiV1CommentsParentCommentIdRepliesGetFail>({
+  async handler({
+    path,
+    query
+  }) {
+    const name = "apiV1CommentsParentCommentIdRepliesGet.body";
+    const response = await requestFx({
+      path: `/api/v1/comments/${path.parentCommentId}/replies`,
+      method: "GET",
+      query
+    });
+    return parseByStatus(name, response, {
+      200: ["ok", apiV1CommentsParentCommentIdRepliesGetOk]
+    });
+  }
+});
+//#endregion apiV1CommentsParentCommentIdRepliesGet
+
+/* --- */
+//#region apiV1CommentsParentCommentIdRepliesPost
+export type ApiV1CommentsParentCommentIdRepliesPost = {
   body?: {
     content?: string;
   };
   path: {
-    targetCommentId: string;
+    parentCommentId: string;
   };
 };
 /* Success */
-export const apiV1CommentsTargetCommentIdPostOk = typed.object({
+export const apiV1CommentsParentCommentIdRepliesPostOk = typed.object({
   id: typed.string.optional,
   content: typed.string.optional,
   author: typed.object({
@@ -587,28 +640,28 @@ export const apiV1CommentsTargetCommentIdPostOk = typed.object({
     avatar_url: typed.string.maybe
   })).optional
 });
-export type ApiV1CommentsTargetCommentIdPostDone = {
+export type ApiV1CommentsParentCommentIdRepliesPostDone = {
   status: "ok";
-  answer: typed.Get<typeof apiV1CommentsTargetCommentIdPostOk>;
+  answer: typed.Get<typeof apiV1CommentsParentCommentIdRepliesPostOk>;
 };
-export type ApiV1CommentsTargetCommentIdPostFail = GenericErrors;
-export const apiV1CommentsTargetCommentIdPost = createEffect<ApiV1CommentsTargetCommentIdPost, ApiV1CommentsTargetCommentIdPostDone, ApiV1CommentsTargetCommentIdPostFail>({
+export type ApiV1CommentsParentCommentIdRepliesPostFail = GenericErrors;
+export const apiV1CommentsParentCommentIdRepliesPost = createEffect<ApiV1CommentsParentCommentIdRepliesPost, ApiV1CommentsParentCommentIdRepliesPostDone, ApiV1CommentsParentCommentIdRepliesPostFail>({
   async handler({
     body,
     path
   }) {
-    const name = "apiV1CommentsTargetCommentIdPost.body";
+    const name = "apiV1CommentsParentCommentIdRepliesPost.body";
     const response = await requestFx({
-      path: `/api/v1/comments/${path.targetCommentId}`,
+      path: `/api/v1/comments/${path.parentCommentId}/replies`,
       method: "POST",
       body
     });
     return parseByStatus(name, response, {
-      200: ["ok", apiV1CommentsTargetCommentIdPostOk]
+      200: ["ok", apiV1CommentsParentCommentIdRepliesPostOk]
     });
   }
 });
-//#endregion apiV1CommentsTargetCommentIdPost
+//#endregion apiV1CommentsParentCommentIdRepliesPost
 
 /* --- */
 //#region apiV1DiscussionsDiscussionIdGet
