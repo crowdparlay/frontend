@@ -1,6 +1,7 @@
 import * as typed from 'typed-contracts';
 import {chainRoute, redirect, RouteInstance, RouteParams, RouteParamsAndQuery} from 'atomic-router';
 import {attach, createEvent, createStore, Effect, sample} from 'effector';
+import {persist} from 'effector-storage/local';
 import {decodeToken} from 'react-jwt';
 
 import {ApiV1UsersUserIdGet, apiV1UsersUserIdGet, apiV1UsersUserIdGetOk} from '~/shared/api';
@@ -39,6 +40,8 @@ export const sessionRequestFx = attach({
 });
 
 export const $user = createStore<typed.Get<typeof apiV1UsersUserIdGetOk> | null>(null);
+persist({store: $user, key: 'user'});
+
 const $authenticationStatus = createStore(AuthStatus.Initial);
 
 $authenticationStatus.on(sessionRequestFx, (status) => {

@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import {useUnit} from 'effector-react/compat';
 import {HTMLAttributes, memo, ReactNode, useCallback, useState} from 'react';
 
 import LikeFillIcon from '~/widgets/post/assets/likeFill.svg';
@@ -9,9 +10,11 @@ import {getTimeSince} from '~/widgets/post/lib';
 
 import {InlineAvatars} from '~/features/inline-avatars';
 import {ProfilePreview} from '~/features/profile-preview';
+import {ReplyForm, ReplyFormProps} from '~/features/reply-form';
 
 import '~/shared/api';
 import {User} from '~/shared/api/types';
+import {$user} from '~/shared/session';
 import {Button, ButtonVariant, Text, TextSize} from '~/shared/ui';
 
 import cls from './index.module.scss';
@@ -27,10 +30,12 @@ export interface PostProps extends HTMLAttributes<HTMLDivElement> {
   canReply: boolean;
   canReport: boolean;
   react?: 'like' | 'dislike';
-  onReplyClicked?: (id: string) => void;
-  onReportClicked?: (id: string) => void;
-  onLikeClicked?: (id: string) => void;
-  onDisLikeClicked?: (id: string) => void;
+  onReplyClick?: (id: string) => void;
+  onReportClick?: (id: string) => void;
+  onLikeClick?: (id: string) => void;
+  onDisLikeClick?: (id: string) => void;
+  onShownClick?: (id: string) => void;
+  onReplyFormSubmit?: ReplyFormProps['onSubmit'];
 }
 
 export const Post = memo((props: PostProps) => {
@@ -47,20 +52,36 @@ export const Post = memo((props: PostProps) => {
     react,
     className,
     children,
-    onReplyClicked,
-    onReportClicked,
-    onLikeClicked,
-    onDisLikeClicked,
+    onReplyClick,
+    onReportClick,
+    onLikeClick,
+    onDisLikeClick,
+    onShownClick,
+    onReplyFormSubmit,
     ...otherProps
   } = props;
-
   const [collapsed, setCollapsed] = useState(true);
+  const [showReplyForm, setShowReplyForm] = useState(false);
 
   const isReply = Boolean(replyId);
 
-  const onButtonClick = useCallback(() => {
-    setCollapsed((prev) => !prev);
-  }, []);
+  const onButtonClick = useCallback(
+    (collapsed: boolean) => {
+      setCollapsed(collapsed);
+      if (!collapsed && onShownClick) {
+        onShownClick(id);
+      }
+    },
+    [onShownClick, id],
+  );
+
+  const onButtonReplyClick = useCallback(() => {
+    if (collapsed) {
+      onButtonClick(!collapsed);
+    }
+
+    setShowReplyForm(true);
+  }, [collapsed, onButtonClick]);
 
   return (
     <div className={classNames(isReply && cls.replyContainer)}>
@@ -88,7 +109,7 @@ export const Post = memo((props: PostProps) => {
 
           <div className={cls.actions}>
             <Button
-              onClick={onButtonClick}
+              onClick={() => onButtonClick(!collapsed)}
               className={classNames(
                 cls.repliesButton,
                 !collapsed && cls.collapse,
@@ -108,9 +129,9 @@ export const Post = memo((props: PostProps) => {
               )}
             </Button>
 
-            {canReply && (
+            {canReply && !showReplyForm && (
               <Button
-                onClick={() => onReplyClicked && onReplyClicked(id)}
+                onClick={onButtonReplyClick}
                 className={classNames(cls.hover)}
                 variant={ButtonVariant.CLEAR}
                 round={true}
@@ -121,7 +142,7 @@ export const Post = memo((props: PostProps) => {
             )}
             {canReport && (
               <Button
-                onClick={() => onReportClicked && onReportClicked(id)}
+                onClick={() => onReportClick && onReportClick(id)}
                 className={classNames(cls.hover)}
                 variant={ButtonVariant.CLEAR}
                 round={true}
@@ -134,7 +155,7 @@ export const Post = memo((props: PostProps) => {
             <div style={{width: '100%'}} />
 
             <Button
-              onClick={() => onLikeClicked && onLikeClicked(id)}
+              onClick={() => onLikeClick && onLikeClick(id)}
               className={classNames(cls.hover, cls.react, react === 'like' && cls.active)}
               variant={ButtonVariant.CLEAR}
               round={true}
@@ -143,7 +164,7 @@ export const Post = memo((props: PostProps) => {
               19
             </Button>
             <Button
-              onClick={() => onDisLikeClicked && onDisLikeClicked(id)}
+              onClick={() => onDisLikeClick && onDisLikeClick(id)}
               className={classNames(cls.hover, cls.react, react === 'dislike' && cls.active)}
               variant={ButtonVariant.CLEAR}
               round={true}
@@ -160,8 +181,51 @@ export const Post = memo((props: PostProps) => {
 
         <div className={cls.line} />
 
+        {showReplyForm && (
+          <ReplyFormWithUser
+            postId={id}
+            onSubmit={(payload) => {
+              setShowReplyForm(false);
+              if (onReplyFormSubmit) {
+                onReplyFormSubmit(payload);
+              }
+            }}
+            onCancel={() => setShowReplyForm(false)}
+          />
+        )}
         {!collapsed && children}
       </div>
     </div>
   );
 });
+
+interface ReplyFormWithUserProps extends Pick<ReplyFormProps, 'onSubmit'> {
+  postId: string;
+  onCancel: () => void;
+}
+
+const ReplyFormWithUser = (props: ReplyFormWithUserProps) => {
+  const {postId, onSubmit, onCancel} = props;
+
+  const user = useUnit($user);
+  if (!user) {
+    return null;
+  }
+
+  return (
+    <div className={classNames(cls.replyContainer)}>
+      <div className={cls.circleContainer}>
+        <div className={cls.circle} />
+      </div>
+
+      <div className={cls.post} style={{width: '100%', paddingLeft: 0}}>
+        <ProfilePreview
+          username={user.username!}
+          displayName={user.display_name!}
+          avatarUrl={user.avatar_url!}
+        />
+        <ReplyForm postId={postId} maxLength={500} onSubmit={onSubmit} onCancel={onCancel} />
+      </div>
+    </div>
+  );
+};
