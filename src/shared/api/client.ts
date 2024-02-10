@@ -77,7 +77,21 @@ export type ApiV1AuthorsAuthorIdGetDone = {
   status: "ok";
   answer: typed.Get<typeof apiV1AuthorsAuthorIdGetOk>;
 };
-export type ApiV1AuthorsAuthorIdGetFail = GenericErrors;
+/* Not Found */
+export const apiV1AuthorsAuthorIdGetNotFound = typed.object({
+  error_description: typed.string.optional
+});
+/* Server Error */
+export const apiV1AuthorsAuthorIdGetInternalServerError = typed.object({
+  error_description: typed.string.optional
+});
+export type ApiV1AuthorsAuthorIdGetFail = {
+  status: "not_found";
+  error: typed.Get<typeof apiV1AuthorsAuthorIdGetNotFound>;
+} | {
+  status: "internal_server_error";
+  error: typed.Get<typeof apiV1AuthorsAuthorIdGetInternalServerError>;
+} | GenericErrors;
 export const apiV1AuthorsAuthorIdGet = createEffect<ApiV1AuthorsAuthorIdGet, ApiV1AuthorsAuthorIdGetDone, ApiV1AuthorsAuthorIdGetFail>({
   async handler({
     path
@@ -88,7 +102,9 @@ export const apiV1AuthorsAuthorIdGet = createEffect<ApiV1AuthorsAuthorIdGet, Api
       method: "GET"
     });
     return parseByStatus(name, response, {
-      200: ["ok", apiV1AuthorsAuthorIdGetOk]
+      200: ["ok", apiV1AuthorsAuthorIdGetOk],
+      404: ["not_found", apiV1AuthorsAuthorIdGetNotFound],
+      500: ["internal_server_error", apiV1AuthorsAuthorIdGetInternalServerError]
     });
   }
 });
@@ -124,7 +140,21 @@ export type ApiV1CommentsCommentIdGetDone = {
   status: "ok";
   answer: typed.Get<typeof apiV1CommentsCommentIdGetOk>;
 };
-export type ApiV1CommentsCommentIdGetFail = GenericErrors;
+/* Not Found */
+export const apiV1CommentsCommentIdGetNotFound = typed.object({
+  error_description: typed.string.optional
+});
+/* Server Error */
+export const apiV1CommentsCommentIdGetInternalServerError = typed.object({
+  error_description: typed.string.optional
+});
+export type ApiV1CommentsCommentIdGetFail = {
+  status: "not_found";
+  error: typed.Get<typeof apiV1CommentsCommentIdGetNotFound>;
+} | {
+  status: "internal_server_error";
+  error: typed.Get<typeof apiV1CommentsCommentIdGetInternalServerError>;
+} | GenericErrors;
 export const apiV1CommentsCommentIdGet = createEffect<ApiV1CommentsCommentIdGet, ApiV1CommentsCommentIdGetDone, ApiV1CommentsCommentIdGetFail>({
   async handler({
     path
@@ -135,7 +165,9 @@ export const apiV1CommentsCommentIdGet = createEffect<ApiV1CommentsCommentIdGet,
       method: "GET"
     });
     return parseByStatus(name, response, {
-      200: ["ok", apiV1CommentsCommentIdGetOk]
+      200: ["ok", apiV1CommentsCommentIdGetOk],
+      404: ["not_found", apiV1CommentsCommentIdGetNotFound],
+      500: ["internal_server_error", apiV1CommentsCommentIdGetInternalServerError]
     });
   }
 });
@@ -174,7 +206,22 @@ export type ApiV1CommentsGetDone = {
   status: "ok";
   answer: typed.Get<typeof apiV1CommentsGetOk>;
 };
-export type ApiV1CommentsGetFail = GenericErrors;
+/* Bad Request */
+export const apiV1CommentsGetBadRequest = typed.object({
+  error_description: typed.string.optional,
+  validation_errors: typed.object({}).optional
+});
+/* Server Error */
+export const apiV1CommentsGetInternalServerError = typed.object({
+  error_description: typed.string.optional
+});
+export type ApiV1CommentsGetFail = {
+  status: "bad_request";
+  error: typed.Get<typeof apiV1CommentsGetBadRequest>;
+} | {
+  status: "internal_server_error";
+  error: typed.Get<typeof apiV1CommentsGetInternalServerError>;
+} | GenericErrors;
 export const apiV1CommentsGet = createEffect<ApiV1CommentsGet, ApiV1CommentsGetDone, ApiV1CommentsGetFail>({
   async handler({
     query
@@ -186,7 +233,9 @@ export const apiV1CommentsGet = createEffect<ApiV1CommentsGet, ApiV1CommentsGetD
       query
     });
     return parseByStatus(name, response, {
-      200: ["ok", apiV1CommentsGetOk]
+      200: ["ok", apiV1CommentsGetOk],
+      400: ["bad_request", apiV1CommentsGetBadRequest],
+      500: ["internal_server_error", apiV1CommentsGetInternalServerError]
     });
   }
 });
@@ -200,8 +249,8 @@ export type ApiV1CommentsPost = {
     content?: string;
   };
 };
-/* Success */
-export const apiV1CommentsPostOk = typed.object({
+/* Created */
+export const apiV1CommentsPostCreated = typed.object({
   id: typed.string.optional,
   content: typed.string.optional,
   author: typed.object({
@@ -220,10 +269,32 @@ export const apiV1CommentsPostOk = typed.object({
   })).optional
 });
 export type ApiV1CommentsPostDone = {
-  status: "ok";
-  answer: typed.Get<typeof apiV1CommentsPostOk>;
+  status: "created";
+  answer: typed.Get<typeof apiV1CommentsPostCreated>;
 };
-export type ApiV1CommentsPostFail = GenericErrors;
+/* Bad Request */
+export const apiV1CommentsPostBadRequest = typed.object({
+  error_description: typed.string.optional,
+  validation_errors: typed.object({}).optional
+});
+/* Forbidden */
+export const apiV1CommentsPostForbidden = typed.object({
+  error_description: typed.string.optional
+});
+/* Server Error */
+export const apiV1CommentsPostInternalServerError = typed.object({
+  error_description: typed.string.optional
+});
+export type ApiV1CommentsPostFail = {
+  status: "bad_request";
+  error: typed.Get<typeof apiV1CommentsPostBadRequest>;
+} | {
+  status: "forbidden";
+  error: typed.Get<typeof apiV1CommentsPostForbidden>;
+} | {
+  status: "internal_server_error";
+  error: typed.Get<typeof apiV1CommentsPostInternalServerError>;
+} | GenericErrors;
 export const apiV1CommentsPost = createEffect<ApiV1CommentsPost, ApiV1CommentsPostDone, ApiV1CommentsPostFail>({
   async handler({
     body
@@ -235,7 +306,10 @@ export const apiV1CommentsPost = createEffect<ApiV1CommentsPost, ApiV1CommentsPo
       body
     });
     return parseByStatus(name, response, {
-      200: ["ok", apiV1CommentsPostOk]
+      201: ["created", apiV1CommentsPostCreated],
+      400: ["bad_request", apiV1CommentsPostBadRequest],
+      403: ["forbidden", apiV1CommentsPostForbidden],
+      500: ["internal_server_error", apiV1CommentsPostInternalServerError]
     });
   }
 });
@@ -275,7 +349,29 @@ export type ApiV1CommentsParentCommentIdRepliesGetDone = {
   status: "ok";
   answer: typed.Get<typeof apiV1CommentsParentCommentIdRepliesGetOk>;
 };
-export type ApiV1CommentsParentCommentIdRepliesGetFail = GenericErrors;
+/* Bad Request */
+export const apiV1CommentsParentCommentIdRepliesGetBadRequest = typed.object({
+  error_description: typed.string.optional,
+  validation_errors: typed.object({}).optional
+});
+/* Not Found */
+export const apiV1CommentsParentCommentIdRepliesGetNotFound = typed.object({
+  error_description: typed.string.optional
+});
+/* Server Error */
+export const apiV1CommentsParentCommentIdRepliesGetInternalServerError = typed.object({
+  error_description: typed.string.optional
+});
+export type ApiV1CommentsParentCommentIdRepliesGetFail = {
+  status: "bad_request";
+  error: typed.Get<typeof apiV1CommentsParentCommentIdRepliesGetBadRequest>;
+} | {
+  status: "not_found";
+  error: typed.Get<typeof apiV1CommentsParentCommentIdRepliesGetNotFound>;
+} | {
+  status: "internal_server_error";
+  error: typed.Get<typeof apiV1CommentsParentCommentIdRepliesGetInternalServerError>;
+} | GenericErrors;
 export const apiV1CommentsParentCommentIdRepliesGet = createEffect<ApiV1CommentsParentCommentIdRepliesGet, ApiV1CommentsParentCommentIdRepliesGetDone, ApiV1CommentsParentCommentIdRepliesGetFail>({
   async handler({
     path,
@@ -288,7 +384,10 @@ export const apiV1CommentsParentCommentIdRepliesGet = createEffect<ApiV1Comments
       query
     });
     return parseByStatus(name, response, {
-      200: ["ok", apiV1CommentsParentCommentIdRepliesGetOk]
+      200: ["ok", apiV1CommentsParentCommentIdRepliesGetOk],
+      400: ["bad_request", apiV1CommentsParentCommentIdRepliesGetBadRequest],
+      404: ["not_found", apiV1CommentsParentCommentIdRepliesGetNotFound],
+      500: ["internal_server_error", apiV1CommentsParentCommentIdRepliesGetInternalServerError]
     });
   }
 });
@@ -304,8 +403,8 @@ export type ApiV1CommentsParentCommentIdRepliesPost = {
     parentCommentId: string;
   };
 };
-/* Success */
-export const apiV1CommentsParentCommentIdRepliesPostOk = typed.object({
+/* Created */
+export const apiV1CommentsParentCommentIdRepliesPostCreated = typed.object({
   id: typed.string.optional,
   content: typed.string.optional,
   author: typed.object({
@@ -324,10 +423,39 @@ export const apiV1CommentsParentCommentIdRepliesPostOk = typed.object({
   })).optional
 });
 export type ApiV1CommentsParentCommentIdRepliesPostDone = {
-  status: "ok";
-  answer: typed.Get<typeof apiV1CommentsParentCommentIdRepliesPostOk>;
+  status: "created";
+  answer: typed.Get<typeof apiV1CommentsParentCommentIdRepliesPostCreated>;
 };
-export type ApiV1CommentsParentCommentIdRepliesPostFail = GenericErrors;
+/* Bad Request */
+export const apiV1CommentsParentCommentIdRepliesPostBadRequest = typed.object({
+  error_description: typed.string.optional,
+  validation_errors: typed.object({}).optional
+});
+/* Forbidden */
+export const apiV1CommentsParentCommentIdRepliesPostForbidden = typed.object({
+  error_description: typed.string.optional
+});
+/* Not Found */
+export const apiV1CommentsParentCommentIdRepliesPostNotFound = typed.object({
+  error_description: typed.string.optional
+});
+/* Server Error */
+export const apiV1CommentsParentCommentIdRepliesPostInternalServerError = typed.object({
+  error_description: typed.string.optional
+});
+export type ApiV1CommentsParentCommentIdRepliesPostFail = {
+  status: "bad_request";
+  error: typed.Get<typeof apiV1CommentsParentCommentIdRepliesPostBadRequest>;
+} | {
+  status: "forbidden";
+  error: typed.Get<typeof apiV1CommentsParentCommentIdRepliesPostForbidden>;
+} | {
+  status: "not_found";
+  error: typed.Get<typeof apiV1CommentsParentCommentIdRepliesPostNotFound>;
+} | {
+  status: "internal_server_error";
+  error: typed.Get<typeof apiV1CommentsParentCommentIdRepliesPostInternalServerError>;
+} | GenericErrors;
 export const apiV1CommentsParentCommentIdRepliesPost = createEffect<ApiV1CommentsParentCommentIdRepliesPost, ApiV1CommentsParentCommentIdRepliesPostDone, ApiV1CommentsParentCommentIdRepliesPostFail>({
   async handler({
     body,
@@ -340,7 +468,11 @@ export const apiV1CommentsParentCommentIdRepliesPost = createEffect<ApiV1Comment
       body
     });
     return parseByStatus(name, response, {
-      200: ["ok", apiV1CommentsParentCommentIdRepliesPostOk]
+      201: ["created", apiV1CommentsParentCommentIdRepliesPostCreated],
+      400: ["bad_request", apiV1CommentsParentCommentIdRepliesPostBadRequest],
+      403: ["forbidden", apiV1CommentsParentCommentIdRepliesPostForbidden],
+      404: ["not_found", apiV1CommentsParentCommentIdRepliesPostNotFound],
+      500: ["internal_server_error", apiV1CommentsParentCommentIdRepliesPostInternalServerError]
     });
   }
 });
