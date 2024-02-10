@@ -12,10 +12,11 @@ export interface ReplyFormProps extends FormHTMLAttributes<HTMLFormElement> {
   postId: string;
   maxLength: number;
   onSubmit?: (payload: {postId: string; value: string}) => void;
+  onCancel?: () => void;
 }
 
 export const ReplyForm = (props: ReplyFormProps) => {
-  const {postId, maxLength, onSubmit, className, ...otherProps} = props;
+  const {postId, maxLength, onSubmit, onCancel, className, ...otherProps} = props;
 
   const [value, setValue] = useState('');
 
@@ -28,6 +29,13 @@ export const ReplyForm = (props: ReplyFormProps) => {
     },
     [postId, onSubmit],
   );
+
+  const onCancelClick = useCallback(() => {
+    setValue('');
+    if (onCancel) {
+      onCancel();
+    }
+  }, [onCancel]);
 
   return (
     <Form
@@ -45,11 +53,11 @@ export const ReplyForm = (props: ReplyFormProps) => {
       <div className={cls.actions}>
         <Button type="submit">Send</Button>
 
-        <Button variant={ButtonVariant.CLEAR}>
+        <Button variant={ButtonVariant.CLEAR} type="button">
           <FileIcon />
           Insert media
         </Button>
-        <Button variant={ButtonVariant.CLEAR}>
+        <Button onClick={onCancelClick} variant={ButtonVariant.CLEAR} type="reset">
           <DeleteIcon />
           Cancel
         </Button>
