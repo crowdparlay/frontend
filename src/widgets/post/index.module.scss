@@ -109,3 +109,8 @@
 .hidden {
   display: none;
 }
+
+.replyForm {
+  display: flex;
+  flex-direction: column;
+}
