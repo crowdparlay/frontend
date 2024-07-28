@@ -16,6 +16,18 @@ interface Request {
 }
 
 export const requestFx = createEffect<Request, any>((request) => {
+  if (request.path.includes('/sso/')) {
+    const url = new URL(request.path, API_URL);
+
+    if (request.query) {
+      url.search = new URLSearchParams(request.query as Record<string, string>).toString();
+    }
+
+    window.location.href = url.href;
+
+    return Promise.resolve({status: 302, body: null});
+  }
+
   return localApi({
     method: request.method,
     url: request.path,

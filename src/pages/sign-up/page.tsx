@@ -17,12 +17,14 @@ import {
   TextSize,
 } from '~/shared/ui';
 
-import {$form, $formError, $loading} from './model';
+import {$form, $formError, $loading, $provider} from './model';
 import cls from './page.module.scss';
 
 export const SignUpPage = () => {
   const {fields, submit, eachValid} = useForm($form);
   const [loading, formError] = useUnit([$loading, $formError]);
+
+  const [provider] = useUnit([$provider]);
 
   return (
     <Page>
@@ -32,17 +34,20 @@ export const SignUpPage = () => {
         </Text>
 
         <Form onSubmit={submit} className={cls.list}>
-          <Input
-            autoFocus={true}
-            disabled={loading}
-            placeholder="Email"
-            type="email"
-            name="email"
-            value={fields.email?.value}
-            onChange={(e) => fields.email?.onChange(e.target.value)}
-            isInvalid={fields.email?.hasError()}
-            errorMessage={fields.email?.errorText()}
-          />
+          {provider === null && (
+            <Input
+              autoFocus={true}
+              disabled={loading}
+              placeholder="Email"
+              type="email"
+              name="email"
+              value={fields.email?.value}
+              onChange={(e) => fields.email?.onChange(e.target.value)}
+              isInvalid={fields.email?.hasError()}
+              errorMessage={fields.email?.errorText()}
+            />
+          )}
+
           <Input
             disabled={loading}
             placeholder="Username"
@@ -59,26 +64,31 @@ export const SignUpPage = () => {
             isInvalid={fields.display_name?.hasError()}
             errorMessage={fields.display_name?.errorText()}
           />
-          <Input
-            disabled={loading}
-            placeholder="Password"
-            type="password"
-            name="password"
-            value={fields.password?.value}
-            onChange={(e) => fields.password?.onChange(e.target.value)}
-            isInvalid={fields.password?.hasError()}
-            errorMessage={fields.password?.errorText()}
-          />
-          <Input
-            disabled={loading}
-            placeholder="Confirm password"
-            type="password"
-            name="confirm_password"
-            value={fields.confirm_password?.value}
-            onChange={(e) => fields.confirm_password?.onChange(e.target.value)}
-            isInvalid={fields.confirm_password?.hasError()}
-            errorMessage={fields.confirm_password?.errorText()}
-          />
+
+          {provider === null && (
+            <Input
+              disabled={loading}
+              placeholder="Password"
+              type="password"
+              name="password"
+              value={fields.password?.value}
+              onChange={(e) => fields.password?.onChange(e.target.value)}
+              isInvalid={fields.password?.hasError()}
+              errorMessage={fields.password?.errorText()}
+            />
+          )}
+          {provider === null && (
+            <Input
+              disabled={loading}
+              placeholder="Confirm password"
+              type="password"
+              name="confirm_password"
+              value={fields.confirm_password?.value}
+              onChange={(e) => fields.confirm_password?.onChange(e.target.value)}
+              isInvalid={fields.confirm_password?.hasError()}
+              errorMessage={fields.confirm_password?.errorText()}
+            />
+          )}
 
           <ProfilePreview
             username={fields.username?.value}

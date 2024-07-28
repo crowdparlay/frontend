@@ -3,15 +3,15 @@ import {chainRoute} from 'atomic-router';
 import {attach, createStore, sample} from 'effector';
 
 import {
-  apiV1DiscussionsGet,
+  apiV1DiscussionsGetFx,
   apiV1DiscussionsGetOk,
-  apiV1UsersResolveGet,
+  apiV1UsersResolveGetFx,
   apiV1UsersResolveGetOk,
 } from '~/shared/api';
 import {routes} from '~/shared/routes';
 
-const getUserFx = attach({effect: apiV1UsersResolveGet});
-const getDiscussionsFx = attach({effect: apiV1DiscussionsGet});
+const getUserFx = attach({effect: apiV1UsersResolveGetFx});
+const getDiscussionsFx = attach({effect: apiV1DiscussionsGetFx});
 
 export const currentRoute = routes.profile;
 
@@ -31,7 +31,7 @@ export const dataLoadedRoute = chainRoute({
 
 export const $user = createStore<typed.Get<typeof apiV1UsersResolveGetOk> | null>(null);
 
-export const $discussions = createStore<typed.Get<typeof apiV1DiscussionsGetOk>>([]);
+export const $discussions = createStore<typed.Get<typeof apiV1DiscussionsGetOk>['items']>([]);
 
 sample({
   clock: getUserFx.doneData,
@@ -44,6 +44,8 @@ sample({
   fn: ({answer}) => ({
     query: {
       authorId: answer.id!,
+      count: 20,
+      offset: 0,
     },
   }),
   target: getDiscussionsFx,
@@ -51,6 +53,6 @@ sample({
 
 sample({
   clock: getDiscussionsFx.doneData,
-  fn: (x) => x.answer,
+  fn: (x) => x.answer.items,
   target: $discussions,
 });

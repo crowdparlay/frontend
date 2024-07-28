@@ -1,15 +1,22 @@
 import * as typed from 'typed-contracts';
-import {chainRoute, redirect, RouteInstance, RouteParams, RouteParamsAndQuery} from 'atomic-router';
+import {
+  chainRoute,
+  redirect,
+  RouteInstance,
+  RouteParams,
+  RouteParamsAndQuery,
+  RouteQuery,
+} from 'atomic-router';
 import {attach, createEvent, createStore, Effect, sample} from 'effector';
 import {persist} from 'effector-storage/local';
-import {decodeToken} from 'react-jwt';
 
-import {ApiV1UsersUserIdGet, apiV1UsersUserIdGet, apiV1UsersUserIdGetOk} from '~/shared/api';
-import {logoutFx} from '~/shared/api/auth';
-import {JwtPayload} from '~/shared/api/types';
-import {LOCAL_STORAGE_ACCESS_TOKEN_KEY} from '~/shared/config';
+import {
+  apiV1AuthenticationSignOutPostFx,
+  apiV1UsersSelfGetFx,
+  apiV1UsersUserIdGetOk,
+} from '~/shared/api';
 
-import {routes} from '../routes';
+import {routes, routesMap} from '../routes';
 
 enum AuthStatus {
   Initial = 0,
@@ -19,24 +26,7 @@ enum AuthStatus {
 }
 
 export const sessionRequestFx = attach({
-  effect: apiV1UsersUserIdGet,
-  mapParams: (): ApiV1UsersUserIdGet => {
-    let userId: string = '';
-
-    const accessToken = localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
-    if (accessToken) {
-      const jwtPayload = decodeToken<JwtPayload>(accessToken);
-      if (jwtPayload) {
-        userId = jwtPayload.sub;
-      }
-    }
-
-    return {
-      path: {
-        userId,
-      },
-    };
-  },
+  effect: apiV1UsersSelfGetFx,
 });
 
 export const $user = createStore<typed.Get<typeof apiV1UsersUserIdGetOk> | null>(null);
@@ -55,11 +45,11 @@ $authenticationStatus.on(sessionRequestFx.doneData, () => AuthStatus.Authenticat
 $authenticationStatus.on(sessionRequestFx.fail, () => AuthStatus.Anonymous);
 $user.on(sessionRequestFx.fail, () => null);
 
-$user.on(logoutFx.done, () => null);
-$authenticationStatus.on(logoutFx.done, () => AuthStatus.Anonymous);
+$user.on(apiV1AuthenticationSignOutPostFx.done, () => null);
+$authenticationStatus.on(apiV1AuthenticationSignOutPostFx.done, () => AuthStatus.Anonymous);
 
 redirect({
-  clock: logoutFx.done,
+  clock: apiV1AuthenticationSignOutPostFx.done,
   route: routes.auth.signIn,
 });
 
@@ -106,8 +96,20 @@ export function chainAuthorized<Params extends RouteParams>(
   if (otherwise) {
     sample({
       clock: sessionReceivedAnonymous,
+      fn: () => {
+        const routeMap = routesMap.find((r) => r.route === route);
+
+        if (routeMap) {
+          const returnUrl = new URL(routeMap.path, window.location.origin).href;
+          return {
+            query: {
+              returnUrl,
+            },
+          };
+        }
+      },
       // @ts-ignore
-      target: otherwise as Event<void>,
+      target: otherwise as Event<{query: RouteQuery} | void>,
     });
   }
 

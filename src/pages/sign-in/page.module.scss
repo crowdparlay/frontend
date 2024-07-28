@@ -14,3 +14,18 @@
   line-height: 77px;
   color: var(--color-white);
 }
+
+.external {
+  margin-top: -27px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.or {
+  line-height: 19px;
+}
+
+.button {
+  gap: 10px;
+}

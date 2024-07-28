@@ -1,5 +1,5 @@
 {
-  "file": "./src/shared/api/openapi.yaml",
+  "file": "https://bump.sh/undrcrxwn/doc/crowdparlay.yaml",
   "outputDir": "./src/shared/api/",
   "templateFileNameCode": "client.ts",
   "presets": [

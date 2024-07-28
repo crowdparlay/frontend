@@ -1,11 +1,12 @@
-import {attach, createStore} from 'effector';
+import {attach, createEvent, createStore} from 'effector';
 import {sample} from 'effector';
 import {createForm} from 'effector-forms';
+import {createEffect} from 'effector/effector.umd';
 import {or} from 'patronum';
 
 import * as api from '~/shared/api';
-import {LOCAL_STORAGE_ACCESS_TOKEN_KEY, LOCAL_STORAGE_REFRESH_TOKEN_KEY} from '~/shared/config';
-import {routes} from '~/shared/routes';
+import {ApiV1AuthenticationSignInPost, ApiV1AuthenticationSsoGoogleGet} from '~/shared/api';
+import {router, routes} from '~/shared/routes';
 import {rules} from '~/shared/rules';
 import {chainAnonymous, sessionRequestFx} from '~/shared/session';
 
@@ -14,7 +15,15 @@ export const anonymousRoute = chainAnonymous(currentRoute, {
   otherwise: routes.explore.open,
 });
 
-const signInFx = attach({effect: api.signInFx});
+const signInFx = attach({effect: api.apiV1AuthenticationSignInPostFx});
+const signInWithGoogleFx = attach({effect: api.apiV1AuthenticationSsoGoogleGetFx});
+const navigateToUrlFx = createEffect((url: string) => {
+  console.log(url);
+  router.push({path: url, params: {}, query: {}, method: 'replace'});
+});
+
+export const signInWithGoogleClicked = createEvent();
+
 export const $loading = or(signInFx.pending, sessionRequestFx.pending);
 
 export const $form = createForm({
@@ -42,40 +51,48 @@ sample({
 
 sample({
   clock: $form.formValidated,
+  fn: (payload): ApiV1AuthenticationSignInPost => ({
+    body: {
+      usernameOrEmail: payload.username,
+      password: payload.password,
+    },
+  }),
   target: [signInFx, $formError.reinit],
 });
 
 sample({
-  clock: signInFx.doneData,
-  filter: (res) => res.status >= 300 && res.status === 400 && Boolean(res.body.validation_errors),
+  clock: signInFx.failData,
   fn: (res) => {
-    return Object.entries(res.body.validation_errors!).map(([field, errorText]) => {
-      return {
-        field,
-        rule: 'backend',
-        errorText: errorText as string,
-      };
-    });
-  },
-  target: $form.addErrors,
-});
-
-sample({
-  clock: signInFx.doneData,
-  filter: (res) =>
-    res.status >= 300 && !(res.status === 400 && Boolean(res.body.validation_errors)),
-  fn: (res) => {
-    return res.body.error_description ?? 'Something went wrong. Try again later.';
+    if ('error_description' in res.error) {
+      return res.error.error_description!;
+    }
+    return 'Something went wrong. Try again later.';
   },
   target: $formError,
 });
 
 sample({
   clock: signInFx.doneData,
-  filter: (res) => res.status < 300,
-  fn: (data) => {
-    localStorage.setItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY, data.body.access_token);
-    localStorage.setItem(LOCAL_STORAGE_REFRESH_TOKEN_KEY, data.body.refresh_token);
-  },
+  source: currentRoute.$query,
+  filter: (query) => query.returnUrl === undefined,
   target: sessionRequestFx,
+});
+
+sample({
+  clock: signInFx.doneData,
+  source: currentRoute.$query,
+  filter: (query) => query.returnUrl !== undefined,
+  fn: (query) => query.returnUrl!,
+  target: navigateToUrlFx,
+});
+
+sample({
+  clock: signInWithGoogleClicked,
+  source: currentRoute.$query,
+  fn: (state): ApiV1AuthenticationSsoGoogleGet => ({
+    query: {
+      returnUrl: state.returnUrl,
+    },
+  }),
+  target: signInWithGoogleFx,
 });
