@@ -1,7 +1,5 @@
 import {useList, useUnit} from 'effector-react';
 
-import {NotFoundPage} from '~/pages/not-found/page';
-
 import {
   Avatar,
   Button,
