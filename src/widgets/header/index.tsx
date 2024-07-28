@@ -1,3 +1,4 @@
+import {RouteInstance} from 'atomic-router';
 import {useUnit} from 'effector-react';
 
 import {User} from '~/shared/api/types';
@@ -60,7 +61,14 @@ export const Header = (props: HeaderProps) => {
           >
             <NotificationIcon />
           </Button>
-          <img src={Avatar} alt="avatar" />
+          <Link
+            to={routes.profile as RouteInstance<any>}
+            params={{
+              username: user!.username,
+            }}
+          >
+            <img src={Avatar} alt="avatar" />
+          </Link>
           <Button
             variant={ButtonVariant.CLEAR}
             shape={ButtonShape.EQUILATERAL}
