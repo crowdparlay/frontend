@@ -1,8 +1,8 @@
 import {createRoutesView} from 'atomic-router-react';
 
-import {DiscussionRoute} from '~/pages/discussion';
-
+import {DiscussionRoute} from './discussion';
 import {EditProfileRoute} from './edit-profile';
+import {ExploreRoute} from './explore';
 import {ForbiddenRoute} from './forbidden';
 import {HomeRoute} from './home';
 import {NotFoundRoute} from './not-found';
@@ -15,6 +15,7 @@ export const Pages = createRoutesView({
     HomeRoute,
     SignInRoute,
     SignUpRoute,
+    ExploreRoute,
     ProfileRoute,
     EditProfileRoute,
     DiscussionRoute,
