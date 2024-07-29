@@ -20,4 +20,17 @@ export default defineConfig({
       {find: '~', replacement: '/src'},
     ],
   },
+
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://crowdparlay.com',
+        changeOrigin: true,
+        secure: false,
+        cookieDomainRewrite: {
+          '*': 'localhost'
+        }
+      }
+    }
+  }
 });

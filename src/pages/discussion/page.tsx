@@ -47,7 +47,7 @@ const buildReplyTree = (
         canReply={true}
         canReport={true}
         onShownClick={(parentCommentId) =>
-          onReplyClicked({path: {parentCommentId}, query: {page: 0, size: 100}})
+          onReplyClicked({path: {parentCommentId}, query: {offset: 0, count: 100}})
         }
         onReplyFormSubmit={(payload) =>
           onReplyFormSubmit({
@@ -71,33 +71,6 @@ export const DiscussionPage = () => {
       model.$replies,
       model.replyFormSubmit,
     ]);
-
-  // const comments = useList(model.$comments, (comment) => (
-  //   <Post
-  //     key={comment.id!}
-  //     id={comment.id!}
-  //     author={{
-  //       id: comment.author!.id!,
-  //       username: comment.author!.username!,
-  //       displayName: comment.author!.display_name!,
-  //       avatarUrl: comment.author!.avatar_url!,
-  //     }}
-  //     date={new Date(comment.created_at!)}
-  //     text={comment.content!}
-  //     commentators={comment.first_replies_authors!.map((x) => ({
-  //       id: x.id!,
-  //       username: x.username!,
-  //       displayName: x.display_name!,
-  //       avatarUrl: x.avatar_url!,
-  //     }))}
-  //     commentsCount={comment.reply_count!}
-  //     canReply={true}
-  //     canReport={true}
-  //     onShownClick={(parentCommentId) =>
-  //       onReplyClicked({path: {parentCommentId}, query: {page: 0, size: 20}})
-  //     }
-  //   />
-  // ));
 
   const items = comments.map((comment) => {
     const children = buildReplyTree(comment.id!, replies, onReplyClicked, onReplyFormSubmit);
@@ -124,7 +97,7 @@ export const DiscussionPage = () => {
         canReply={true}
         canReport={true}
         onShownClick={(parentCommentId) =>
-          onReplyClicked({path: {parentCommentId}, query: {page: 0, size: 100}})
+          onReplyClicked({path: {parentCommentId}, query: {offset: 0, count: 100}})
         }
         onReplyFormSubmit={(payload) =>
           onReplyFormSubmit({

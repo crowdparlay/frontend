@@ -1,4 +1,9 @@
-import {createHistoryRouter, createRoute, createRouterControls} from 'atomic-router';
+import {
+  createHistoryRouter,
+  createRoute,
+  createRouterControls,
+  UnmappedRouteObject,
+} from 'atomic-router';
 import {sample} from 'effector';
 import {createBrowserHistory} from 'history';
 
@@ -26,57 +31,23 @@ export const routes = {
 
 export const controls = createRouterControls();
 
+export const routesMap: UnmappedRouteObject<any>[] = [
+  {path: '/', route: routes.home},
+  {path: '/sign-in', route: routes.auth.signIn},
+  {path: '/sign-up', route: routes.auth.signUp},
+  {path: '/reset-password', route: routes.auth.resetPassword},
+  {path: '/u/:username', route: routes.profile},
+  {path: '/edit-profile', route: routes.editProfile},
+  {path: '/explore', route: routes.explore},
+  {path: '/bets', route: routes.bets},
+  {path: '/events', route: routes.events},
+  {path: '/bookmarks', route: routes.bookmarks},
+  {path: '/d/:discussionId', route: routes.discussion},
+  {path: '/forbidden', route: routes.problems.forbidden},
+];
+
 export const router = createHistoryRouter({
-  routes: [
-    {
-      path: '/',
-      route: routes.home,
-    },
-    {
-      path: '/sign-in',
-      route: routes.auth.signIn,
-    },
-    {
-      path: '/sign-up',
-      route: routes.auth.signUp,
-    },
-    {
-      path: '/reset-password',
-      route: routes.auth.resetPassword,
-    },
-    {
-      path: '/u/:username',
-      route: routes.profile,
-    },
-    {
-      path: '/edit-profile',
-      route: routes.editProfile,
-    },
-    {
-      path: '/explore',
-      route: routes.explore,
-    },
-    {
-      path: '/bets',
-      route: routes.bets,
-    },
-    {
-      path: '/events',
-      route: routes.events,
-    },
-    {
-      path: '/bookmarks',
-      route: routes.bookmarks,
-    },
-    {
-      path: '/d/:discussionId',
-      route: routes.discussion,
-    },
-    {
-      path: '/forbidden',
-      route: routes.problems.forbidden,
-    },
-  ],
+  routes: routesMap,
   notFoundRoute: routes.problems.notFound,
   controls,
 });

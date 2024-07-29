@@ -1,4 +1,5 @@
-import {Container, ContainerSize, Page, Text, TextSize} from '~/shared/ui';
+import {routes} from '~/shared/routes';
+import {Container, ContainerSize, Link, Page, Text, TextSize} from '~/shared/ui';
 
 import cls from './page.module.scss';
 
@@ -7,7 +8,15 @@ export const HomePage = () => {
     <Page className={cls.page}>
       <Container size={ContainerSize.S} className={cls.header}>
         <Text size={TextSize.L}>Hello, world!</Text>
-        <Text size={TextSize.S}>How's it going?</Text>
+
+        <Link
+          to={routes.explore}
+          style={{
+            textDecoration: 'underline',
+          }}
+        >
+          <Text size={TextSize.S}>How's it going?</Text>
+        </Link>
       </Container>
     </Page>
   );

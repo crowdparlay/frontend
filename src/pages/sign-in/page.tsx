@@ -5,6 +5,7 @@ import {routes} from '~/shared/routes';
 import {
   Attention,
   Button,
+  ButtonVariant,
   Container,
   ContainerSize,
   Form,
@@ -15,12 +16,15 @@ import {
   TextSize,
 } from '~/shared/ui';
 
-import {$form, $formError, $loading} from './model';
+import GoogleIcon from './assets/google.svg';
+import {$form, $formError, $loading, signInWithGoogleClicked} from './model';
 import cls from './page.module.scss';
 
 export const SignInPage = () => {
   const {fields, submit, eachValid} = useForm($form);
   const [loading, formError] = useUnit([$loading, $formError]);
+
+  const [onSignInWithGoogleClicked] = useUnit([signInWithGoogleClicked]);
 
   return (
     <Page>
@@ -58,13 +62,30 @@ export const SignInPage = () => {
           </Button>
         </Form>
 
-        <div className={cls.list}>
-          <Link center={true} to={routes.auth.resetPassword}>
-            Reset password
-          </Link>
-          <Link center={true} to={routes.auth.signUp}>
-            Sign up
-          </Link>
+        <div className={cls.external}>
+          <Text center={true} className={cls.or}>
+            or
+          </Text>
+
+          <div className={cls.list}>
+            <Button
+              onClick={onSignInWithGoogleClicked}
+              variant={ButtonVariant.SECONDARY}
+              className={cls.button}
+            >
+              <GoogleIcon />
+              Proceed with Google
+            </Button>
+          </div>
+
+          <div className={cls.list}>
+            <Link center={true} to={routes.auth.resetPassword}>
+              Reset password
+            </Link>
+            <Link center={true} to={routes.auth.signUp}>
+              Sign up
+            </Link>
+          </div>
         </div>
       </Container>
     </Page>
