@@ -3,12 +3,15 @@
 @import 'reset';
 @import 'variables/global';
 
+body {
+  background: var(--color-black);
+}
+
 .app {
   min-height: 100vh;
   display: flex;
   flex-flow: column;
   justify-content: space-between;
-  background: var(--color-black);
 }
 
 * {
