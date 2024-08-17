@@ -10,3 +10,4 @@ export * from './form';
 export * from './attention';
 export * from './avatar';
 export * from './text-area';
+export * from './pagination';
