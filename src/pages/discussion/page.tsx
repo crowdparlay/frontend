@@ -8,7 +8,7 @@ import {
   ApiV1CommentsParentCommentIdRepliesGet,
   ApiV1CommentsParentCommentIdRepliesPost,
 } from '~/shared/api';
-import {Container, ContainerSize, Page, Text, TextSize} from '~/shared/ui';
+import {Container, ContainerSize, Page, Pagination, Text, TextSize} from '~/shared/ui';
 import {Card, CardSize} from '~/shared/ui/card';
 
 import * as model from './model';
@@ -72,6 +72,12 @@ export const DiscussionPage = () => {
       model.replyFormSubmit,
     ]);
 
+  const [page, onPageChanged, totalPageCount] = useUnit([
+    model.pagination.$page,
+    model.pagination.pageChanged,
+    model.pagination.$totalPageCount,
+  ]);
+
   const items = comments.map((comment) => {
     const children = buildReplyTree(comment.id!, replies, onReplyClicked, onReplyFormSubmit);
 
@@ -123,10 +129,16 @@ export const DiscussionPage = () => {
           </Text>
           <Text size={TextSize.M}>{discussion.description!}</Text>
         </Card>
+
+        <Pagination total={totalPageCount} value={page} onChange={onPageChanged} />
       </Container>
 
       <Container size={ContainerSize.M} style={{marginTop: 50, marginBottom: 20}}>
         {...items}
+      </Container>
+
+      <Container size={ContainerSize.M} style={{marginBottom: 20}}>
+        <Pagination total={totalPageCount} value={page} onChange={onPageChanged} />
       </Container>
 
       <Container size={ContainerSize.M}>
