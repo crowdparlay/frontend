@@ -1,7 +1,8 @@
 import * as typed from 'typed-contracts';
 import {chainRoute} from 'atomic-router';
-import {attach, createEvent, createStore, sample} from 'effector';
+import {attach, combine, createEvent, createStore, sample} from 'effector';
 import {produce} from 'immer';
+import {spread} from 'patronum';
 
 import {
   apiV1CommentsGetFx,
@@ -16,6 +17,8 @@ import {
   apiV1DiscussionsDiscussionIdGetFx,
   apiV1DiscussionsDiscussionIdGetOk,
 } from '~/shared/api';
+import {paginationFactory} from '~/shared/factory/pagination.factory';
+import {signalRFactory} from '~/shared/factory/signal-r.factory';
 import {routes} from '~/shared/routes';
 
 const getDiscussionFx = attach({effect: apiV1DiscussionsDiscussionIdGetFx});
@@ -40,11 +43,14 @@ export const dataLoadedRoute = chainRoute({
   },
 });
 
+const $discussionId = currentRoute.$params.map((query) => query.discussionId);
+
 export const $discussion = createStore<typed.Get<typeof apiV1DiscussionsDiscussionIdGetOk> | null>(
   null,
 );
 
 export const $comments = createStore<typed.Get<typeof apiV1CommentsGetOk>['items']>([]);
+export const $totalCommentsCount = createStore(0);
 export const commentFormSubmit = createEvent<ApiV1CommentsPost>();
 
 export type Replies = Record<
@@ -55,19 +61,39 @@ export const $replies = createStore<Replies>({});
 export const replyClicked = createEvent<ApiV1CommentsParentCommentIdRepliesGet>();
 export const replyFormSubmit = createEvent<ApiV1CommentsParentCommentIdRepliesPost>();
 
+const hub = signalRFactory<typed.Get<typeof apiV1CommentsGetOk>['items'][number]>('NewComment');
+
+export const pagination = paginationFactory({
+  route: currentRoute,
+  limit: 10,
+  totalCount: $totalCommentsCount,
+});
+
 sample({
-  clock: getDiscussionFx.doneData,
-  fn: (x) => x.answer,
-  target: $discussion,
+  clock: currentRoute.opened,
+  source: currentRoute.$params,
+  fn: (params) => ({url: `/api/v1/hubs/comments?discussionId=${params.discussionId}`}),
+  target: hub.start,
 });
 
 sample({
   clock: getDiscussionFx.doneData,
-  fn: ({answer}) => ({
+  fn: (payload) => payload.answer,
+  target: $discussion,
+});
+
+sample({
+  clock: [getDiscussionFx.doneData, pagination.pageChanged],
+  source: {
+    discussionId: $discussionId,
+    offset: pagination.$offset,
+    count: pagination.$limit,
+  },
+  fn: ({discussionId, offset, count}) => ({
     query: {
-      discussionId: answer.id!,
-      offset: 0,
-      count: 20,
+      discussionId,
+      offset,
+      count,
     },
   }),
   target: getCommentsFx,
@@ -75,27 +101,47 @@ sample({
 
 sample({
   clock: getCommentsFx.doneData,
-  fn: (x) => x.answer.items,
+  fn: (payload) => ({
+    totalCount: payload.answer.total_count,
+    items: payload.answer.items,
+  }),
+  target: spread({
+    targets: {
+      totalCount: $totalCommentsCount,
+      items: $comments,
+    },
+  }),
+});
+
+sample({
+  clock: hub.messageReceived,
+  source: $comments,
+  filter: combine(
+    pagination.$page,
+    pagination.$totalPageCount,
+    (page, totalPageCount) => page === totalPageCount,
+  ),
+  fn: (comments, newComment) =>
+    produce(comments, (draft) => {
+      const comment = draft.find((c) => c.id === newComment.id);
+      if (comment === undefined) {
+        // @ts-expect-error
+        draft.push(newComment);
+      }
+    }),
   target: $comments,
+});
+
+sample({
+  clock: hub.messageReceived,
+  source: $totalCommentsCount,
+  fn: (value) => value + 1,
+  target: $totalCommentsCount,
 });
 
 sample({
   clock: commentFormSubmit,
   target: commentDiscussionFx,
-});
-
-sample({
-  clock: commentDiscussionFx.doneData,
-  source: $discussion,
-  filter: Boolean,
-  fn: (discussion) => ({
-    query: {
-      discussionId: discussion.id!,
-      offset: 0,
-      count: 20,
-    },
-  }),
-  target: getCommentsFx,
 });
 
 sample({
