@@ -1,8 +1,7 @@
 import {attach, createEvent, createStore} from 'effector';
-import {sample} from 'effector';
+import {createEffect, sample} from 'effector';
 import {createForm} from 'effector-forms';
-import {createEffect} from 'effector/effector.umd';
-import {or} from 'patronum';
+import {combineEvents, or} from 'patronum';
 
 import * as api from '~/shared/api';
 import {ApiV1AuthenticationSignInPost, ApiV1AuthenticationSsoGoogleGet} from '~/shared/api';
@@ -18,7 +17,7 @@ export const anonymousRoute = chainAnonymous(currentRoute, {
 const signInFx = attach({effect: api.apiV1AuthenticationSignInPostFx});
 const signInWithGoogleFx = attach({effect: api.apiV1AuthenticationSsoGoogleGetFx});
 const navigateToUrlFx = createEffect((url: string) => {
-  console.log(url);
+  console.log({url});
   router.push({path: url, params: {}, query: {}, method: 'replace'});
 });
 
@@ -74,12 +73,12 @@ sample({
 sample({
   clock: signInFx.doneData,
   source: currentRoute.$query,
-  filter: (query) => query.returnUrl === undefined,
+  // filter: (query) => query.returnUrl === undefined,
   target: sessionRequestFx,
 });
 
 sample({
-  clock: signInFx.doneData,
+  clock: combineEvents({events: [signInFx.doneData, sessionRequestFx.doneData]}),
   source: currentRoute.$query,
   filter: (query) => query.returnUrl !== undefined,
   fn: (query) => query.returnUrl!,
@@ -91,7 +90,7 @@ sample({
   source: currentRoute.$query,
   fn: (state): ApiV1AuthenticationSsoGoogleGet => ({
     query: {
-      returnUrl: state.returnUrl,
+      returnUrl: state.returnUrl ?? window.location.href,
     },
   }),
   target: signInWithGoogleFx,
