@@ -28,6 +28,8 @@ export const $provider = currentRoute.$query.map((query) => {
   return Object.values(Provider).find((p) => p === provider) ?? null;
 });
 
+const $ticketId = currentRoute.$query.map((query) => (query.ticket as string | undefined) ?? null);
+
 export const $loading = or(signUpFx.pending, sessionRequestFx.pending);
 
 export const $form = createForm({
@@ -44,7 +46,7 @@ export const $form = createForm({
     },
     username: {
       init: '',
-      rules: [rules.required(), rules.minLength(4)],
+      rules: [rules.required(), rules.minLength(5)],
       validateOn: ['blur'],
     },
     password: {
@@ -98,7 +100,19 @@ sample({
 
 sample({
   clock: $form.formValidated,
-  fn: (fields): ApiV1UsersRegisterPost => ({body: fields}),
+  source: {
+    provider: $provider,
+    ticketId: $ticketId,
+  },
+  fn: (state, fields): ApiV1UsersRegisterPost => ({
+    body: {
+      email: state.provider === null ? fields.email : null,
+      username: fields.username,
+      display_name: fields.display_name,
+      password: state.provider === null ? fields.password : null,
+      external_login_ticket_id: state.ticketId,
+    },
+  }),
   target: [signUpFx, $formError.reinit],
 });
 

@@ -917,9 +917,10 @@ export type ApiV1UsersRegisterPost = {
   body?: {
     username?: string;
     display_name?: string;
-    email?: string;
+    email?: string | null;
     password?: string | null;
     avatar_url?: string | null;
+    external_login_ticket_id?: string | null;
   };
 };
 
