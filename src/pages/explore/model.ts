@@ -1,7 +1,6 @@
 import * as typed from 'typed-contracts';
 import {chainRoute} from 'atomic-router';
 import {attach, createStore, sample} from 'effector';
-import {debug} from 'patronum';
 
 import {apiV1DiscussionsGetFx, apiV1DiscussionsGetOk} from '~/shared/api';
 import {routes} from '~/shared/routes';
@@ -34,5 +33,3 @@ sample({
   fn: (payload) => payload.answer.items,
   target: $discussions,
 });
-
-debug(getDiscussionsFx, $discussions);

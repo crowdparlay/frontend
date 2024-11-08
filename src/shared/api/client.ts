@@ -43,6 +43,8 @@ function parseByStatus<
   contracts: Contracts,
 ): Result[Exclude<keyof Result, ErrorCodes>] {
   const contractObject = contracts[response.status];
+console.log(contracts)
+  console.log(contractObject)
   if (!contractObject) {
     throw {
       status: 'unknown_status',
@@ -53,7 +55,11 @@ function parseByStatus<
     };
   }
   const [status, contract] = contractObject;
+  console.log(status, contract)
+
+
   const answer = contract(name, response.body);
+  console.log(answer)
   if (answer instanceof typed.ValidationError) {
     throw { status: 'validation_error', error: answer };
   }
@@ -63,25 +69,6 @@ function parseByStatus<
   return { status, answer } as Result[Exclude<keyof Result, ErrorCodes>];
 }
 
-function convertBodyToUrlSearchParams(body: Record<string, any>): URLSearchParams {
-  function flattenObject(obj: any, parent: string = '', res: Record<string, string> = {}): Record<string, string> {
-    for (let key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        const propName = parent ? `${parent}[${key}]` : key;
-        if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
-          flattenObject(obj[key], propName, res);
-        } else {
-          res[propName] = String(obj[key]);
-        }
-      }
-    }
-    return res;
-  }
-
-  const flatBody = flattenObject(body);
-  return new URLSearchParams(flatBody);
-}
-
 //#endregion prebuilt code/* --- */
 //#region apiV1CommentsCommentIdGet
 export type ApiV1CommentsCommentIdGet = {
@@ -89,7 +76,6 @@ export type ApiV1CommentsCommentIdGet = {
     commentId: string;
   };
 };
-
 /* OK */
 export const apiV1CommentsCommentIdGetOk = typed.object({
   id: typed.string,
@@ -99,7 +85,7 @@ export const apiV1CommentsCommentIdGetOk = typed.object({
     username: typed.string,
     display_name: typed.string,
     avatar_url: typed.string.maybe
-  })).maybe,
+  })),
   created_at: typed.string,
   reply_count: typed.number,
   first_replies_authors: typed.array(typed.object({
@@ -107,13 +93,14 @@ export const apiV1CommentsCommentIdGetOk = typed.object({
     username: typed.string,
     display_name: typed.string,
     avatar_url: typed.string.maybe
-  }))
+  })),
+  reaction_counters: typed.object({}),
+  viewer_reactions: typed.array(typed.string)
 });
 export type ApiV1CommentsCommentIdGetDone = {
   status: "ok";
   answer: typed.Get<typeof apiV1CommentsCommentIdGetOk>;
 };
-
 /* Not Found */
 export const apiV1CommentsCommentIdGetNotFound = typed.object({
   type: typed.string.maybe,
@@ -122,7 +109,6 @@ export const apiV1CommentsCommentIdGetNotFound = typed.object({
   detail: typed.string.maybe,
   instance: typed.string.maybe
 });
-
 /* Internal Server Error */
 export const apiV1CommentsCommentIdGetInternalServerError = typed.object({
   type: typed.string.maybe,
@@ -153,7 +139,6 @@ export const apiV1CommentsCommentIdGetFx = createEffect<ApiV1CommentsCommentIdGe
       500: ["internal_server_error", apiV1CommentsCommentIdGetInternalServerError]
     });
   }
-
 });
 //#endregion apiV1CommentsCommentIdGet
 
@@ -167,7 +152,6 @@ export type ApiV1CommentsGet = {
     count: number;
   };
 };
-
 /* OK */
 export const apiV1CommentsGetOk = typed.object({
   total_count: typed.number,
@@ -179,7 +163,7 @@ export const apiV1CommentsGetOk = typed.object({
       username: typed.string,
       display_name: typed.string,
       avatar_url: typed.string.maybe
-    })).maybe,
+    })),
     created_at: typed.string,
     reply_count: typed.number,
     first_replies_authors: typed.array(typed.object({
@@ -187,14 +171,15 @@ export const apiV1CommentsGetOk = typed.object({
       username: typed.string,
       display_name: typed.string,
       avatar_url: typed.string.maybe
-    }))
+    })),
+    reaction_counters: typed.object({}),
+    viewer_reactions: typed.array(typed.string)
   }))
 });
 export type ApiV1CommentsGetDone = {
   status: "ok";
   answer: typed.Get<typeof apiV1CommentsGetOk>;
 };
-
 /* Bad Request */
 export const apiV1CommentsGetBadRequest = typed.object({
   type: typed.string.maybe,
@@ -204,7 +189,6 @@ export const apiV1CommentsGetBadRequest = typed.object({
   instance: typed.string.maybe,
   errors: typed.object({}).optional
 });
-
 /* Internal Server Error */
 export const apiV1CommentsGetInternalServerError = typed.object({
   type: typed.string.maybe,
@@ -236,7 +220,6 @@ export const apiV1CommentsGetFx = createEffect<ApiV1CommentsGet, ApiV1CommentsGe
       500: ["internal_server_error", apiV1CommentsGetInternalServerError]
     });
   }
-
 });
 //#endregion apiV1CommentsGet
 
@@ -248,7 +231,6 @@ export type ApiV1CommentsPost = {
     content?: string;
   };
 };
-
 /* Created */
 export const apiV1CommentsPostCreated = typed.object({
   id: typed.string,
@@ -258,7 +240,7 @@ export const apiV1CommentsPostCreated = typed.object({
     username: typed.string,
     display_name: typed.string,
     avatar_url: typed.string.maybe
-  })).maybe,
+  })),
   created_at: typed.string,
   reply_count: typed.number,
   first_replies_authors: typed.array(typed.object({
@@ -266,13 +248,14 @@ export const apiV1CommentsPostCreated = typed.object({
     username: typed.string,
     display_name: typed.string,
     avatar_url: typed.string.maybe
-  }))
+  })),
+  reaction_counters: typed.object({}),
+  viewer_reactions: typed.array(typed.string)
 });
 export type ApiV1CommentsPostDone = {
   status: "created";
   answer: typed.Get<typeof apiV1CommentsPostCreated>;
 };
-
 /* Bad Request */
 export const apiV1CommentsPostBadRequest = typed.object({
   type: typed.string.maybe,
@@ -282,7 +265,6 @@ export const apiV1CommentsPostBadRequest = typed.object({
   instance: typed.string.maybe,
   errors: typed.object({}).optional
 });
-
 /* Forbidden */
 export const apiV1CommentsPostForbidden = typed.object({
   type: typed.string.maybe,
@@ -291,7 +273,6 @@ export const apiV1CommentsPostForbidden = typed.object({
   detail: typed.string.maybe,
   instance: typed.string.maybe
 });
-
 /* Internal Server Error */
 export const apiV1CommentsPostInternalServerError = typed.object({
   type: typed.string.maybe,
@@ -327,7 +308,6 @@ export const apiV1CommentsPostFx = createEffect<ApiV1CommentsPost, ApiV1Comments
       500: ["internal_server_error", apiV1CommentsPostInternalServerError]
     });
   }
-
 });
 //#endregion apiV1CommentsPost
 
@@ -342,7 +322,6 @@ export type ApiV1CommentsParentCommentIdRepliesGet = {
     count: number;
   };
 };
-
 /* OK */
 export const apiV1CommentsParentCommentIdRepliesGetOk = typed.object({
   total_count: typed.number,
@@ -354,7 +333,7 @@ export const apiV1CommentsParentCommentIdRepliesGetOk = typed.object({
       username: typed.string,
       display_name: typed.string,
       avatar_url: typed.string.maybe
-    })).maybe,
+    })),
     created_at: typed.string,
     reply_count: typed.number,
     first_replies_authors: typed.array(typed.object({
@@ -362,14 +341,15 @@ export const apiV1CommentsParentCommentIdRepliesGetOk = typed.object({
       username: typed.string,
       display_name: typed.string,
       avatar_url: typed.string.maybe
-    }))
+    })),
+    reaction_counters: typed.object({}),
+    viewer_reactions: typed.array(typed.string)
   }))
 });
 export type ApiV1CommentsParentCommentIdRepliesGetDone = {
   status: "ok";
   answer: typed.Get<typeof apiV1CommentsParentCommentIdRepliesGetOk>;
 };
-
 /* Bad Request */
 export const apiV1CommentsParentCommentIdRepliesGetBadRequest = typed.object({
   type: typed.string.maybe,
@@ -379,7 +359,6 @@ export const apiV1CommentsParentCommentIdRepliesGetBadRequest = typed.object({
   instance: typed.string.maybe,
   errors: typed.object({}).optional
 });
-
 /* Not Found */
 export const apiV1CommentsParentCommentIdRepliesGetNotFound = typed.object({
   type: typed.string.maybe,
@@ -388,7 +367,6 @@ export const apiV1CommentsParentCommentIdRepliesGetNotFound = typed.object({
   detail: typed.string.maybe,
   instance: typed.string.maybe
 });
-
 /* Internal Server Error */
 export const apiV1CommentsParentCommentIdRepliesGetInternalServerError = typed.object({
   type: typed.string.maybe,
@@ -425,7 +403,6 @@ export const apiV1CommentsParentCommentIdRepliesGetFx = createEffect<ApiV1Commen
       500: ["internal_server_error", apiV1CommentsParentCommentIdRepliesGetInternalServerError]
     });
   }
-
 });
 //#endregion apiV1CommentsParentCommentIdRepliesGet
 
@@ -439,7 +416,6 @@ export type ApiV1CommentsParentCommentIdRepliesPost = {
     parentCommentId: string;
   };
 };
-
 /* Created */
 export const apiV1CommentsParentCommentIdRepliesPostCreated = typed.object({
   id: typed.string,
@@ -449,7 +425,7 @@ export const apiV1CommentsParentCommentIdRepliesPostCreated = typed.object({
     username: typed.string,
     display_name: typed.string,
     avatar_url: typed.string.maybe
-  })).maybe,
+  })),
   created_at: typed.string,
   reply_count: typed.number,
   first_replies_authors: typed.array(typed.object({
@@ -457,13 +433,14 @@ export const apiV1CommentsParentCommentIdRepliesPostCreated = typed.object({
     username: typed.string,
     display_name: typed.string,
     avatar_url: typed.string.maybe
-  }))
+  })),
+  reaction_counters: typed.object({}),
+  viewer_reactions: typed.array(typed.string)
 });
 export type ApiV1CommentsParentCommentIdRepliesPostDone = {
   status: "created";
   answer: typed.Get<typeof apiV1CommentsParentCommentIdRepliesPostCreated>;
 };
-
 /* Bad Request */
 export const apiV1CommentsParentCommentIdRepliesPostBadRequest = typed.object({
   type: typed.string.maybe,
@@ -473,7 +450,6 @@ export const apiV1CommentsParentCommentIdRepliesPostBadRequest = typed.object({
   instance: typed.string.maybe,
   errors: typed.object({}).optional
 });
-
 /* Forbidden */
 export const apiV1CommentsParentCommentIdRepliesPostForbidden = typed.object({
   type: typed.string.maybe,
@@ -482,7 +458,6 @@ export const apiV1CommentsParentCommentIdRepliesPostForbidden = typed.object({
   detail: typed.string.maybe,
   instance: typed.string.maybe
 });
-
 /* Not Found */
 export const apiV1CommentsParentCommentIdRepliesPostNotFound = typed.object({
   type: typed.string.maybe,
@@ -491,7 +466,6 @@ export const apiV1CommentsParentCommentIdRepliesPostNotFound = typed.object({
   detail: typed.string.maybe,
   instance: typed.string.maybe
 });
-
 /* Internal Server Error */
 export const apiV1CommentsParentCommentIdRepliesPostInternalServerError = typed.object({
   type: typed.string.maybe,
@@ -532,9 +506,94 @@ export const apiV1CommentsParentCommentIdRepliesPostFx = createEffect<ApiV1Comme
       500: ["internal_server_error", apiV1CommentsParentCommentIdRepliesPostInternalServerError]
     });
   }
-
 });
 //#endregion apiV1CommentsParentCommentIdRepliesPost
+
+/* --- */
+//#region apiV1CommentsDiscussionIdReactionsPost
+export type ApiV1CommentsDiscussionIdReactionsPost = {
+  body?: string[];
+  path: {
+    discussionId: string;
+  };
+};
+/* No Content */
+export const apiV1CommentsDiscussionIdReactionsPostNoContent = typed.string;
+export type ApiV1CommentsDiscussionIdReactionsPostDone = {
+  status: "no_content";
+  answer: typed.Get<typeof apiV1CommentsDiscussionIdReactionsPostNoContent>;
+};
+/* Bad Request */
+export const apiV1CommentsDiscussionIdReactionsPostBadRequest = typed.object({
+  type: typed.string.maybe,
+  title: typed.string.maybe,
+  status: typed.number.maybe,
+  detail: typed.string.maybe,
+  instance: typed.string.maybe,
+  errors: typed.object({}).optional
+});
+/* Forbidden */
+export const apiV1CommentsDiscussionIdReactionsPostForbidden = typed.object({
+  type: typed.string.maybe,
+  title: typed.string.maybe,
+  status: typed.number.maybe,
+  detail: typed.string.maybe,
+  instance: typed.string.maybe
+});
+/* Not Found */
+export const apiV1CommentsDiscussionIdReactionsPostNotFound = typed.object({
+  type: typed.string.maybe,
+  title: typed.string.maybe,
+  status: typed.number.maybe,
+  detail: typed.string.maybe,
+  instance: typed.string.maybe
+});
+/* Internal Server Error */
+export const apiV1CommentsDiscussionIdReactionsPostInternalServerError = typed.object({
+  type: typed.string.maybe,
+  title: typed.string.maybe,
+  status: typed.number.maybe,
+  detail: typed.string.maybe,
+  instance: typed.string.maybe
+});
+export type ApiV1CommentsDiscussionIdReactionsPostFail = {
+  status: "bad_request";
+  error: typed.Get<typeof apiV1CommentsDiscussionIdReactionsPostBadRequest>;
+} | {
+  status: "forbidden";
+  error: typed.Get<typeof apiV1CommentsDiscussionIdReactionsPostForbidden>;
+} | {
+  status: "not_found";
+  error: typed.Get<typeof apiV1CommentsDiscussionIdReactionsPostNotFound>;
+} | {
+  status: "internal_server_error";
+  error: typed.Get<typeof apiV1CommentsDiscussionIdReactionsPostInternalServerError>;
+} | GenericErrors;
+export const apiV1CommentsDiscussionIdReactionsPostFx = createEffect<ApiV1CommentsDiscussionIdReactionsPost, ApiV1CommentsDiscussionIdReactionsPostDone, ApiV1CommentsDiscussionIdReactionsPostFail>({
+  async handler({
+    body,
+    path
+  }) {
+    const name = "apiV1CommentsDiscussionIdReactionsPostFx.body";
+    const response = await requestFx({
+      path: `/api/v1/comments/${path.discussionId}/reactions`,
+      method: "POST",
+      body
+    });
+    console.log(123)
+    console.log(name, response)
+    const status = parseByStatus(name, response, {
+      204: ["no_content", apiV1CommentsDiscussionIdReactionsPostNoContent],
+      400: ["bad_request", apiV1CommentsDiscussionIdReactionsPostBadRequest],
+      403: ["forbidden", apiV1CommentsDiscussionIdReactionsPostForbidden],
+      404: ["not_found", apiV1CommentsDiscussionIdReactionsPostNotFound],
+      500: ["internal_server_error", apiV1CommentsDiscussionIdReactionsPostInternalServerError]
+    });
+    console.log(status)
+    return status;
+  }
+});
+//#endregion apiV1CommentsDiscussionIdReactionsPost
 
 /* --- */
 //#region apiV1DiscussionsDiscussionIdGet
@@ -543,7 +602,6 @@ export type ApiV1DiscussionsDiscussionIdGet = {
     discussionId: string;
   };
 };
-
 /* OK */
 export const apiV1DiscussionsDiscussionIdGetOk = typed.object({
   id: typed.string,
@@ -554,16 +612,25 @@ export const apiV1DiscussionsDiscussionIdGetOk = typed.object({
     username: typed.string,
     display_name: typed.string,
     avatar_url: typed.string.maybe
-  })).maybe,
-  created_at: typed.string
+  })),
+  created_at: typed.string,
+  reaction_counters: typed.object({}),
+  viewer_reactions: typed.array(typed.string)
 });
 export type ApiV1DiscussionsDiscussionIdGetDone = {
   status: "ok";
   answer: typed.Get<typeof apiV1DiscussionsDiscussionIdGetOk>;
 };
-
 /* Not Found */
 export const apiV1DiscussionsDiscussionIdGetNotFound = typed.object({
+  type: typed.string.maybe,
+  title: typed.string.maybe,
+  status: typed.number.maybe,
+  detail: typed.string.maybe,
+  instance: typed.string.maybe
+});
+/* Internal Server Error */
+export const apiV1DiscussionsDiscussionIdGetInternalServerError = typed.object({
   type: typed.string.maybe,
   title: typed.string.maybe,
   status: typed.number.maybe,
@@ -573,6 +640,9 @@ export const apiV1DiscussionsDiscussionIdGetNotFound = typed.object({
 export type ApiV1DiscussionsDiscussionIdGetFail = {
   status: "not_found";
   error: typed.Get<typeof apiV1DiscussionsDiscussionIdGetNotFound>;
+} | {
+  status: "internal_server_error";
+  error: typed.Get<typeof apiV1DiscussionsDiscussionIdGetInternalServerError>;
 } | GenericErrors;
 export const apiV1DiscussionsDiscussionIdGetFx = createEffect<ApiV1DiscussionsDiscussionIdGet, ApiV1DiscussionsDiscussionIdGetDone, ApiV1DiscussionsDiscussionIdGetFail>({
   async handler({
@@ -585,12 +655,97 @@ export const apiV1DiscussionsDiscussionIdGetFx = createEffect<ApiV1DiscussionsDi
     });
     return parseByStatus(name, response, {
       200: ["ok", apiV1DiscussionsDiscussionIdGetOk],
-      404: ["not_found", apiV1DiscussionsDiscussionIdGetNotFound]
+      404: ["not_found", apiV1DiscussionsDiscussionIdGetNotFound],
+      500: ["internal_server_error", apiV1DiscussionsDiscussionIdGetInternalServerError]
     });
   }
-
 });
 //#endregion apiV1DiscussionsDiscussionIdGet
+
+/* --- */
+//#region apiV1DiscussionsDiscussionIdPatch
+export type ApiV1DiscussionsDiscussionIdPatch = {
+  body?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  path: {
+    discussionId: string;
+  };
+};
+/* OK */
+export const apiV1DiscussionsDiscussionIdPatchOk = typed.object({
+  id: typed.string,
+  title: typed.string,
+  description: typed.string,
+  author: typed.intersection(typed.object({
+    id: typed.string,
+    username: typed.string,
+    display_name: typed.string,
+    avatar_url: typed.string.maybe
+  })),
+  created_at: typed.string,
+  reaction_counters: typed.object({}),
+  viewer_reactions: typed.array(typed.string)
+});
+export type ApiV1DiscussionsDiscussionIdPatchDone = {
+  status: "ok";
+  answer: typed.Get<typeof apiV1DiscussionsDiscussionIdPatchOk>;
+};
+/* Forbidden */
+export const apiV1DiscussionsDiscussionIdPatchForbidden = typed.object({
+  type: typed.string.maybe,
+  title: typed.string.maybe,
+  status: typed.number.maybe,
+  detail: typed.string.maybe,
+  instance: typed.string.maybe
+});
+/* Not Found */
+export const apiV1DiscussionsDiscussionIdPatchNotFound = typed.object({
+  type: typed.string.maybe,
+  title: typed.string.maybe,
+  status: typed.number.maybe,
+  detail: typed.string.maybe,
+  instance: typed.string.maybe
+});
+/* Internal Server Error */
+export const apiV1DiscussionsDiscussionIdPatchInternalServerError = typed.object({
+  type: typed.string.maybe,
+  title: typed.string.maybe,
+  status: typed.number.maybe,
+  detail: typed.string.maybe,
+  instance: typed.string.maybe
+});
+export type ApiV1DiscussionsDiscussionIdPatchFail = {
+  status: "forbidden";
+  error: typed.Get<typeof apiV1DiscussionsDiscussionIdPatchForbidden>;
+} | {
+  status: "not_found";
+  error: typed.Get<typeof apiV1DiscussionsDiscussionIdPatchNotFound>;
+} | {
+  status: "internal_server_error";
+  error: typed.Get<typeof apiV1DiscussionsDiscussionIdPatchInternalServerError>;
+} | GenericErrors;
+export const apiV1DiscussionsDiscussionIdPatchFx = createEffect<ApiV1DiscussionsDiscussionIdPatch, ApiV1DiscussionsDiscussionIdPatchDone, ApiV1DiscussionsDiscussionIdPatchFail>({
+  async handler({
+    body,
+    path
+  }) {
+    const name = "apiV1DiscussionsDiscussionIdPatchFx.body";
+    const response = await requestFx({
+      path: `/api/v1/discussions/${path.discussionId}`,
+      method: "PATCH",
+      body
+    });
+    return parseByStatus(name, response, {
+      200: ["ok", apiV1DiscussionsDiscussionIdPatchOk],
+      403: ["forbidden", apiV1DiscussionsDiscussionIdPatchForbidden],
+      404: ["not_found", apiV1DiscussionsDiscussionIdPatchNotFound],
+      500: ["internal_server_error", apiV1DiscussionsDiscussionIdPatchInternalServerError]
+    });
+  }
+});
+//#endregion apiV1DiscussionsDiscussionIdPatch
 
 /* --- */
 //#region apiV1DiscussionsGet
@@ -601,7 +756,6 @@ export type ApiV1DiscussionsGet = {
     count: number;
   };
 };
-
 /* OK */
 export const apiV1DiscussionsGetOk = typed.object({
   total_count: typed.number,
@@ -614,15 +768,28 @@ export const apiV1DiscussionsGetOk = typed.object({
       username: typed.string,
       display_name: typed.string,
       avatar_url: typed.string.maybe
-    })).maybe,
-    created_at: typed.string
+    })),
+    created_at: typed.string,
+    reaction_counters: typed.object({}),
+    viewer_reactions: typed.array(typed.string)
   }))
 });
 export type ApiV1DiscussionsGetDone = {
   status: "ok";
   answer: typed.Get<typeof apiV1DiscussionsGetOk>;
 };
-export type ApiV1DiscussionsGetFail = GenericErrors;
+/* Internal Server Error */
+export const apiV1DiscussionsGetInternalServerError = typed.object({
+  type: typed.string.maybe,
+  title: typed.string.maybe,
+  status: typed.number.maybe,
+  detail: typed.string.maybe,
+  instance: typed.string.maybe
+});
+export type ApiV1DiscussionsGetFail = {
+  status: "internal_server_error";
+  error: typed.Get<typeof apiV1DiscussionsGetInternalServerError>;
+} | GenericErrors;
 export const apiV1DiscussionsGetFx = createEffect<ApiV1DiscussionsGet, ApiV1DiscussionsGetDone, ApiV1DiscussionsGetFail>({
   async handler({
     query
@@ -634,10 +801,10 @@ export const apiV1DiscussionsGetFx = createEffect<ApiV1DiscussionsGet, ApiV1Disc
       query
     });
     return parseByStatus(name, response, {
-      200: ["ok", apiV1DiscussionsGetOk]
+      200: ["ok", apiV1DiscussionsGetOk],
+      500: ["internal_server_error", apiV1DiscussionsGetInternalServerError]
     });
   }
-
 });
 //#endregion apiV1DiscussionsGet
 
@@ -649,7 +816,6 @@ export type ApiV1DiscussionsPost = {
     description?: string;
   };
 };
-
 /* Created */
 export const apiV1DiscussionsPostCreated = typed.object({
   id: typed.string,
@@ -660,16 +826,25 @@ export const apiV1DiscussionsPostCreated = typed.object({
     username: typed.string,
     display_name: typed.string,
     avatar_url: typed.string.maybe
-  })).maybe,
-  created_at: typed.string
+  })),
+  created_at: typed.string,
+  reaction_counters: typed.object({}),
+  viewer_reactions: typed.array(typed.string)
 });
 export type ApiV1DiscussionsPostDone = {
   status: "created";
   answer: typed.Get<typeof apiV1DiscussionsPostCreated>;
 };
-
 /* Forbidden */
 export const apiV1DiscussionsPostForbidden = typed.object({
+  type: typed.string.maybe,
+  title: typed.string.maybe,
+  status: typed.number.maybe,
+  detail: typed.string.maybe,
+  instance: typed.string.maybe
+});
+/* Internal Server Error */
+export const apiV1DiscussionsPostInternalServerError = typed.object({
   type: typed.string.maybe,
   title: typed.string.maybe,
   status: typed.number.maybe,
@@ -679,6 +854,9 @@ export const apiV1DiscussionsPostForbidden = typed.object({
 export type ApiV1DiscussionsPostFail = {
   status: "forbidden";
   error: typed.Get<typeof apiV1DiscussionsPostForbidden>;
+} | {
+  status: "internal_server_error";
+  error: typed.Get<typeof apiV1DiscussionsPostInternalServerError>;
 } | GenericErrors;
 export const apiV1DiscussionsPostFx = createEffect<ApiV1DiscussionsPost, ApiV1DiscussionsPostDone, ApiV1DiscussionsPostFail>({
   async handler({
@@ -692,12 +870,118 @@ export const apiV1DiscussionsPostFx = createEffect<ApiV1DiscussionsPost, ApiV1Di
     });
     return parseByStatus(name, response, {
       201: ["created", apiV1DiscussionsPostCreated],
-      403: ["forbidden", apiV1DiscussionsPostForbidden]
+      403: ["forbidden", apiV1DiscussionsPostForbidden],
+      500: ["internal_server_error", apiV1DiscussionsPostInternalServerError]
     });
   }
-
 });
 //#endregion apiV1DiscussionsPost
+
+/* --- */
+//#region apiV1DiscussionsDiscussionIdReactionsPost
+export type ApiV1DiscussionsDiscussionIdReactionsPost = {
+  body?: string[];
+  path: {
+    discussionId: string;
+  };
+};
+/* No Content */
+export const apiV1DiscussionsDiscussionIdReactionsPostNoContent = typed.nul;
+export type ApiV1DiscussionsDiscussionIdReactionsPostDone = {
+  status: "no_content";
+  answer: typed.Get<typeof apiV1DiscussionsDiscussionIdReactionsPostNoContent>;
+};
+/* Bad Request */
+export const apiV1DiscussionsDiscussionIdReactionsPostBadRequest = typed.object({
+  type: typed.string.maybe,
+  title: typed.string.maybe,
+  status: typed.number.maybe,
+  detail: typed.string.maybe,
+  instance: typed.string.maybe,
+  errors: typed.object({}).optional
+});
+/* Forbidden */
+export const apiV1DiscussionsDiscussionIdReactionsPostForbidden = typed.object({
+  type: typed.string.maybe,
+  title: typed.string.maybe,
+  status: typed.number.maybe,
+  detail: typed.string.maybe,
+  instance: typed.string.maybe
+});
+/* Not Found */
+export const apiV1DiscussionsDiscussionIdReactionsPostNotFound = typed.object({
+  type: typed.string.maybe,
+  title: typed.string.maybe,
+  status: typed.number.maybe,
+  detail: typed.string.maybe,
+  instance: typed.string.maybe
+});
+/* Internal Server Error */
+export const apiV1DiscussionsDiscussionIdReactionsPostInternalServerError = typed.object({
+  type: typed.string.maybe,
+  title: typed.string.maybe,
+  status: typed.number.maybe,
+  detail: typed.string.maybe,
+  instance: typed.string.maybe
+});
+export type ApiV1DiscussionsDiscussionIdReactionsPostFail = {
+  status: "bad_request";
+  error: typed.Get<typeof apiV1DiscussionsDiscussionIdReactionsPostBadRequest>;
+} | {
+  status: "forbidden";
+  error: typed.Get<typeof apiV1DiscussionsDiscussionIdReactionsPostForbidden>;
+} | {
+  status: "not_found";
+  error: typed.Get<typeof apiV1DiscussionsDiscussionIdReactionsPostNotFound>;
+} | {
+  status: "internal_server_error";
+  error: typed.Get<typeof apiV1DiscussionsDiscussionIdReactionsPostInternalServerError>;
+} | GenericErrors;
+export const apiV1DiscussionsDiscussionIdReactionsPostFx = createEffect<ApiV1DiscussionsDiscussionIdReactionsPost, ApiV1DiscussionsDiscussionIdReactionsPostDone, ApiV1DiscussionsDiscussionIdReactionsPostFail>({
+  async handler({
+    body,
+    path
+  }) {
+    const name = "apiV1DiscussionsDiscussionIdReactionsPostFx.body";
+    const response = await requestFx({
+      path: `/api/v1/discussions/${path.discussionId}/reactions`,
+      method: "POST",
+      body
+    });
+    return parseByStatus(name, response, {
+      204: ["no_content", apiV1DiscussionsDiscussionIdReactionsPostNoContent],
+      400: ["bad_request", apiV1DiscussionsDiscussionIdReactionsPostBadRequest],
+      403: ["forbidden", apiV1DiscussionsDiscussionIdReactionsPostForbidden],
+      404: ["not_found", apiV1DiscussionsDiscussionIdReactionsPostNotFound],
+      500: ["internal_server_error", apiV1DiscussionsDiscussionIdReactionsPostInternalServerError]
+    });
+  }
+});
+//#endregion apiV1DiscussionsDiscussionIdReactionsPost
+
+/* --- */
+//#region apiV1LookupReactionsGet
+export type ApiV1LookupReactionsGet = {};
+/* OK */
+export const apiV1LookupReactionsGetOk = typed.array(typed.string);
+export type ApiV1LookupReactionsGetDone = {
+  status: "ok";
+  answer: typed.Get<typeof apiV1LookupReactionsGetOk>;
+};
+export type ApiV1LookupReactionsGetFail = GenericErrors;
+export const apiV1LookupReactionsGetFx = createEffect<ApiV1LookupReactionsGet, ApiV1LookupReactionsGetDone, ApiV1LookupReactionsGetFail>({
+  async handler() {
+    const name = "apiV1LookupReactionsGetFx.body";
+    const response = await requestFx({
+      path: "/api/v1/lookup/reactions",
+      method: "GET"
+    });
+    return parseByStatus(name, response, {
+      200: ["ok", apiV1LookupReactionsGetOk]
+    });
+  }
+});
+//#endregion apiV1LookupReactionsGet
 
 /* --- */
 //#region apiV1AuthenticationSignInPost
@@ -707,7 +991,6 @@ export type ApiV1AuthenticationSignInPost = {
     password?: string;
   };
 };
-
 /* OK */
 export const apiV1AuthenticationSignInPostOk = typed.object({
   id: typed.string.optional,
@@ -719,12 +1002,10 @@ export type ApiV1AuthenticationSignInPostDone = {
   status: "ok";
   answer: typed.Get<typeof apiV1AuthenticationSignInPostOk>;
 };
-
 /* Unauthorized */
 export const apiV1AuthenticationSignInPostUnauthorized = typed.object({
   error_description: typed.string.optional
 });
-
 /* Internal Server Error */
 export const apiV1AuthenticationSignInPostInternalServerError = typed.object({
   error_description: typed.string.optional
@@ -744,7 +1025,7 @@ export const apiV1AuthenticationSignInPostFx = createEffect<ApiV1AuthenticationS
     const response = await requestFx({
       path: "/api/v1/authentication/sign-in",
       method: "POST",
-      body: convertBodyToUrlSearchParams(body)
+      body
     });
     return parseByStatus(name, response, {
       200: ["ok", apiV1AuthenticationSignInPostOk],
@@ -752,21 +1033,18 @@ export const apiV1AuthenticationSignInPostFx = createEffect<ApiV1AuthenticationS
       500: ["internal_server_error", apiV1AuthenticationSignInPostInternalServerError]
     });
   }
-
 });
 //#endregion apiV1AuthenticationSignInPost
 
 /* --- */
 //#region apiV1AuthenticationSignOutPost
 export type ApiV1AuthenticationSignOutPost = {};
-
 /* OK */
 export const apiV1AuthenticationSignOutPostOk = typed.nul;
 export type ApiV1AuthenticationSignOutPostDone = {
   status: "ok";
   answer: typed.Get<typeof apiV1AuthenticationSignOutPostOk>;
 };
-
 /* Unauthorized */
 export const apiV1AuthenticationSignOutPostUnauthorized = typed.object({
   type: typed.string.maybe,
@@ -791,7 +1069,6 @@ export const apiV1AuthenticationSignOutPostFx = createEffect<ApiV1Authentication
       401: ["unauthorized", apiV1AuthenticationSignOutPostUnauthorized]
     });
   }
-
 });
 //#endregion apiV1AuthenticationSignOutPost
 
@@ -802,7 +1079,6 @@ export type ApiV1AuthenticationSsoGoogleGet = {
     returnUrl?: string;
   };
 };
-
 /* Found */
 export const apiV1AuthenticationSsoGoogleGetFound = typed.nul;
 export type ApiV1AuthenticationSsoGoogleGetDone = {
@@ -824,7 +1100,6 @@ export const apiV1AuthenticationSsoGoogleGetFx = createEffect<ApiV1Authenticatio
       302: ["found", apiV1AuthenticationSsoGoogleGetFound]
     });
   }
-
 });
 //#endregion apiV1AuthenticationSsoGoogleGet
 
@@ -836,7 +1111,6 @@ export type ApiV1AuthenticationSignInGoogleCallbackGet = {
     state?: string;
   };
 };
-
 /* OK */
 export const apiV1AuthenticationSignInGoogleCallbackGetOk = typed.object({
   id: typed.string.optional,
@@ -844,7 +1118,6 @@ export const apiV1AuthenticationSignInGoogleCallbackGetOk = typed.object({
   display_name: typed.string.optional,
   avatar_url: typed.string.maybe
 });
-
 /* Found */
 export const apiV1AuthenticationSignInGoogleCallbackGetFound = typed.nul;
 export type ApiV1AuthenticationSignInGoogleCallbackGetDone = {
@@ -854,23 +1127,19 @@ export type ApiV1AuthenticationSignInGoogleCallbackGetDone = {
   status: "found";
   answer: typed.Get<typeof apiV1AuthenticationSignInGoogleCallbackGetFound>;
 };
-
 /* Bad Request */
 export const apiV1AuthenticationSignInGoogleCallbackGetBadRequest = typed.object({
   error_description: typed.string.optional,
   validation_errors: typed.object({}).optional
 });
-
 /* Unauthorized */
 export const apiV1AuthenticationSignInGoogleCallbackGetUnauthorized = typed.object({
   error_description: typed.string.optional
 });
-
 /* Internal Server Error */
 export const apiV1AuthenticationSignInGoogleCallbackGetInternalServerError = typed.object({
   error_description: typed.string.optional
 });
-
 /* Service Unavailable */
 export const apiV1AuthenticationSignInGoogleCallbackGetServiceUnavailable = typed.object({
   error_description: typed.string.optional
@@ -907,7 +1176,6 @@ export const apiV1AuthenticationSignInGoogleCallbackGetFx = createEffect<ApiV1Au
       503: ["service_unavailable", apiV1AuthenticationSignInGoogleCallbackGetServiceUnavailable]
     });
   }
-
 });
 //#endregion apiV1AuthenticationSignInGoogleCallbackGet
 
@@ -923,7 +1191,6 @@ export type ApiV1UsersRegisterPost = {
     external_login_ticket_id?: string | null;
   };
 };
-
 /* OK */
 export const apiV1UsersRegisterPostOk = typed.object({
   id: typed.string.optional,
@@ -936,18 +1203,15 @@ export type ApiV1UsersRegisterPostDone = {
   status: "ok";
   answer: typed.Get<typeof apiV1UsersRegisterPostOk>;
 };
-
 /* Bad Request */
 export const apiV1UsersRegisterPostBadRequest = typed.object({
   error_description: typed.string.optional,
   validation_errors: typed.object({}).optional
 });
-
 /* Forbidden */
 export const apiV1UsersRegisterPostForbidden = typed.object({
   error_description: typed.string.optional
 });
-
 /* Internal Server Error */
 export const apiV1UsersRegisterPostInternalServerError = typed.object({
   error_description: typed.string.optional
@@ -979,7 +1243,6 @@ export const apiV1UsersRegisterPostFx = createEffect<ApiV1UsersRegisterPost, Api
       500: ["internal_server_error", apiV1UsersRegisterPostInternalServerError]
     });
   }
-
 });
 //#endregion apiV1UsersRegisterPost
 
@@ -990,7 +1253,6 @@ export type ApiV1UsersUserIdGet = {
     userId: string;
   };
 };
-
 /* OK */
 export const apiV1UsersUserIdGetOk = typed.object({
   id: typed.string.optional,
@@ -1002,12 +1264,10 @@ export type ApiV1UsersUserIdGetDone = {
   status: "ok";
   answer: typed.Get<typeof apiV1UsersUserIdGetOk>;
 };
-
 /* Not Found */
 export const apiV1UsersUserIdGetNotFound = typed.object({
   error_description: typed.string.optional
 });
-
 /* Internal Server Error */
 export const apiV1UsersUserIdGetInternalServerError = typed.object({
   error_description: typed.string.optional
@@ -1034,7 +1294,6 @@ export const apiV1UsersUserIdGetFx = createEffect<ApiV1UsersUserIdGet, ApiV1User
       500: ["internal_server_error", apiV1UsersUserIdGetInternalServerError]
     });
   }
-
 });
 //#endregion apiV1UsersUserIdGet
 
@@ -1053,7 +1312,6 @@ export type ApiV1UsersUserIdPut = {
     userId: string;
   };
 };
-
 /* OK */
 export const apiV1UsersUserIdPutOk = typed.object({
   id: typed.string.optional,
@@ -1066,23 +1324,19 @@ export type ApiV1UsersUserIdPutDone = {
   status: "ok";
   answer: typed.Get<typeof apiV1UsersUserIdPutOk>;
 };
-
 /* Bad Request */
 export const apiV1UsersUserIdPutBadRequest = typed.object({
   error_description: typed.string.optional,
   validation_errors: typed.object({}).optional
 });
-
 /* Forbidden */
 export const apiV1UsersUserIdPutForbidden = typed.object({
   error_description: typed.string.optional
 });
-
 /* Not Found */
 export const apiV1UsersUserIdPutNotFound = typed.object({
   error_description: typed.string.optional
 });
-
 /* Internal Server Error */
 export const apiV1UsersUserIdPutInternalServerError = typed.object({
   error_description: typed.string.optional
@@ -1119,7 +1373,6 @@ export const apiV1UsersUserIdPutFx = createEffect<ApiV1UsersUserIdPut, ApiV1User
       500: ["internal_server_error", apiV1UsersUserIdPutInternalServerError]
     });
   }
-
 });
 //#endregion apiV1UsersUserIdPut
 
@@ -1130,7 +1383,6 @@ export type ApiV1UsersUserIdDelete = {
     userId: string;
   };
 };
-
 /* OK */
 export const apiV1UsersUserIdDeleteOk = typed.object({
   id: typed.string.optional,
@@ -1143,17 +1395,14 @@ export type ApiV1UsersUserIdDeleteDone = {
   status: "ok";
   answer: typed.Get<typeof apiV1UsersUserIdDeleteOk>;
 };
-
 /* Forbidden */
 export const apiV1UsersUserIdDeleteForbidden = typed.object({
   error_description: typed.string.optional
 });
-
 /* Not Found */
 export const apiV1UsersUserIdDeleteNotFound = typed.object({
   error_description: typed.string.optional
 });
-
 /* Internal Server Error */
 export const apiV1UsersUserIdDeleteInternalServerError = typed.object({
   error_description: typed.string.optional
@@ -1184,14 +1433,12 @@ export const apiV1UsersUserIdDeleteFx = createEffect<ApiV1UsersUserIdDelete, Api
       500: ["internal_server_error", apiV1UsersUserIdDeleteInternalServerError]
     });
   }
-
 });
 //#endregion apiV1UsersUserIdDelete
 
 /* --- */
 //#region apiV1UsersSelfGet
 export type ApiV1UsersSelfGet = {};
-
 /* OK */
 export const apiV1UsersSelfGetOk = typed.object({
   id: typed.string.optional,
@@ -1203,12 +1450,10 @@ export type ApiV1UsersSelfGetDone = {
   status: "ok";
   answer: typed.Get<typeof apiV1UsersSelfGetOk>;
 };
-
 /* Not Found */
 export const apiV1UsersSelfGetNotFound = typed.object({
   error_description: typed.string.optional
 });
-
 /* Internal Server Error */
 export const apiV1UsersSelfGetInternalServerError = typed.object({
   error_description: typed.string.optional
@@ -1233,7 +1478,6 @@ export const apiV1UsersSelfGetFx = createEffect<ApiV1UsersSelfGet, ApiV1UsersSel
       500: ["internal_server_error", apiV1UsersSelfGetInternalServerError]
     });
   }
-
 });
 //#endregion apiV1UsersSelfGet
 
@@ -1244,7 +1488,6 @@ export type ApiV1UsersResolveGet = {
     username?: string;
   };
 };
-
 /* OK */
 export const apiV1UsersResolveGetOk = typed.object({
   id: typed.string.optional,
@@ -1256,18 +1499,15 @@ export type ApiV1UsersResolveGetDone = {
   status: "ok";
   answer: typed.Get<typeof apiV1UsersResolveGetOk>;
 };
-
 /* Bad Request */
 export const apiV1UsersResolveGetBadRequest = typed.object({
   error_description: typed.string.optional,
   validation_errors: typed.object({}).optional
 });
-
 /* Not Found */
 export const apiV1UsersResolveGetNotFound = typed.object({
   error_description: typed.string.optional
 });
-
 /* Internal Server Error */
 export const apiV1UsersResolveGetInternalServerError = typed.object({
   error_description: typed.string.optional
@@ -1299,7 +1539,6 @@ export const apiV1UsersResolveGetFx = createEffect<ApiV1UsersResolveGet, ApiV1Us
       500: ["internal_server_error", apiV1UsersResolveGetInternalServerError]
     });
   }
-
 });
 //#endregion apiV1UsersResolveGet
 

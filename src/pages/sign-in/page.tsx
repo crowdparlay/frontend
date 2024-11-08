@@ -4,10 +4,10 @@ import {useUnit} from 'effector-react';
 import {routes} from '~/shared/routes';
 import {
   Attention,
-  Button,
   ButtonVariant,
   Container,
   ContainerSize,
+  CustomButton,
   Form,
   Input,
   Link,
@@ -57,9 +57,9 @@ export const SignInPage = () => {
 
           {formError && <Attention>{formError}</Attention>}
 
-          <Button disabled={loading || !eachValid} type="submit">
+          <CustomButton disabled={loading || !eachValid} type="submit">
             Proceed
-          </Button>
+          </CustomButton>
         </Form>
 
         <div className={cls.external}>
@@ -68,14 +68,14 @@ export const SignInPage = () => {
           </Text>
 
           <div className={cls.list}>
-            <Button
+            <CustomButton
               onClick={onSignInWithGoogleClicked}
               variant={ButtonVariant.SECONDARY}
               className={cls.button}
             >
               <GoogleIcon />
               Proceed with Google
-            </Button>
+            </CustomButton>
           </div>
 
           <div className={cls.list}>

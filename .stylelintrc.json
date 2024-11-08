@@ -11,6 +11,12 @@
       }
     ],
     "order/order": ["custom-properties", "declarations"],
-    "order/properties-order": ["width", "height"]
+    "order/properties-order": ["width", "height"],
+    "scss/at-rule-no-unknown": [
+      true,
+      {
+        "ignoreAtRules": ["tailwind", "apply", "variants", "responsive", "screen"]
+      }
+    ]
   }
 }

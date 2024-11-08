@@ -6,9 +6,9 @@ import {ProfilePreview} from '~/features/profile-preview';
 import {routes} from '~/shared/routes';
 import {
   Attention,
-  Button,
   Container,
   ContainerSize,
+  CustomButton,
   Form,
   Input,
   Link,
@@ -97,9 +97,9 @@ export const SignUpPage = () => {
 
           {formError && <Attention>{formError}</Attention>}
 
-          <Button disabled={loading || !eachValid} type="submit" center={true}>
+          <CustomButton disabled={loading || !eachValid} type="submit" center={true}>
             Join
-          </Button>
+          </CustomButton>
         </Form>
 
         <div className={cls.list}>

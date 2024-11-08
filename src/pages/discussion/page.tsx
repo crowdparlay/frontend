@@ -1,4 +1,5 @@
 import {useUnit} from 'effector-react';
+import {useEffect} from 'react';
 
 import {Post} from '~/widgets/post';
 
@@ -7,6 +8,7 @@ import {ReplyForm} from '~/features/reply-form';
 import {
   ApiV1CommentsParentCommentIdRepliesGet,
   ApiV1CommentsParentCommentIdRepliesPost,
+  apiV1LookupReactionsGetFx,
 } from '~/shared/api';
 import {Container, ContainerSize, Page, Pagination, Text, TextSize} from '~/shared/ui';
 import {Card, CardSize} from '~/shared/ui/card';
@@ -37,6 +39,8 @@ const buildReplyTree = (
         }}
         date={new Date(reply.created_at!)}
         text={reply.content!}
+        reactionCounters={reply.reaction_counters}
+        viewerReactions={reply.viewer_reactions}
         commentators={reply.first_replies_authors!.map((x) => ({
           id: x.id!,
           username: x.username!,
@@ -45,7 +49,6 @@ const buildReplyTree = (
         }))}
         commentsCount={reply.reply_count!}
         canReply={true}
-        canReport={true}
         onShownClick={(parentCommentId) =>
           onReplyClicked({path: {parentCommentId}, query: {offset: 0, count: 100}})
         }
@@ -93,6 +96,8 @@ export const DiscussionPage = () => {
         }}
         date={new Date(comment.created_at!)}
         text={comment.content!}
+        reactionCounters={comment.reaction_counters}
+        viewerReactions={comment.viewer_reactions}
         commentators={comment.first_replies_authors!.map((x) => ({
           id: x.id!,
           username: x.username!,
@@ -101,7 +106,6 @@ export const DiscussionPage = () => {
         }))}
         commentsCount={comment.reply_count!}
         canReply={true}
-        canReport={true}
         onShownClick={(parentCommentId) =>
           onReplyClicked({path: {parentCommentId}, query: {offset: 0, count: 100}})
         }
@@ -115,6 +119,10 @@ export const DiscussionPage = () => {
       />
     );
   });
+
+  useEffect(() => {
+    apiV1LookupReactionsGetFx({});
+  }, []);
 
   if (!discussion) {
     return null;

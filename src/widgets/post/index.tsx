@@ -1,21 +1,25 @@
 import classNames from 'classnames';
+import {createStore} from 'effector';
 import {useUnit} from 'effector-react/compat';
-import {HTMLAttributes, memo, ReactNode, useCallback, useState} from 'react';
+import {sortBy} from 'lodash';
+import {HTMLAttributes, memo, ReactNode, useCallback, useEffect, useState} from 'react';
+import {toast} from 'sonner';
+import {cn} from '~/lib/utils';
 
-import LikeFillIcon from '~/widgets/post/assets/likeFill.svg';
-import LikeOutlineIcon from '~/widgets/post/assets/likeOutline.svg';
 import ReplyIcon from '~/widgets/post/assets/reply.svg';
-import ReportIcon from '~/widgets/post/assets/report.svg';
-import {getTimeSince} from '~/widgets/post/lib';
+import {getTimeSince, isEmoji} from '~/widgets/post/lib';
 
 import {InlineAvatars} from '~/features/inline-avatars';
 import {ProfilePreview} from '~/features/profile-preview';
 import {ReplyForm, ReplyFormProps} from '~/features/reply-form';
 
 import '~/shared/api';
+import {apiV1CommentsDiscussionIdReactionsPostFx, apiV1LookupReactionsGetFx} from '~/shared/api';
 import {User} from '~/shared/api/types';
 import {$user} from '~/shared/session';
-import {Button, ButtonVariant, Text, TextSize} from '~/shared/ui';
+import {ButtonVariant, CustomButton, Text, TextSize} from '~/shared/ui';
+import {Button} from '~/shared/ui/button';
+import {ContextMenu, ContextMenuContent, ContextMenuTrigger} from '~/shared/ui/context-menu';
 
 import cls from './index.module.scss';
 
@@ -25,18 +29,18 @@ export interface PostProps extends HTMLAttributes<HTMLDivElement> {
   author: User;
   date: Date;
   text: ReactNode;
+  reactionCounters: Record<string, number>;
+  viewerReactions: readonly string[];
   commentators: User[];
   commentsCount: number;
   canReply: boolean;
-  canReport: boolean;
-  react?: 'like' | 'dislike';
   onReplyClick?: (id: string) => void;
-  onReportClick?: (id: string) => void;
-  onLikeClick?: (id: string) => void;
-  onDisLikeClick?: (id: string) => void;
   onShownClick?: (id: string) => void;
   onReplyFormSubmit?: ReplyFormProps['onSubmit'];
 }
+
+export const $availableReactions = createStore<readonly string[]>([]);
+$availableReactions.on(apiV1LookupReactionsGetFx.doneData, (_, payload) => payload.answer);
 
 export const Post = memo((props: PostProps) => {
   const {
@@ -45,17 +49,15 @@ export const Post = memo((props: PostProps) => {
     author,
     date,
     text,
+    reactionCounters,
+    viewerReactions,
     commentators,
     commentsCount,
     canReply,
-    canReport,
-    react,
     className,
     children,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     onReplyClick,
-    onReportClick,
-    onLikeClick,
-    onDisLikeClick,
     onShownClick,
     onReplyFormSubmit,
     ...otherProps
@@ -83,119 +85,193 @@ export const Post = memo((props: PostProps) => {
     setShowReplyForm(true);
   }, [collapsed, onButtonClick]);
 
+  const availableReactions = useUnit($availableReactions);
+  const [committedReactions, setCommittedReactions] = useState<string[]>([]);
+  const [draftReactions, setDraftReactions] = useState<string[]>([]);
+
+  useEffect(() => {
+    const reactions = viewerReactions as string[];
+    setCommittedReactions(reactions);
+    setDraftReactions(reactions);
+  }, [viewerReactions]);
+
+  const toggleReaction = async (reaction: string) => {
+    const newReactions = draftReactions.includes(reaction)
+      ? draftReactions.filter((draftReaction) => draftReaction !== reaction)
+      : [...draftReactions, reaction].slice(-3);
+
+    setDraftReactions(newReactions);
+
+    apiV1CommentsDiscussionIdReactionsPostFx({
+      path: {discussionId: id},
+      body: newReactions,
+    })
+      .then(() => {
+        setCommittedReactions(newReactions);
+      })
+      .catch(() => {
+        setDraftReactions(committedReactions);
+        toast('Oops...', {
+          description: (
+            <p>
+              Failed to toggle <span className="font-semibold">{reaction}</span>
+            </p>
+          ),
+          action: {
+            label: 'Shit happens',
+            onClick: () => {},
+          },
+        });
+      });
+  };
+
+  const [draftReactionCounters, setDraftReactionCounters] =
+    useState<Record<string, number>>(reactionCounters);
+
+  useEffect(() => {
+    const draftReactionCounters: Record<string, number> = {
+      ...reactionCounters,
+    };
+
+    viewerReactions.forEach((reaction) => {
+      draftReactionCounters[reaction]--;
+    });
+
+    draftReactions.forEach((reaction) => {
+      draftReactionCounters[reaction] ??= 0;
+      draftReactionCounters[reaction]++;
+    });
+
+    const sortedReactionCounters: Record<string, number> = Object.fromEntries(
+      sortBy(
+        Object.entries(draftReactionCounters).filter(([, counter]) => counter > 0),
+        [
+          ([, counter]) => -counter,
+          ([reaction]) => !draftReactions.includes(reaction),
+          ([reaction]) => reaction,
+        ],
+      ),
+    );
+
+    setDraftReactionCounters(sortedReactionCounters);
+  }, [draftReactions, reactionCounters, viewerReactions]);
+
   return (
-    <div className={classNames(isReply && cls.replyContainer)}>
-      {isReply && (
-        <div className={cls.circleContainer}>
-          <div className={cls.circle} />
-        </div>
-      )}
+    <ContextMenu>
+      <ContextMenuTrigger>
+        <div className={classNames(isReply && cls.replyContainer)}>
+          {isReply && (
+            <div className={cls.circleContainer}>
+              <div className={cls.circle} />
+            </div>
+          )}
 
-      <div style={{width: '100%'}}>
-        <div
-          data-id={id}
-          className={classNames(cls.post, className)}
-          {...otherProps}
-          style={{paddingLeft: isReply ? 0 : 20}}
-        >
-          <ProfilePreview
-            username={author.username}
-            displayName={author.displayName}
-            avatarUrl={author.avatarUrl}
-            hint={getTimeSince(date)}
-          />
-
-          <Text size={TextSize.M}>{text}</Text>
-
-          <div className={cls.actions}>
-            <Button
-              onClick={() => onButtonClick(!collapsed)}
-              className={classNames(
-                cls.repliesButton,
-                !collapsed && cls.collapse,
-                commentsCount === 0 && cls.hidden,
-              )}
-              variant={ButtonVariant.SECONDARY}
+          <div style={{width: '100%'}}>
+            <div
+              data-id={id}
+              className={classNames(cls.post, className)}
+              {...otherProps}
+              style={{paddingLeft: isReply ? 0 : 20}}
             >
-              {collapsed ? (
-                <>
-                  <InlineAvatars className={cls.avatars} users={commentators} />
-                  <Text size={TextSize.S}>
-                    {commentsCount} {commentsCount > 1 ? 'replies' : 'reply'}
-                  </Text>
-                </>
-              ) : (
-                <Text size={TextSize.S}>Collapse {commentsCount > 1 ? 'replies' : 'reply'}</Text>
-              )}
-            </Button>
+              <ProfilePreview
+                username={author.username}
+                displayName={author.displayName}
+                avatarUrl={author.avatarUrl}
+                hint={getTimeSince(date)}
+              />
 
-            {canReply && !showReplyForm && (
-              <Button
-                onClick={onButtonReplyClick}
-                className={classNames(cls.hover)}
-                variant={ButtonVariant.CLEAR}
-                round={true}
-              >
-                <ReplyIcon />
-                Reply
-              </Button>
+              <Text size={TextSize.M}>{text}</Text>
+
+              <div className={cls.actions}>
+                <CustomButton
+                  onClick={() => onButtonClick(!collapsed)}
+                  className={classNames(
+                    cls.repliesButton,
+                    !collapsed && cls.collapse,
+                    commentsCount === 0 && cls.hidden,
+                  )}
+                  variant={ButtonVariant.SECONDARY}
+                >
+                  {collapsed ? (
+                    <>
+                      <InlineAvatars className={cls.avatars} users={commentators} />
+                      <Text size={TextSize.S}>
+                        {commentsCount} {commentsCount > 1 ? 'replies' : 'reply'}
+                      </Text>
+                    </>
+                  ) : (
+                    <Text size={TextSize.S}>
+                      Collapse {commentsCount > 1 ? 'replies' : 'reply'}
+                    </Text>
+                  )}
+                </CustomButton>
+
+                {draftReactionCounters &&
+                  Object.keys(draftReactionCounters).length > 0 &&
+                  Object.entries(draftReactionCounters).map(([reaction, counter]) => (
+                    <Button
+                      key={reaction}
+                      variant={draftReactions.includes(reaction) ? 'default' : 'outline'}
+                      className={cn('rounded-full pr-4', isEmoji(reaction) && 'pl-2')}
+                      onClick={() => toggleReaction(reaction)}
+                    >
+                      <span className={cn('font-medium', isEmoji(reaction) && 'text-xl')}>
+                        {reaction}
+                      </span>
+                      {counter}
+                    </Button>
+                  ))}
+
+                {canReply && !showReplyForm && (
+                  <CustomButton
+                    onClick={onButtonReplyClick}
+                    className={cls.hover}
+                    variant={ButtonVariant.CLEAR}
+                    round={true}
+                  >
+                    <ReplyIcon />
+                    Reply
+                  </CustomButton>
+                )}
+              </div>
+            </div>
+
+            <div className={cls.line} />
+
+            {showReplyForm && (
+              <ReplyFormWithUser
+                postId={id}
+                onSubmit={(payload) => {
+                  setShowReplyForm(false);
+                  if (onReplyFormSubmit) {
+                    onReplyFormSubmit(payload);
+                  }
+                }}
+                onCancel={() => setShowReplyForm(false)}
+              />
             )}
-            {canReport && (
-              <Button
-                onClick={() => onReportClick && onReportClick(id)}
-                className={classNames(cls.hover)}
-                variant={ButtonVariant.CLEAR}
-                round={true}
-              >
-                <ReportIcon />
-                Report
-              </Button>
-            )}
-
-            <div style={{width: '100%'}} />
-
-            <Button
-              onClick={() => onLikeClick && onLikeClick(id)}
-              className={classNames(cls.hover, cls.react, react === 'like' && cls.active)}
-              variant={ButtonVariant.CLEAR}
-              round={true}
-            >
-              {react === 'like' ? <LikeFillIcon /> : <LikeOutlineIcon />}
-              19
-            </Button>
-            <Button
-              onClick={() => onDisLikeClick && onDisLikeClick(id)}
-              className={classNames(cls.hover, cls.react, react === 'dislike' && cls.active)}
-              variant={ButtonVariant.CLEAR}
-              round={true}
-            >
-              {react === 'dislike' ? (
-                <LikeFillIcon className={cls.dislike} />
-              ) : (
-                <LikeOutlineIcon className={cls.dislike} />
-              )}
-              5
-            </Button>
+            {!collapsed && children}
           </div>
         </div>
-
-        <div className={cls.line} />
-
-        {showReplyForm && (
-          <ReplyFormWithUser
-            postId={id}
-            onSubmit={(payload) => {
-              setShowReplyForm(false);
-              if (onReplyFormSubmit) {
-                onReplyFormSubmit(payload);
-              }
-            }}
-            onCancel={() => setShowReplyForm(false)}
-          />
-        )}
-        {!collapsed && children}
-      </div>
-    </div>
+      </ContextMenuTrigger>
+      <ContextMenuContent className="rounded-xl">
+        <div className="flex max-w-[15rem] flex-wrap">
+          {availableReactions
+            .concat('убей себя')
+            .filter((reaction) => !draftReactions.includes(reaction))
+            .map((reaction) => (
+              <Button
+                variant="ghost"
+                size={isEmoji(reaction) ? 'icon' : 'default'}
+                className="text-xl p-6"
+                onClick={() => toggleReaction(reaction)}
+              >
+                {reaction}
+              </Button>
+            ))}
+        </div>
+      </ContextMenuContent>
+    </ContextMenu>
   );
 });
 

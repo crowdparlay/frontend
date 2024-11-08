@@ -4,7 +4,7 @@ import {HTMLAttributes, useState} from 'react';
 import {InlineAvatars, User} from '~/features/inline-avatars';
 import {ProfilePreview} from '~/features/profile-preview';
 
-import {Button, ButtonVariant, Text, TextSize} from '~/shared/ui';
+import {ButtonVariant, CustomButton, Text, TextSize} from '~/shared/ui';
 
 import cls from './index.module.scss';
 
@@ -81,9 +81,9 @@ export const Thread = (props: ThreadProps) => {
       {isThreadExpanded && (
         <div>
           <div className={cls.connector} />
-          <Button className={cls.showMore} variant={ButtonVariant.INLINE}>
+          <CustomButton className={cls.showMore} variant={ButtonVariant.INLINE}>
             show more
-          </Button>
+          </CustomButton>
         </div>
       )}
     </div>

@@ -2,7 +2,5 @@
   "file": "https://bump.sh/undrcrxwn/doc/crowdparlay.yaml",
   "outputDir": "./src/shared/api/",
   "templateFileNameCode": "client.ts",
-  "presets": [
-    "openapi-preset-effector"
-  ]
+  "presets": ["@mere1y/effector-openapi-preset"]
 }

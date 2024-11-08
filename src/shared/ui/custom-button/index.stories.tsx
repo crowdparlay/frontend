@@ -1,16 +1,16 @@
 import type {Meta, StoryObj} from '@storybook/react';
 
-import {Button, ButtonShape, ButtonVariant} from '.';
+import {ButtonShape, ButtonVariant, CustomButton} from '.';
 import AddIcon from '../icon/assets/add.svg';
 
-const meta: Meta<typeof Button> = {
+const meta: Meta<typeof CustomButton> = {
   title: 'shared/Button',
-  component: Button,
+  component: CustomButton,
   tags: ['autodocs'],
 };
 
 export default meta;
-type Story = StoryObj<typeof Button>;
+type Story = StoryObj<typeof CustomButton>;
 
 export const Primary: Story = {
   args: {

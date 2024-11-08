@@ -2,11 +2,11 @@ import {useList, useUnit} from 'effector-react';
 
 import {
   Avatar,
-  Button,
   ButtonShape,
   ButtonVariant,
   Container,
   ContainerSize,
+  CustomButton,
   Page,
   Text,
   TextSize,
@@ -57,19 +57,19 @@ export const ProfilePage = () => {
           replicated throughout a cluster.
         </Text>
         <div className={cls.actions}>
-          <Button variant={ButtonVariant.PRIMARY}>
+          <CustomButton variant={ButtonVariant.PRIMARY}>
             <FollowIcon />
             Follow
-          </Button>
-          <Button variant={ButtonVariant.SECONDARY} shape={ButtonShape.EQUILATERAL}>
+          </CustomButton>
+          <CustomButton variant={ButtonVariant.SECONDARY} shape={ButtonShape.EQUILATERAL}>
             <ChatIcon />
-          </Button>
-          <Button variant={ButtonVariant.SECONDARY} shape={ButtonShape.EQUILATERAL}>
+          </CustomButton>
+          <CustomButton variant={ButtonVariant.SECONDARY} shape={ButtonShape.EQUILATERAL}>
             <ReportIcon />
-          </Button>
-          <Button variant={ButtonVariant.SECONDARY} shape={ButtonShape.EQUILATERAL}>
+          </CustomButton>
+          <CustomButton variant={ButtonVariant.SECONDARY} shape={ButtonShape.EQUILATERAL}>
             <MoreIcon />
-          </Button>
+          </CustomButton>
         </div>
       </Container>
 

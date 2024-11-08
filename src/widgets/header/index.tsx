@@ -1,10 +1,13 @@
 import {RouteInstance} from 'atomic-router';
 import {useUnit} from 'effector-react';
 
+import {ModeToggle} from '~/widgets/mode-toggle';
+
 import {User} from '~/shared/api/types';
 import {routes} from '~/shared/routes';
 import {$user} from '~/shared/session';
-import {Button, ButtonShape, ButtonVariant, Input, Link, LinkVariant} from '~/shared/ui';
+import {Input, Link, LinkVariant} from '~/shared/ui';
+import {Button} from '~/shared/ui/button';
 import ArrowIcon from '~/shared/ui/icon/assets/arrow.svg';
 
 import Avatar from './assets/avatar.png';
@@ -53,12 +56,9 @@ export const Header = (props: HeaderProps) => {
       </div>
 
       {forceUser ?? user ? (
-        <div className={cls.row}>
-          <Button
-            variant={ButtonVariant.CLEAR}
-            shape={ButtonShape.EQUILATERAL}
-            className={cls.button}
-          >
+        <div className="flex items-center gap-4">
+          <ModeToggle />
+          <Button variant="ghost" size="icon">
             <NotificationIcon />
           </Button>
           <Link
@@ -67,23 +67,19 @@ export const Header = (props: HeaderProps) => {
               username: user!.username,
             }}
           >
-            <img src={Avatar} alt="avatar" />
+            <img src={Avatar} alt="avatar" className="rounded-full h-9" />
           </Link>
-          <Button
-            variant={ButtonVariant.CLEAR}
-            shape={ButtonShape.EQUILATERAL}
-            className={cls.button}
-          >
+          <Button variant="ghost" size="icon">
             <ArrowIcon />
           </Button>
         </div>
       ) : (
         <div className={cls.authorization}>
           <Link to={routes.auth.signUp}>
-            <Button variant={ButtonVariant.PRIMARY}>Sign up</Button>
+            <Button>Sign up</Button>
           </Link>
           <Link to={routes.auth.signIn}>
-            <Button variant={ButtonVariant.CLEAR}>Sign in</Button>
+            <Button variant="ghost">Sign in</Button>
           </Link>
         </div>
       )}
