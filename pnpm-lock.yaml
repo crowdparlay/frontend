@@ -126,8 +126,8 @@ importers:
         specifier: ^7.22.15
         version: 7.23.2(@babel/core@7.23.2)
       '@mere1y/effector-openapi-preset':
-        specifier: ^0.3.2
-        version: 0.3.2
+        specifier: ^0.4.0
+        version: 0.4.0
       '@rollup/plugin-babel':
         specifier: ^6.0.3
         version: 6.0.4(@babel/core@7.23.2)(@types/babel__core@7.20.3)(rollup@3.29.4)
@@ -203,9 +203,6 @@ importers:
       openapi:
         specifier: ^1.0.1
         version: 1.0.1
-      openapi-preset-effector:
-        specifier: ^0.3.2
-        version: 0.3.2
       prettier:
         specifier: ^3.0.3
         version: 3.0.3
@@ -1987,10 +1984,10 @@ packages:
     peerDependencies:
       react: '>=16'
 
-  '@mere1y/effector-openapi-preset@0.3.2':
+  '@mere1y/effector-openapi-preset@0.4.0':
     resolution:
       {
-        integrity: sha512-ek7DzMakWwjR36oyjF9xKK9ZKtK9CHpIrbOVX/Xo1INxTu33ke+fd7kBCxg1JDcEZ5SnaZG7ETRRvUWhYkhbgw==,
+        integrity: sha512-chH8fzK9wfsvTDglFjeum51EXi/PSO6tRL1WUcDxxg/S/FNXROpL6z1S1kb5ifwrJq/vpIMdXUO4db7qDZqLEg==,
       }
 
   '@microsoft/signalr@8.0.7':
@@ -7484,12 +7481,6 @@ packages:
       }
     engines: {node: '>=12'}
 
-  openapi-preset-effector@0.3.2:
-    resolution:
-      {
-        integrity: sha512-bYwRqAW6S2zoKbkhQvWw/XwuyNJd5vIqXob55EIppRX77Ep6ByMoMF03rvDSqOs6kZ9//rghtHsBTe0d92yJaQ==,
-      }
-
   openapi@1.0.1:
     resolution:
       {
@@ -11129,7 +11120,7 @@ snapshots:
       '@types/react': 18.2.36
       react: 18.2.0
 
-  '@mere1y/effector-openapi-preset@0.3.2':
+  '@mere1y/effector-openapi-preset@0.4.0':
     dependencies:
       '@babel/core': 7.23.2
       '@babel/generator': 7.23.0
@@ -14997,16 +14988,6 @@ snapshots:
       define-lazy-prop: 2.0.0
       is-docker: 2.2.1
       is-wsl: 2.2.0
-
-  openapi-preset-effector@0.3.2:
-    dependencies:
-      '@babel/core': 7.23.2
-      '@babel/generator': 7.23.0
-      '@babel/template': 7.22.15
-      '@babel/types': 7.23.0
-      change-case: 4.1.2
-    transitivePeerDependencies:
-      - supports-color
 
   openapi@1.0.1:
     dependencies:
