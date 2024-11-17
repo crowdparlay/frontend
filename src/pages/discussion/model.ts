@@ -16,6 +16,7 @@ import {
   apiV1CommentsPostFx,
   apiV1DiscussionsDiscussionIdGetFx,
   apiV1DiscussionsDiscussionIdGetOk,
+  apiV1LookupReactionsGetFx,
 } from '~/shared/api';
 import {paginationFactory} from '~/shared/factory/pagination.factory';
 import {signalRFactory} from '~/shared/factory/signal-r.factory';
@@ -23,6 +24,7 @@ import {routes} from '~/shared/routes';
 
 const getDiscussionFx = attach({effect: apiV1DiscussionsDiscussionIdGetFx});
 const getCommentsFx = attach({effect: apiV1CommentsGetFx});
+const getAvailableReactionsFx = attach({effect: apiV1LookupReactionsGetFx, mapParams: () => ({})});
 const commentDiscussionFx = attach({effect: apiV1CommentsPostFx});
 const getRepliesFx = attach({effect: apiV1CommentsParentCommentIdRepliesGetFx});
 const commentReplyFx = attach({effect: apiV1CommentsParentCommentIdRepliesPostFx});
@@ -65,6 +67,11 @@ export const pagination = paginationFactory({
   route: currentRoute,
   limit: 10,
   totalCount: $totalCommentsCount,
+});
+
+sample({
+  clock: [getDiscussionFx.doneData, pagination.pageChanged],
+  target: getAvailableReactionsFx,
 });
 
 sample({

@@ -135,8 +135,6 @@ export const Post = memo((props: PostProps) => {
                   )}
                 </CustomButton>
 
-                {JSON.stringify(reactions, null, 2)}
-
                 {Object.keys(reactions.countersWithDraft).length > 0 &&
                   Object.entries(reactions.countersWithDraft).map(([reaction, counter]) => (
                     <Button

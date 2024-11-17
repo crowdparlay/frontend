@@ -1,5 +1,4 @@
 import {useUnit} from 'effector-react';
-import {useEffect} from 'react';
 
 import {Post} from '~/widgets/post';
 
@@ -8,7 +7,6 @@ import {ReplyForm} from '~/features/reply-form';
 import {
   ApiV1CommentsParentCommentIdRepliesGet,
   ApiV1CommentsParentCommentIdRepliesPost,
-  apiV1LookupReactionsGetFx,
 } from '~/shared/api';
 import {Container, ContainerSize, Page, Pagination, Text, TextSize} from '~/shared/ui';
 import {Card, CardSize} from '~/shared/ui/card';
@@ -119,10 +117,6 @@ export const DiscussionPage = () => {
       />
     );
   });
-
-  useEffect(() => {
-    apiV1LookupReactionsGetFx({});
-  }, []);
 
   if (!discussion) {
     return null;

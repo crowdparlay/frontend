@@ -5,6 +5,7 @@ import {sortBy} from 'lodash';
 import {
   apiV1CommentsCommentIdReactionsPostFx,
   apiV1CommentsGetFx,
+  apiV1CommentsParentCommentIdRepliesGetFx,
   apiV1LookupReactionsGetFx,
 } from '~/shared/api';
 import {AlertOptions, showNotificationFx} from '~/shared/notifications';
@@ -26,21 +27,17 @@ const commitReactionsFx = attach({
   }),
 });
 
-const getReactionsFx = attach({
-  effect: apiV1LookupReactionsGetFx,
-});
-
 export const $reactions = createStore<Record<string, CommentReactions>>({});
 
 export const $availableReactions = restore(
-  getReactionsFx.doneData.map((payload) => payload.answer),
+  apiV1LookupReactionsGetFx.doneData.map((payload) => payload.answer),
   [],
 );
 
 export const reactionToggled = createEvent<{commentId: string; toggledReaction: string}>();
 
 sample({
-  clock: apiV1CommentsGetFx.doneData,
+  clock: [apiV1CommentsGetFx.doneData, apiV1CommentsParentCommentIdRepliesGetFx.doneData],
   source: $reactions,
   fn: (reactions, {answer: {items}}) => ({
     ...reactions,
@@ -105,6 +102,7 @@ const draftReactionsUpdate = sample({
   clock: reactionToggled,
   source: $reactions,
   fn: (viewerReactions, payload) => {
+    console.log(viewerReactions, payload);
     const draftReactions = viewerReactions[payload.commentId].draft;
 
     const newDraftReactions = draftReactions.includes(payload.toggledReaction)
