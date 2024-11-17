@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import {FormHTMLAttributes, useCallback, useState} from 'react';
 
-import {Button, ButtonVariant, Form, Text, TextArea, TextSize} from '~/shared/ui';
+import {ButtonVariant, CustomButton, Form, Text, TextArea, TextSize} from '~/shared/ui';
 
 import DeleteIcon from './assets/delete.svg';
 import FileIcon from './assets/file.svg';
@@ -51,16 +51,16 @@ export const ReplyForm = (props: ReplyFormProps) => {
       />
 
       <div className={cls.actions}>
-        <Button type="submit">Send</Button>
+        <CustomButton type="submit">Send</CustomButton>
 
-        <Button variant={ButtonVariant.CLEAR} type="button">
+        <CustomButton variant={ButtonVariant.CLEAR} type="button">
           <FileIcon />
           Insert media
-        </Button>
-        <Button onClick={onCancelClick} variant={ButtonVariant.CLEAR} type="reset">
+        </CustomButton>
+        <CustomButton onClick={onCancelClick} variant={ButtonVariant.CLEAR} type="reset">
           <DeleteIcon />
           Cancel
-        </Button>
+        </CustomButton>
 
         <div style={{width: '100%'}} />
 

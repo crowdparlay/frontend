@@ -3,7 +3,16 @@ import {useUnit} from 'effector-react';
 
 import {ProfilePreview} from '~/features/profile-preview';
 
-import {Button, Container, ContainerSize, Form, Input, Page, Text, TextSize} from '~/shared/ui';
+import {
+  Container,
+  ContainerSize,
+  CustomButton,
+  Form,
+  Input,
+  Page,
+  Text,
+  TextSize,
+} from '~/shared/ui';
 
 import {$form, avatarFileChanged} from './model';
 import cls from './page.module.scss';
@@ -78,9 +87,9 @@ export const EditProfilePage = () => {
               style={{maxWidth: 165}}
             />
 
-            <Button type="submit" disabled={!eachValid} style={{whiteSpace: 'nowrap'}}>
+            <CustomButton type="submit" disabled={!eachValid} style={{whiteSpace: 'nowrap'}}>
               Apply changes
-            </Button>
+            </CustomButton>
           </div>
         </Form>
       </Container>

@@ -24,7 +24,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   round?: boolean;
 }
 
-export const Button = (props: ButtonProps) => {
+export const CustomButton = (props: ButtonProps) => {
   const {
     children,
     variant = ButtonVariant.PRIMARY,

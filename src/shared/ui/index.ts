@@ -1,5 +1,5 @@
 export * from './text';
-export * from './button';
+export * from './custom-button';
 export * from './link';
 export * from './input';
 export * from './select';

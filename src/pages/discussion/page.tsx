@@ -45,7 +45,6 @@ const buildReplyTree = (
         }))}
         commentsCount={reply.reply_count!}
         canReply={true}
-        canReport={true}
         onShownClick={(parentCommentId) =>
           onReplyClicked({path: {parentCommentId}, query: {offset: 0, count: 100}})
         }
@@ -101,7 +100,6 @@ export const DiscussionPage = () => {
         }))}
         commentsCount={comment.reply_count!}
         canReply={true}
-        canReport={true}
         onShownClick={(parentCommentId) =>
           onReplyClicked({path: {parentCommentId}, query: {offset: 0, count: 100}})
         }

@@ -7,7 +7,6 @@
     "skipLibCheck": true,
     "allowJs": false,
     "forceConsistentCasingInFileNames": true,
-
     /* Bundler mode */
     "moduleResolution": "Node",
     "allowImportingTsExtensions": false,
@@ -19,9 +18,9 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["src/*"],
+      "@/*": ["./src/*"]
     },
-
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
@@ -29,5 +28,9 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
-  "references": [{"path": "./tsconfig.node.json"}]
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
 }
