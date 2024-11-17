@@ -37,8 +37,6 @@ const buildReplyTree = (
         }}
         date={new Date(reply.created_at!)}
         text={reply.content!}
-        reactionCounters={reply.reaction_counters}
-        viewerReactions={reply.viewer_reactions}
         commentators={reply.first_replies_authors!.map((x) => ({
           id: x.id!,
           username: x.username!,
@@ -94,8 +92,6 @@ export const DiscussionPage = () => {
         }}
         date={new Date(comment.created_at!)}
         text={comment.content!}
-        reactionCounters={comment.reaction_counters}
-        viewerReactions={comment.viewer_reactions}
         commentators={comment.first_replies_authors!.map((x) => ({
           id: x.id!,
           username: x.username!,

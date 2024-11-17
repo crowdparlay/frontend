@@ -26,8 +26,6 @@ export interface PostProps extends HTMLAttributes<HTMLDivElement> {
   author: User;
   date: Date;
   text: ReactNode;
-  reactionCounters: Record<string, number>;
-  viewerReactions: readonly string[];
   commentators: User[];
   commentsCount: number;
   canReply: boolean;
@@ -189,6 +187,7 @@ export const Post = memo((props: PostProps) => {
             .filter((reaction) => !reactions.draft.includes(reaction))
             .map((reaction) => (
               <Button
+                key={reaction}
                 variant="ghost"
                 size={isEmoji(reaction) ? 'icon' : 'default'}
                 className="text-xl p-6"

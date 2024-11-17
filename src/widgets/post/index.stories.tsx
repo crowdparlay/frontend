@@ -118,7 +118,6 @@ const renderPosts = (posts: typeof POSTS) => {
         commentators={nextPosts.map((p) => p.author)}
         commentsCount={nextPosts.length}
         canReply={Math.random() < 0.5}
-        canReport={Math.random() < 0.5}
         children={nextPosts.length > 0 ? renderPosts(nextPosts) : undefined}
       />
     );
@@ -144,7 +143,6 @@ export const Default: Story = {
     ),
     commentators: POSTS.map((p) => p.author),
     commentsCount: POSTS.length,
-    canReport: true,
     canReply: true,
     children: renderPosts(POSTS),
   },
