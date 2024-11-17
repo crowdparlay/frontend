@@ -43,8 +43,6 @@ function parseByStatus<
   contracts: Contracts,
 ): Result[Exclude<keyof Result, ErrorCodes>] {
   const contractObject = contracts[response.status];
-console.log(contracts)
-  console.log(contractObject)
   if (!contractObject) {
     throw {
       status: 'unknown_status',
@@ -55,11 +53,7 @@ console.log(contracts)
     };
   }
   const [status, contract] = contractObject;
-  console.log(status, contract)
-
-
   const answer = contract(name, response.body);
-  console.log(answer)
   if (answer instanceof typed.ValidationError) {
     throw { status: 'validation_error', error: answer };
   }
@@ -67,6 +61,25 @@ console.log(contracts)
     throw { status, error: answer };
   }
   return { status, answer } as Result[Exclude<keyof Result, ErrorCodes>];
+}
+
+function convertBodyToUrlSearchParams(body: Record<string, any>): URLSearchParams {
+  function flattenObject(obj: any, parent: string = '', res: Record<string, string> = {}): Record<string, string> {
+    for (let key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        const propName = parent ? `${parent}[${key}]` : key;
+        if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
+          flattenObject(obj[key], propName, res);
+        } else {
+          res[propName] = String(obj[key]);
+        }
+      }
+    }
+    return res;
+  }
+
+  const flatBody = flattenObject(body);
+  return new URLSearchParams(flatBody);
 }
 
 //#endregion prebuilt code/* --- */
@@ -85,7 +98,7 @@ export const apiV1CommentsCommentIdGetOk = typed.object({
     username: typed.string,
     display_name: typed.string,
     avatar_url: typed.string.maybe
-  })),
+  })).maybe,
   created_at: typed.string,
   reply_count: typed.number,
   first_replies_authors: typed.array(typed.object({
@@ -163,7 +176,7 @@ export const apiV1CommentsGetOk = typed.object({
       username: typed.string,
       display_name: typed.string,
       avatar_url: typed.string.maybe
-    })),
+    })).maybe,
     created_at: typed.string,
     reply_count: typed.number,
     first_replies_authors: typed.array(typed.object({
@@ -240,7 +253,7 @@ export const apiV1CommentsPostCreated = typed.object({
     username: typed.string,
     display_name: typed.string,
     avatar_url: typed.string.maybe
-  })),
+  })).maybe,
   created_at: typed.string,
   reply_count: typed.number,
   first_replies_authors: typed.array(typed.object({
@@ -333,7 +346,7 @@ export const apiV1CommentsParentCommentIdRepliesGetOk = typed.object({
       username: typed.string,
       display_name: typed.string,
       avatar_url: typed.string.maybe
-    })),
+    })).maybe,
     created_at: typed.string,
     reply_count: typed.number,
     first_replies_authors: typed.array(typed.object({
@@ -425,7 +438,7 @@ export const apiV1CommentsParentCommentIdRepliesPostCreated = typed.object({
     username: typed.string,
     display_name: typed.string,
     avatar_url: typed.string.maybe
-  })),
+  })).maybe,
   created_at: typed.string,
   reply_count: typed.number,
   first_replies_authors: typed.array(typed.object({
@@ -510,21 +523,21 @@ export const apiV1CommentsParentCommentIdRepliesPostFx = createEffect<ApiV1Comme
 //#endregion apiV1CommentsParentCommentIdRepliesPost
 
 /* --- */
-//#region apiV1CommentsDiscussionIdReactionsPost
-export type ApiV1CommentsDiscussionIdReactionsPost = {
+//#region apiV1CommentsCommentIdReactionsPost
+export type ApiV1CommentsCommentIdReactionsPost = {
   body?: string[];
   path: {
-    discussionId: string;
+    commentId: string;
   };
 };
 /* No Content */
-export const apiV1CommentsDiscussionIdReactionsPostNoContent = typed.string;
-export type ApiV1CommentsDiscussionIdReactionsPostDone = {
+export const apiV1CommentsCommentIdReactionsPostNoContent = typed.nul;
+export type ApiV1CommentsCommentIdReactionsPostDone = {
   status: "no_content";
-  answer: typed.Get<typeof apiV1CommentsDiscussionIdReactionsPostNoContent>;
+  answer: typed.Get<typeof apiV1CommentsCommentIdReactionsPostNoContent>;
 };
 /* Bad Request */
-export const apiV1CommentsDiscussionIdReactionsPostBadRequest = typed.object({
+export const apiV1CommentsCommentIdReactionsPostBadRequest = typed.object({
   type: typed.string.maybe,
   title: typed.string.maybe,
   status: typed.number.maybe,
@@ -533,7 +546,7 @@ export const apiV1CommentsDiscussionIdReactionsPostBadRequest = typed.object({
   errors: typed.object({}).optional
 });
 /* Forbidden */
-export const apiV1CommentsDiscussionIdReactionsPostForbidden = typed.object({
+export const apiV1CommentsCommentIdReactionsPostForbidden = typed.object({
   type: typed.string.maybe,
   title: typed.string.maybe,
   status: typed.number.maybe,
@@ -541,7 +554,7 @@ export const apiV1CommentsDiscussionIdReactionsPostForbidden = typed.object({
   instance: typed.string.maybe
 });
 /* Not Found */
-export const apiV1CommentsDiscussionIdReactionsPostNotFound = typed.object({
+export const apiV1CommentsCommentIdReactionsPostNotFound = typed.object({
   type: typed.string.maybe,
   title: typed.string.maybe,
   status: typed.number.maybe,
@@ -549,51 +562,47 @@ export const apiV1CommentsDiscussionIdReactionsPostNotFound = typed.object({
   instance: typed.string.maybe
 });
 /* Internal Server Error */
-export const apiV1CommentsDiscussionIdReactionsPostInternalServerError = typed.object({
+export const apiV1CommentsCommentIdReactionsPostInternalServerError = typed.object({
   type: typed.string.maybe,
   title: typed.string.maybe,
   status: typed.number.maybe,
   detail: typed.string.maybe,
   instance: typed.string.maybe
 });
-export type ApiV1CommentsDiscussionIdReactionsPostFail = {
+export type ApiV1CommentsCommentIdReactionsPostFail = {
   status: "bad_request";
-  error: typed.Get<typeof apiV1CommentsDiscussionIdReactionsPostBadRequest>;
+  error: typed.Get<typeof apiV1CommentsCommentIdReactionsPostBadRequest>;
 } | {
   status: "forbidden";
-  error: typed.Get<typeof apiV1CommentsDiscussionIdReactionsPostForbidden>;
+  error: typed.Get<typeof apiV1CommentsCommentIdReactionsPostForbidden>;
 } | {
   status: "not_found";
-  error: typed.Get<typeof apiV1CommentsDiscussionIdReactionsPostNotFound>;
+  error: typed.Get<typeof apiV1CommentsCommentIdReactionsPostNotFound>;
 } | {
   status: "internal_server_error";
-  error: typed.Get<typeof apiV1CommentsDiscussionIdReactionsPostInternalServerError>;
+  error: typed.Get<typeof apiV1CommentsCommentIdReactionsPostInternalServerError>;
 } | GenericErrors;
-export const apiV1CommentsDiscussionIdReactionsPostFx = createEffect<ApiV1CommentsDiscussionIdReactionsPost, ApiV1CommentsDiscussionIdReactionsPostDone, ApiV1CommentsDiscussionIdReactionsPostFail>({
+export const apiV1CommentsCommentIdReactionsPostFx = createEffect<ApiV1CommentsCommentIdReactionsPost, ApiV1CommentsCommentIdReactionsPostDone, ApiV1CommentsCommentIdReactionsPostFail>({
   async handler({
     body,
     path
   }) {
-    const name = "apiV1CommentsDiscussionIdReactionsPostFx.body";
+    const name = "apiV1CommentsCommentIdReactionsPostFx.body";
     const response = await requestFx({
-      path: `/api/v1/comments/${path.discussionId}/reactions`,
+      path: `/api/v1/comments/${path.commentId}/reactions`,
       method: "POST",
       body
     });
-    console.log(123)
-    console.log(name, response)
-    const status = parseByStatus(name, response, {
-      204: ["no_content", apiV1CommentsDiscussionIdReactionsPostNoContent],
-      400: ["bad_request", apiV1CommentsDiscussionIdReactionsPostBadRequest],
-      403: ["forbidden", apiV1CommentsDiscussionIdReactionsPostForbidden],
-      404: ["not_found", apiV1CommentsDiscussionIdReactionsPostNotFound],
-      500: ["internal_server_error", apiV1CommentsDiscussionIdReactionsPostInternalServerError]
+    return parseByStatus(name, response, {
+      204: ["no_content", apiV1CommentsCommentIdReactionsPostNoContent],
+      400: ["bad_request", apiV1CommentsCommentIdReactionsPostBadRequest],
+      403: ["forbidden", apiV1CommentsCommentIdReactionsPostForbidden],
+      404: ["not_found", apiV1CommentsCommentIdReactionsPostNotFound],
+      500: ["internal_server_error", apiV1CommentsCommentIdReactionsPostInternalServerError]
     });
-    console.log(status)
-    return status;
   }
 });
-//#endregion apiV1CommentsDiscussionIdReactionsPost
+//#endregion apiV1CommentsCommentIdReactionsPost
 
 /* --- */
 //#region apiV1DiscussionsDiscussionIdGet
@@ -612,7 +621,7 @@ export const apiV1DiscussionsDiscussionIdGetOk = typed.object({
     username: typed.string,
     display_name: typed.string,
     avatar_url: typed.string.maybe
-  })),
+  })).maybe,
   created_at: typed.string,
   reaction_counters: typed.object({}),
   viewer_reactions: typed.array(typed.string)
@@ -683,7 +692,7 @@ export const apiV1DiscussionsDiscussionIdPatchOk = typed.object({
     username: typed.string,
     display_name: typed.string,
     avatar_url: typed.string.maybe
-  })),
+  })).maybe,
   created_at: typed.string,
   reaction_counters: typed.object({}),
   viewer_reactions: typed.array(typed.string)
@@ -768,7 +777,7 @@ export const apiV1DiscussionsGetOk = typed.object({
       username: typed.string,
       display_name: typed.string,
       avatar_url: typed.string.maybe
-    })),
+    })).maybe,
     created_at: typed.string,
     reaction_counters: typed.object({}),
     viewer_reactions: typed.array(typed.string)
@@ -826,7 +835,7 @@ export const apiV1DiscussionsPostCreated = typed.object({
     username: typed.string,
     display_name: typed.string,
     avatar_url: typed.string.maybe
-  })),
+  })).maybe,
   created_at: typed.string,
   reaction_counters: typed.object({}),
   viewer_reactions: typed.array(typed.string)
@@ -1025,7 +1034,7 @@ export const apiV1AuthenticationSignInPostFx = createEffect<ApiV1AuthenticationS
     const response = await requestFx({
       path: "/api/v1/authentication/sign-in",
       method: "POST",
-      body
+      body: convertBodyToUrlSearchParams(body)
     });
     return parseByStatus(name, response, {
       200: ["ok", apiV1AuthenticationSignInPostOk],
