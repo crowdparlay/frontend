@@ -1,8 +1,15 @@
-import {attach, createEvent, createStore, sample} from 'effector';
+import {attach, createEvent, createStore, restore, sample} from 'effector';
+import {produce} from 'immer';
 import {sortBy} from 'lodash';
-import {toast} from 'sonner';
 
-import {apiV1CommentsDiscussionIdReactionsPostFx, apiV1CommentsGetFx} from '~/shared/api';
+import {
+  apiV1CommentsCommentIdReactionsPostFx,
+  apiV1CommentsGetFx,
+  apiV1LookupReactionsGetFx,
+} from '~/shared/api';
+import {AlertOptions, showNotificationFx} from '~/shared/notifications';
+
+import {FailedMessage} from './ui/failed-message';
 
 interface CommentReactions {
   draft: string[];
@@ -11,28 +18,32 @@ interface CommentReactions {
   countersWithoutDraft: Record<string, number>;
 }
 
-// Словарь [айди коммента] -> реакции
-export const $reactions = createStore<Record<string, CommentReactions>>({});
-
-// Ивент который вызывает вьюшка при нажатии на кнопку реакции
-export const reactionToggled = createEvent<{commentId: string; toggledReaction: string}>();
-
-// Попытка отправить набор реакций на бек
-// toggledReaction тут нужен чтобы commitReactionsFx.fail какую именно реакцию не удалось тогглнуть
 const commitReactionsFx = attach({
+  effect: apiV1CommentsCommentIdReactionsPostFx,
   mapParams: (params: {commentId: string; toggledReaction: string; reactions: string[]}) => ({
-    path: {discussionId: params.commentId},
+    path: {commentId: params.commentId},
     body: params.reactions,
   }),
-  effect: apiV1CommentsDiscussionIdReactionsPostFx,
 });
 
-// При получении с бека комментов заполняем для них draft и committed начальными значениями
+const getReactionsFx = attach({
+  effect: apiV1LookupReactionsGetFx,
+});
+
+export const $reactions = createStore<Record<string, CommentReactions>>({});
+
+export const $availableReactions = restore(
+  getReactionsFx.doneData.map((payload) => payload.answer),
+  [],
+);
+
+export const reactionToggled = createEvent<{commentId: string; toggledReaction: string}>();
+
 sample({
   clock: apiV1CommentsGetFx.doneData,
   source: $reactions,
-  fn: (state, {answer: {items}}) => ({
-    ...state,
+  fn: (reactions, {answer: {items}}) => ({
+    ...reactions,
     ...Object.fromEntries(
       items.map((comment) => [
         comment.id,
@@ -55,71 +66,59 @@ sample({
   target: $reactions,
 });
 
-// Если не получилось отправить на бек реакции
 sample({
   clock: commitReactionsFx.fail,
-  source: $reactions,
-  fn: (state, {params: {commentId, toggledReaction}}) => {
-    // Отображаем тост (это я наверное попытаюсь как нибудь вынести во вью, чтобы было model.ts а не tsx)
-    toast('Oops...', {
-      description: (
-        <p>
-          Failed to toggle <span className="font-semibold"> {toggledReaction} </span>
-        </p>
-      ),
+  fn: (payload): AlertOptions => ({
+    message: 'Oops...',
+    data: {
+      description: () => FailedMessage({reaction: payload.params.toggledReaction}),
       action: {
         label: 'Shit happens',
         onClick: () => {},
       },
-    });
+    },
+  }),
+  target: showNotificationFx,
+});
 
-    // Заменяем draft реакции этого коммента на его committed реакции
-    return {
-      ...state,
-      [commentId]: {
-        ...state[commentId],
-        draft: state[commentId].committed,
-      },
-    };
-  },
+sample({
+  clock: commitReactionsFx.fail,
+  source: $reactions,
+  fn: (reactions, payload) =>
+    produce(reactions, (draft) => {
+      draft[payload.params.commentId].draft = reactions[payload.params.commentId].committed;
+    }),
   target: $reactions,
 });
 
-// Если получилось отправить на бек набор реакций, то записываем его в committed
 sample({
   clock: commitReactionsFx.done,
   source: $reactions,
-  fn: (state, {params: {commentId, reactions}}) => ({
-    ...state,
-    [commentId]: {
-      ...state[commentId],
-      committed: reactions,
-    },
-  }),
+  fn: (reactions, payload) =>
+    produce(reactions, (draft) => {
+      draft[payload.params.commentId].committed = payload.params.reactions;
+    }),
   target: $reactions,
 });
 
-// При reactionToggled изменяем draft реакции
 const draftReactionsUpdate = sample({
   clock: reactionToggled,
   source: $reactions,
-  fn: (viewerReactions, {commentId, toggledReaction}) => {
-    // Берём текущие draft реакции
-    const draftReactions = viewerReactions[commentId].draft;
+  fn: (viewerReactions, payload) => {
+    const draftReactions = viewerReactions[payload.commentId].draft;
 
-    // Тогглим нужную реакцию
-    const newDraftReactions = draftReactions.includes(toggledReaction)
-      ? draftReactions.filter((draftReaction) => draftReaction !== toggledReaction)
-      : [...draftReactions, toggledReaction].slice(-3);
+    const newDraftReactions = draftReactions.includes(payload.toggledReaction)
+      ? draftReactions.filter((draftReaction) => draftReaction !== payload.toggledReaction)
+      : [...draftReactions, payload.toggledReaction].slice(-3);
 
     return {
-      commentId,
-      toggledReaction,
+      commentId: payload.commentId,
+      toggledReaction: payload.toggledReaction,
       newDraftReactions,
       newReactions: {
         ...viewerReactions,
-        [commentId]: {
-          ...viewerReactions[commentId],
+        [payload.commentId]: {
+          ...viewerReactions[payload.commentId],
           draft: newDraftReactions,
         },
       },

@@ -1,19 +1,17 @@
 import classNames from 'classnames';
-import {createStore} from 'effector';
-import {useUnit} from 'effector-react/compat';
+import {useStoreMap, useUnit} from 'effector-react';
 import {HTMLAttributes, memo, ReactNode, useCallback, useState} from 'react';
 import {cn} from '~/lib/utils';
 
 import ReplyIcon from '~/widgets/post/assets/reply.svg';
 import {getTimeSince, isEmoji} from '~/widgets/post/lib';
-import {$reactions, reactionToggled} from '~/widgets/post/model';
+import {$availableReactions, $reactions, reactionToggled} from '~/widgets/post/model';
 
 import {InlineAvatars} from '~/features/inline-avatars';
 import {ProfilePreview} from '~/features/profile-preview';
 import {ReplyForm, ReplyFormProps} from '~/features/reply-form';
 
 import '~/shared/api';
-import {apiV1LookupReactionsGetFx} from '~/shared/api';
 import {User} from '~/shared/api/types';
 import {$user} from '~/shared/session';
 import {ButtonVariant, CustomButton, Text, TextSize} from '~/shared/ui';
@@ -38,9 +36,6 @@ export interface PostProps extends HTMLAttributes<HTMLDivElement> {
   onReplyFormSubmit?: ReplyFormProps['onSubmit'];
 }
 
-export const $availableReactions = createStore<readonly string[]>([]);
-$availableReactions.on(apiV1LookupReactionsGetFx.doneData, (_, payload) => payload.answer);
-
 export const Post = memo((props: PostProps) => {
   const {
     id,
@@ -62,9 +57,13 @@ export const Post = memo((props: PostProps) => {
   const [collapsed, setCollapsed] = useState(true);
   const [showReplyForm, setShowReplyForm] = useState(false);
 
-  const availableReactions = useUnit($availableReactions);
-  const reactions = useUnit($reactions)[id];
-  const toggleReaction = useUnit(reactionToggled);
+  const [availableReactions, onReactionToggled] = useUnit([$availableReactions, reactionToggled]);
+
+  const reactions = useStoreMap({
+    store: $reactions,
+    keys: [id],
+    fn: (reactions, [id]) => reactions[id] ?? null,
+  });
 
   const isReply = Boolean(replyId);
 
@@ -144,7 +143,7 @@ export const Post = memo((props: PostProps) => {
                       key={reaction}
                       variant={reactions.draft.includes(reaction) ? 'default' : 'outline'}
                       className={cn('rounded-full pr-4', isEmoji(reaction) && 'pl-2')}
-                      onClick={() => toggleReaction({commentId: id, toggledReaction: reaction})}
+                      onClick={() => onReactionToggled({commentId: id, toggledReaction: reaction})}
                     >
                       <span className={cn('font-medium', isEmoji(reaction) && 'text-xl')}>
                         {reaction}
@@ -195,7 +194,7 @@ export const Post = memo((props: PostProps) => {
                 variant="ghost"
                 size={isEmoji(reaction) ? 'icon' : 'default'}
                 className="text-xl p-6"
-                onClick={() => toggleReaction({commentId: id, toggledReaction: reaction})}
+                onClick={() => onReactionToggled({commentId: id, toggledReaction: reaction})}
               >
                 {reaction}
               </Button>
