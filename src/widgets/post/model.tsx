@@ -41,9 +41,12 @@ sample({
           committed: comment.viewer_reactions as string[],
           countersWithDraft: comment.reaction_counters,
           countersWithoutDraft: Object.fromEntries(
-            Object.entries(comment.reaction_counters).filter(
-              ([key]) => !comment.viewer_reactions.includes(key),
-            ),
+            Object.entries(comment.reaction_counters as Record<string, number>)
+              .map(([reaction, counter]) => [
+                reaction,
+                comment.viewer_reactions.includes(reaction) ? counter - 1 : counter,
+              ])
+              .filter(([, counter]) => (counter as number) > 0),
           ) as Record<string, number>,
         },
       ]),
