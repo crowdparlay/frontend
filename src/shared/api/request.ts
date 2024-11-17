@@ -34,8 +34,8 @@ export const requestFx = createEffect<Request, any>((request) => {
     data: request.body,
     params: request.query,
   })
-    .then((response) => ({status: response.status, body: response.data}))
+    .then((response) => ({status: response.status, body: response.data || null}))
     .catch((response) =>
-      Promise.resolve({status: response.response.status, body: response.response.data}),
+      Promise.resolve({status: response.response.status, body: response.response.data || null}),
     );
 });

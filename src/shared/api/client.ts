@@ -531,7 +531,7 @@ export type ApiV1CommentsCommentIdReactionsPost = {
   };
 };
 /* No Content */
-export const apiV1CommentsCommentIdReactionsPostNoContent = typed.string;
+export const apiV1CommentsCommentIdReactionsPostNoContent = typed.nul;
 export type ApiV1CommentsCommentIdReactionsPostDone = {
   status: "no_content";
   answer: typed.Get<typeof apiV1CommentsCommentIdReactionsPostNoContent>;
