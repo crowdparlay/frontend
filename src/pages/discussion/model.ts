@@ -33,13 +33,11 @@ export const dataLoadedRoute = chainRoute({
   route: currentRoute,
   beforeOpen: {
     effect: getDiscussionFx,
-    mapParams: ({params}) => {
-      return {
-        path: {
-          discussionId: params.discussionId,
-        },
-      };
-    },
+    mapParams: ({params}) => ({
+      path: {
+        discussionId: params.discussionId,
+      },
+    }),
   },
 });
 

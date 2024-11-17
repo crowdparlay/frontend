@@ -1,20 +1,19 @@
 import classNames from 'classnames';
 import {createStore} from 'effector';
 import {useUnit} from 'effector-react/compat';
-import {sortBy} from 'lodash';
-import {HTMLAttributes, memo, ReactNode, useCallback, useEffect, useState} from 'react';
-import {toast} from 'sonner';
+import {HTMLAttributes, memo, ReactNode, useCallback, useState} from 'react';
 import {cn} from '~/lib/utils';
 
 import ReplyIcon from '~/widgets/post/assets/reply.svg';
 import {getTimeSince, isEmoji} from '~/widgets/post/lib';
+import {$reactions, reactionToggled} from '~/widgets/post/model';
 
 import {InlineAvatars} from '~/features/inline-avatars';
 import {ProfilePreview} from '~/features/profile-preview';
 import {ReplyForm, ReplyFormProps} from '~/features/reply-form';
 
 import '~/shared/api';
-import {apiV1CommentsDiscussionIdReactionsPostFx, apiV1LookupReactionsGetFx} from '~/shared/api';
+import {apiV1LookupReactionsGetFx} from '~/shared/api';
 import {User} from '~/shared/api/types';
 import {$user} from '~/shared/session';
 import {ButtonVariant, CustomButton, Text, TextSize} from '~/shared/ui';
@@ -49,8 +48,6 @@ export const Post = memo((props: PostProps) => {
     author,
     date,
     text,
-    reactionCounters,
-    viewerReactions,
     commentators,
     commentsCount,
     canReply,
@@ -64,6 +61,10 @@ export const Post = memo((props: PostProps) => {
   } = props;
   const [collapsed, setCollapsed] = useState(true);
   const [showReplyForm, setShowReplyForm] = useState(false);
+
+  const availableReactions = useUnit($availableReactions);
+  const reactions = useUnit($reactions)[id];
+  const toggleReaction = useUnit(reactionToggled);
 
   const isReply = Boolean(replyId);
 
@@ -84,77 +85,6 @@ export const Post = memo((props: PostProps) => {
 
     setShowReplyForm(true);
   }, [collapsed, onButtonClick]);
-
-  const availableReactions = useUnit($availableReactions);
-  const [committedReactions, setCommittedReactions] = useState<string[]>([]);
-  const [draftReactions, setDraftReactions] = useState<string[]>([]);
-
-  useEffect(() => {
-    const reactions = viewerReactions as string[];
-    setCommittedReactions(reactions);
-    setDraftReactions(reactions);
-  }, [viewerReactions]);
-
-  const toggleReaction = async (reaction: string) => {
-    const newReactions = draftReactions.includes(reaction)
-      ? draftReactions.filter((draftReaction) => draftReaction !== reaction)
-      : [...draftReactions, reaction].slice(-3);
-
-    setDraftReactions(newReactions);
-
-    apiV1CommentsDiscussionIdReactionsPostFx({
-      path: {discussionId: id},
-      body: newReactions,
-    })
-      .then(() => {
-        setCommittedReactions(newReactions);
-      })
-      .catch(() => {
-        setDraftReactions(committedReactions);
-        toast('Oops...', {
-          description: (
-            <p>
-              Failed to toggle <span className="font-semibold">{reaction}</span>
-            </p>
-          ),
-          action: {
-            label: 'Shit happens',
-            onClick: () => {},
-          },
-        });
-      });
-  };
-
-  const [draftReactionCounters, setDraftReactionCounters] =
-    useState<Record<string, number>>(reactionCounters);
-
-  useEffect(() => {
-    const draftReactionCounters: Record<string, number> = {
-      ...reactionCounters,
-    };
-
-    viewerReactions.forEach((reaction) => {
-      draftReactionCounters[reaction]--;
-    });
-
-    draftReactions.forEach((reaction) => {
-      draftReactionCounters[reaction] ??= 0;
-      draftReactionCounters[reaction]++;
-    });
-
-    const sortedReactionCounters: Record<string, number> = Object.fromEntries(
-      sortBy(
-        Object.entries(draftReactionCounters).filter(([, counter]) => counter > 0),
-        [
-          ([, counter]) => -counter,
-          ([reaction]) => !draftReactions.includes(reaction),
-          ([reaction]) => reaction,
-        ],
-      ),
-    );
-
-    setDraftReactionCounters(sortedReactionCounters);
-  }, [draftReactions, reactionCounters, viewerReactions]);
 
   return (
     <ContextMenu>
@@ -206,14 +136,15 @@ export const Post = memo((props: PostProps) => {
                   )}
                 </CustomButton>
 
-                {draftReactionCounters &&
-                  Object.keys(draftReactionCounters).length > 0 &&
-                  Object.entries(draftReactionCounters).map(([reaction, counter]) => (
+                {JSON.stringify(reactions, null, 2)}
+
+                {Object.keys(reactions.countersWithDraft).length > 0 &&
+                  Object.entries(reactions.countersWithDraft).map(([reaction, counter]) => (
                     <Button
                       key={reaction}
-                      variant={draftReactions.includes(reaction) ? 'default' : 'outline'}
+                      variant={reactions.draft.includes(reaction) ? 'default' : 'outline'}
                       className={cn('rounded-full pr-4', isEmoji(reaction) && 'pl-2')}
-                      onClick={() => toggleReaction(reaction)}
+                      onClick={() => toggleReaction({commentId: id, toggledReaction: reaction})}
                     >
                       <span className={cn('font-medium', isEmoji(reaction) && 'text-xl')}>
                         {reaction}
@@ -258,13 +189,13 @@ export const Post = memo((props: PostProps) => {
         <div className="flex max-w-[15rem] flex-wrap">
           {availableReactions
             .concat('убей себя')
-            .filter((reaction) => !draftReactions.includes(reaction))
+            .filter((reaction) => !reactions.draft.includes(reaction))
             .map((reaction) => (
               <Button
                 variant="ghost"
                 size={isEmoji(reaction) ? 'icon' : 'default'}
                 className="text-xl p-6"
-                onClick={() => toggleReaction(reaction)}
+                onClick={() => toggleReaction({commentId: id, toggledReaction: reaction})}
               >
                 {reaction}
               </Button>
