@@ -15,6 +15,7 @@ import {
   apiV1UsersSelfGetFx,
   apiV1UsersUserIdGetOk,
 } from '~/shared/api';
+import {UserEntity} from '~/shared/api/types';
 
 import {routes, routesMap} from '../routes';
 
@@ -29,7 +30,7 @@ export const sessionRequestFx = attach({
   effect: apiV1UsersSelfGetFx,
 });
 
-export const $user = createStore<typed.Get<typeof apiV1UsersUserIdGetOk> | null>(null);
+export const $user = createStore<UserEntity | null>(null);
 persist({store: $user, key: 'user'});
 
 const $authenticationStatus = createStore(AuthStatus.Initial);
@@ -39,7 +40,7 @@ $authenticationStatus.on(sessionRequestFx, (status) => {
   return status;
 });
 
-$user.on(sessionRequestFx.doneData, (_, user) => user.answer);
+$user.on(sessionRequestFx.doneData, (_, user) => UserEntity.fromResponse(user.answer));
 $authenticationStatus.on(sessionRequestFx.doneData, () => AuthStatus.Authenticated);
 
 $authenticationStatus.on(sessionRequestFx.fail, () => AuthStatus.Anonymous);

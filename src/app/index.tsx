@@ -15,7 +15,7 @@ export const App = () => {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <RouterProvider router={router}>
-        <div className="app">
+        <div className="app bg-background text-foreground">
           <Header />
           <Pages />
           <Footer />

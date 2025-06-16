@@ -1,7 +1,7 @@
 import {useForm} from 'effector-forms';
 import {useUnit} from 'effector-react';
 
-import {ProfilePreview} from '~/features/profile-preview';
+import {Profile} from '~/features/profile';
 
 import {
   Container,
@@ -80,7 +80,7 @@ export const EditProfilePage = () => {
             onFileChanged={onAvatarFileChanged}
           />
           <div className={cls.row}>
-            <ProfilePreview
+            <Profile
               username={fields.username?.value}
               displayName={fields.displayName?.value}
               avatarUrl={fields.avatarUrl?.value}

@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import {HTMLAttributes, useState} from 'react';
+import {Profile} from 'src/features/profile';
 
 import {InlineAvatars, User} from '~/features/inline-avatars';
-import {ProfilePreview} from '~/features/profile-preview';
 
 import {ButtonVariant, CustomButton, Text, TextSize} from '~/shared/ui';
 
@@ -57,7 +57,7 @@ export const Thread = (props: ThreadProps) => {
       <div className={cls.post}>
         <div className={cls.content}>
           <Text size={TextSize.M}>{text}</Text>
-          <ProfilePreview {...author} />
+          <Profile {...author} />
         </div>
 
         {!isThreadExpanded && replyAuthors && replyCount && replyCount > 0 && (

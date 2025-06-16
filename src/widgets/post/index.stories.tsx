@@ -1,15 +1,15 @@
 import {Meta, StoryObj} from '@storybook/react';
 
-import {Post} from '.';
+import {Comment} from '.';
 
-const meta: Meta<typeof Post> = {
+const meta: Meta<typeof Comment> = {
   title: 'widgets/Post',
-  component: Post,
+  component: Comment,
   tags: ['autodocs'],
 };
 
 export default meta;
-type Story = StoryObj<typeof Post>;
+type Story = StoryObj<typeof Comment>;
 
 const POSTS = [
   {
@@ -112,7 +112,7 @@ const renderPosts = (posts: typeof POSTS) => {
 
     return (
       // @ts-ignore
-      <Post
+      <Comment
         key={posts.length + post.id}
         {...post}
         commentators={nextPosts.map((p) => p.author)}
@@ -134,7 +134,7 @@ export const Default: Story = {
       avatarUrl: 'https://avatars.githubusercontent.com/u/44271343?v=4',
     },
     date: new Date(),
-    text: (
+    content: (
       <>
         вапо ыа вп вы аа вв ыых авпо эыж ваопы длва пды в @sdfgsdfgfsgdf ыдп рыа врп выдл арп а
         ыдлврап лыорв алпырв лаопр ыдлвао рпдлывора длрвыд алпрылаоп двыраоплырпадлвыорпдлырвдл рр

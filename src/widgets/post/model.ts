@@ -1,4 +1,52 @@
-import {attach, createEvent, createStore, restore, sample} from 'effector';
+import * as typed from 'typed-contracts';
+import {createStore, sample} from 'effector';
+import _ from 'lodash';
+
+import {
+  apiV1CommentsCommentIdRepliesGetFx,
+  apiV1CommentsCommentIdRepliesGetOk,
+  apiV1CommentsCommentIdRepliesPostFx,
+} from '~/shared/api';
+
+export const $replies = createStore<
+  Record<string, typed.Get<typeof apiV1CommentsCommentIdRepliesGetOk>['items']>
+>({});
+
+sample({
+  clock: apiV1CommentsCommentIdRepliesGetFx.done,
+  source: $replies,
+  fn: (currentReplies, {params, result}) => {
+    const commentId = params.path.commentId;
+    return {
+      ...currentReplies,
+      [commentId]: _.uniqBy(
+        [...(currentReplies[commentId] ?? []), ...result.answer.items],
+        (reply) => reply.id,
+      ),
+    };
+  },
+  target: $replies,
+});
+
+sample({
+  clock: apiV1CommentsCommentIdRepliesPostFx.done,
+  source: $replies,
+  fn: (currentReplies, {params, result}) => {
+    const commentId = params.path.commentId;
+    return {
+      ...currentReplies,
+      [commentId]: _.uniqBy(
+        [...(currentReplies[commentId] ?? []), result.answer],
+        (reply) => reply.id,
+      ),
+    };
+  },
+  target: $replies,
+});
+
+/*
+
+import {attach, createEvent, createStore, sample} from 'effector';
 import {produce} from 'immer';
 import {sortBy} from 'lodash';
 
@@ -6,7 +54,6 @@ import {
   apiV1CommentsCommentIdReactionsPostFx,
   apiV1CommentsGetFx,
   apiV1CommentsParentCommentIdRepliesGetFx,
-  apiV1LookupReactionsGetFx,
 } from '~/shared/api';
 import {AlertOptions, showNotificationFx} from '~/shared/notifications';
 
@@ -28,11 +75,6 @@ const commitReactionsFx = attach({
 });
 
 export const $reactions = createStore<Record<string, CommentReactions>>({});
-
-export const $availableReactions = restore(
-  apiV1LookupReactionsGetFx.doneData.map((payload) => payload.answer),
-  [],
-);
 
 export const reactionToggled = createEvent<{commentId: string; toggledReaction: string}>();
 
@@ -173,3 +215,4 @@ sample({
     ),
   target: $reactions,
 });
+*/

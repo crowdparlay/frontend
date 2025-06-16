@@ -40,6 +40,10 @@ body {
   }
 }
 
+*:focus-visible {
+  outline: none;
+}
+
 hr {
   color: white;
   border-bottom: 1px solid rgba(255 255 255 / 7%);

@@ -1,9 +1,15 @@
-import classNames from 'classnames';
-import {HTMLAttributes} from 'react';
-import stc from 'string-to-color';
+import {HTMLAttributes, memo, useState} from 'react';
+import {cn} from '~/lib/utils';
+
+import {UserEntity} from '~/shared/api/types';
+import {Skeleton} from '~/shared/ui/skeleton';
 
 import cls from './index.module.scss';
-import {getLuminance} from './lib';
+
+export const AvatarSkeleton = (props: HTMLAttributes<HTMLDivElement>) => {
+  const {className, ...otherProps} = props;
+  return <Skeleton className={cn('w-10 h-10 rounded-full', className)} {...otherProps} />;
+};
 
 export enum AvatarVariant {
   DEFAULT = 'default',
@@ -11,49 +17,50 @@ export enum AvatarVariant {
 }
 
 export interface AvatarProps extends HTMLAttributes<HTMLDivElement> {
-  username: string;
-  displayName: string;
-  avatarUrl?: string;
+  user?: UserEntity | null;
   variant?: AvatarVariant;
 }
 
-export const Avatar = (props: AvatarProps) => {
-  const {
-    username,
-    displayName,
-    avatarUrl,
-    variant = AvatarVariant.DEFAULT,
-    className,
-    ...otherProps
-  } = props;
+export const Avatar = memo((props: AvatarProps) => {
+  const {user, variant = AvatarVariant.DEFAULT, className, ...otherProps} = props;
 
-  const backgroundColor = stc(displayName + ' ' + username);
-  const luminance = getLuminance(backgroundColor);
-  const theme = luminance > 0.5 ? 'dark' : 'light';
+  const [isImageValid, setIsImageValid] = useState(true);
 
   const mods = {
-    [cls[theme]]: true,
     [cls[variant]]: true,
   };
 
-  if (avatarUrl) {
+  if (!user)
+    return (
+      <AvatarSkeleton className={cn(variant === AvatarVariant.INLINE && 'w-6 h-6', className)} />
+    );
+
+  if (user.avatarUrl && isImageValid) {
     return (
       <img
-        className={classNames(cls.avatar, mods, className)}
-        src={avatarUrl}
-        alt={username}
+        className={cn(
+          'size-10 rounded-full',
+          cls.avatar,
+          mods,
+          className,
+          variant === 'default' && 'border',
+        )}
+        src={user.avatarUrl}
+        alt=""
         {...otherProps}
+        onError={() => setIsImageValid(false)}
       />
     );
   }
 
   return (
     <div
-      style={{backgroundColor}}
-      className={classNames(cls.avatar, mods, className)}
+      style={{backgroundColor: user.getPersonalStyle().color}}
+      className={cn('size-10 rounded-full text-white', cls.avatar, mods, className)}
       {...otherProps}
     >
       <svg
+        className="grayscale"
         width="100%"
         height="100%"
         viewBox="0 0 40 40"
@@ -69,9 +76,9 @@ export const Avatar = (props: AvatarProps) => {
           textAnchor="middle"
           fill="currentColor"
         >
-          {Array.from(displayName)[0]?.toUpperCase() ?? 'D'}
+          {Array.from(user.displayName)[0]?.toUpperCase() ?? 'D'}
         </text>
       </svg>
     </div>
   );
-};
+});

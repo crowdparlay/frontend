@@ -1,7 +1,7 @@
 import {useForm} from 'effector-forms';
 import {useUnit} from 'effector-react';
 
-import {ProfilePreview} from '~/features/profile-preview';
+import {Profile} from '~/features/profile';
 
 import {routes} from '~/shared/routes';
 import {
@@ -90,9 +90,12 @@ export const SignUpPage = () => {
             />
           )}
 
-          <ProfilePreview
-            username={fields.username?.value}
-            displayName={fields.display_name?.value}
+          <Profile
+            variant="md"
+            user={{
+              username: fields.username?.value,
+              displayName: fields.display_name?.value,
+            }}
           />
 
           {formError && <Attention>{formError}</Attention>}

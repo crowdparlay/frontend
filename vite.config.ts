@@ -3,12 +3,14 @@ import babel from '@rollup/plugin-babel';
 import svgr from 'vite-plugin-svgr';
 import stylelint from 'vite-plugin-stylelint';
 import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   plugins: [
+    tailwindcss(),
     babel({extensions: ['.ts', '.tsx'], babelHelpers: 'bundled', skipPreflightCheck: true}),
     svgr({
-      include: '**/*.svg'
+      include: '**/*.svg',
     }),
     stylelint({
       fix: true,
@@ -29,9 +31,9 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
         cookieDomainRewrite: {
-          '*': 'localhost'
-        }
-      }
-    }
-  }
+          '*': 'localhost',
+        },
+      },
+    },
+  },
 });

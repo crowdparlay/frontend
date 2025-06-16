@@ -24,7 +24,6 @@ export const requestFx = createEffect<Request, any>((request) => {
     }
 
     window.location.href = url.href;
-
     return Promise.resolve({status: 302, body: null});
   }
 
