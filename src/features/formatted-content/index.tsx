@@ -1,4 +1,4 @@
-import {createElement, HTMLAttributes, ReactElement, ReactNode} from 'react';
+import {createElement, ReactElement} from 'react';
 import Markdown, {Components} from 'react-markdown';
 import remarkDirective from 'remark-directive';
 import {visit} from 'unist-util-visit';

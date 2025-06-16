@@ -1,5 +1,7 @@
 import {Meta, StoryObj} from '@storybook/react';
 
+import {UserEntity} from '~/entities/types';
+
 import {Profile} from '.';
 
 const meta: Meta<typeof Profile> = {
@@ -13,15 +15,21 @@ type Story = StoryObj<typeof Profile>;
 
 export const SignUp: Story = {
   args: {
-    username: 'mere1y',
-    displayName: 'Me-re-ly!',
+    user: new UserEntity({
+      id: '',
+      username: 'mere1y',
+      displayName: 'Me-re-ly!',
+    }),
   },
 };
 
 export const User: Story = {
   args: {
-    username: 'mere1y',
-    displayName: 'Me-re-ly!',
-    avatarUrl: 'https://source.unsplash.com/random/100x100?sig=1',
+    user: new UserEntity({
+      id: '',
+      username: 'mere1y',
+      displayName: 'Me-re-ly!',
+      avatarUrl: 'https://source.unsplash.com/random/100x100?sig=1',
+    }),
   },
 };

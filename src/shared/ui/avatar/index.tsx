@@ -1,7 +1,8 @@
 import {HTMLAttributes, memo, useState} from 'react';
 import {cn} from '~/lib/utils';
 
-import {UserEntity} from '~/shared/api/types';
+import {UserEntity} from '~/entities/types';
+
 import {Skeleton} from '~/shared/ui/skeleton';
 
 import cls from './index.module.scss';

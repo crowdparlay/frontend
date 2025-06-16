@@ -1,6 +1,5 @@
 import {useUnit} from 'effector-react';
 import {Plus} from 'lucide-react';
-import {cn} from '~/lib/utils';
 
 import {CreateDiscussionDialog} from '~/widgets/create-discussion-dialog';
 import {Discussion, DiscussionSkeleton} from '~/widgets/discussion';

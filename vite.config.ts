@@ -7,8 +7,8 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   plugins: [
-    tailwindcss(),
     babel({extensions: ['.ts', '.tsx'], babelHelpers: 'bundled', skipPreflightCheck: true}),
+    tailwindcss(),
     svgr({
       include: '**/*.svg',
     }),

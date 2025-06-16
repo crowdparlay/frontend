@@ -1,4 +1,3 @@
-import * as typed from 'typed-contracts';
 import {
   chainRoute,
   redirect,
@@ -10,12 +9,9 @@ import {
 import {attach, createEvent, createStore, Effect, sample} from 'effector';
 import {persist} from 'effector-storage/local';
 
-import {
-  apiV1AuthenticationSignOutPostFx,
-  apiV1UsersSelfGetFx,
-  apiV1UsersUserIdGetOk,
-} from '~/shared/api';
-import {UserEntity} from '~/shared/api/types';
+import {UserEntity} from '~/entities/types';
+
+import {apiV1AuthenticationSignOutPostFx, apiV1UsersSelfGetFx} from '~/shared/api';
 
 import {routes, routesMap} from '../routes';
 

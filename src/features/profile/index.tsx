@@ -3,7 +3,8 @@ import {Ban, HeartHandshake, Mic, Rocket} from 'lucide-react';
 import {HTMLAttributes, memo} from 'react';
 import {cn} from '~/lib/utils';
 
-import {UserEntity} from '~/shared/api/types';
+import {UserEntity} from '~/entities/types';
+
 import {Avatar, AvatarSkeleton} from '~/shared/ui';
 import {Skeleton} from '~/shared/ui/skeleton';
 

@@ -3,7 +3,8 @@ import {useUnit} from 'effector-react';
 
 import {ModeToggle} from '~/widgets/mode-toggle';
 
-import {UserEntity} from '~/shared/api/types';
+import {UserEntity} from '~/entities/types';
+
 import {routes} from '~/shared/routes';
 import {$user} from '~/shared/session';
 import {Avatar, Input, Link, LinkVariant} from '~/shared/ui';

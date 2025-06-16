@@ -2,9 +2,9 @@ import {chainRoute} from 'atomic-router';
 import {attach, createStore, sample} from 'effector';
 
 import {DiscussionEntity} from '~/entities/types';
+import {UserEntity} from '~/entities/types';
 
 import {apiV1DiscussionsGetFx, apiV1UsersResolveGetFx} from '~/shared/api';
-import {UserEntity} from '~/shared/api/types';
 import {routes} from '~/shared/routes';
 
 const getUserFx = attach({effect: apiV1UsersResolveGetFx});

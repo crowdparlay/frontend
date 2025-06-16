@@ -10,8 +10,8 @@ import {Profile} from '~/features/profile';
 import {ReplySubjectQuote} from '~/features/reply-subject-quote';
 
 import {CommentEntity, SubjectEntity} from '~/entities/types';
+import {UserEntity} from '~/entities/types';
 
-import {UserEntity} from '~/shared/api/types';
 import {Form, FormControl, FormField, FormItem} from '~/shared/ui';
 import {Button} from '~/shared/ui/button';
 import {Separator} from '~/shared/ui/separator';

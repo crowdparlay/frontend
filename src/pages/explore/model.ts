@@ -14,7 +14,6 @@ import {
 } from '~/shared/api';
 import {AlertOptions, showNotificationFx} from '~/shared/notifications';
 import {routes} from '~/shared/routes';
-import {chainAuthorized} from '~/shared/session';
 
 const getDiscussionsFx = attach({effect: apiV1DiscussionsGetFx});
 const getAvailableReactionsFx = attach({effect: apiV1LookupReactionsGetFx, mapParams: () => ({})});

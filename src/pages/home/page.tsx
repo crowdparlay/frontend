@@ -8,7 +8,8 @@ import {$repos} from '~/pages/home/model';
 import {Profile} from '~/features/profile';
 import {Timestamp} from '~/features/timestamp';
 
-import {UserEntity} from '~/shared/api/types';
+import {UserEntity} from '~/entities/types';
+
 import {Page} from '~/shared/ui';
 import {Badge} from '~/shared/ui/badge';
 import {Button} from '~/shared/ui/button';

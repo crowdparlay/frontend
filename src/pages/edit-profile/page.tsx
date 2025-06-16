@@ -3,16 +3,9 @@ import {useUnit} from 'effector-react';
 
 import {Profile} from '~/features/profile';
 
-import {
-  Container,
-  ContainerSize,
-  CustomButton,
-  Form,
-  Input,
-  Page,
-  Text,
-  TextSize,
-} from '~/shared/ui';
+import {UserEntity} from '~/entities/types';
+
+import {Container, ContainerSize, CustomButton, Input, Page, Text, TextSize} from '~/shared/ui';
 
 import {$form, avatarFileChanged} from './model';
 import cls from './page.module.scss';
@@ -28,7 +21,7 @@ export const EditProfilePage = () => {
           Profile
         </Text>
 
-        <Form className={cls.grid} onSubmit={submit}>
+        <form className={cls.grid} onSubmit={() => submit()}>
           <Input
             label="Display name"
             placeholder="Display name"
@@ -81,17 +74,22 @@ export const EditProfilePage = () => {
           />
           <div className={cls.row}>
             <Profile
-              username={fields.username?.value}
-              displayName={fields.displayName?.value}
-              avatarUrl={fields.avatarUrl?.value}
-              style={{maxWidth: 165}}
+              variant="md"
+              user={
+                new UserEntity({
+                  id: '',
+                  username: fields.username.value,
+                  displayName: fields.displayName.value,
+                  avatarUrl: fields.avatarUrl.value,
+                })
+              }
             />
 
             <CustomButton type="submit" disabled={!eachValid} style={{whiteSpace: 'nowrap'}}>
               Apply changes
             </CustomButton>
           </div>
-        </Form>
+        </form>
       </Container>
     </Page>
   );

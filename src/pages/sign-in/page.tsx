@@ -8,7 +8,6 @@ import {
   Container,
   ContainerSize,
   CustomButton,
-  Form,
   Input,
   Link,
   Page,
@@ -33,7 +32,7 @@ export const SignInPage = () => {
           Sign in
         </Text>
 
-        <Form onSubmit={submit} className={cls.list}>
+        <form className={cls.list} onSubmit={() => submit()}>
           <Input
             autoFocus={true}
             disabled={loading}
@@ -60,7 +59,7 @@ export const SignInPage = () => {
           <CustomButton disabled={loading || !eachValid} type="submit">
             Proceed
           </CustomButton>
-        </Form>
+        </form>
 
         <div className={cls.external}>
           <Text center={true} className={cls.or}>

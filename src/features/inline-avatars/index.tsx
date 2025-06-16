@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import {HTMLAttributes} from 'react';
 
-import {UserEntity} from '~/shared/api/types';
+import {UserEntity} from '~/entities/types';
+
 import {Avatar, AvatarVariant} from '~/shared/ui';
 
 import cls from './index.module.scss';

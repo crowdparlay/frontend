@@ -1,11 +1,6 @@
-import {useList, useUnit} from 'effector-react';
-import {Plus} from 'lucide-react';
-import {cn} from '~/lib/utils';
+import {useUnit} from 'effector-react';
 
-import {CreateDiscussionDialog} from '~/widgets/create-discussion-dialog';
 import {Discussion, DiscussionSkeleton} from '~/widgets/discussion';
-
-import {DiscussionEntity} from '~/entities/types';
 
 import {
   Avatar,
@@ -18,8 +13,6 @@ import {
   Text,
   TextSize,
 } from '~/shared/ui';
-import {Button} from '~/shared/ui/button';
-import {Card} from '~/shared/ui/card';
 
 import * as model from './model';
 import ChatIcon from './assets/chat.svg';
