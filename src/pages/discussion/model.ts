@@ -5,15 +5,15 @@ import {produce} from 'immer';
 import {spread} from 'patronum';
 
 import {
-  apiV1CommentsGetFx,
-  apiV1CommentsGetOk,
-  ApiV1CommentsParentCommentIdRepliesGet,
-  apiV1CommentsParentCommentIdRepliesGetFx,
-  apiV1CommentsParentCommentIdRepliesGetOk,
-  ApiV1CommentsParentCommentIdRepliesPost,
-  apiV1CommentsParentCommentIdRepliesPostFx,
-  ApiV1CommentsPost,
-  apiV1CommentsPostFx,
+  ApiV1CommentsCommentIdRepliesGet,
+  apiV1CommentsCommentIdRepliesGetFx,
+  apiV1CommentsCommentIdRepliesGetOk,
+  ApiV1CommentsCommentIdRepliesPost,
+  apiV1CommentsCommentIdRepliesPostFx,
+  apiV1DiscussionsDiscussionIdCommentsGetFx,
+  apiV1DiscussionsDiscussionIdCommentsGetOk,
+  ApiV1DiscussionsDiscussionIdCommentsPost,
+  apiV1DiscussionsDiscussionIdCommentsPostFx,
   apiV1DiscussionsDiscussionIdGetFx,
   apiV1DiscussionsDiscussionIdGetOk,
   apiV1LookupReactionsGetFx,
@@ -23,11 +23,11 @@ import {signalRFactory} from '~/shared/factory/signal-r.factory';
 import {routes} from '~/shared/routes';
 
 const getDiscussionFx = attach({effect: apiV1DiscussionsDiscussionIdGetFx});
-const getCommentsFx = attach({effect: apiV1CommentsGetFx});
+const getCommentsFx = attach({effect: apiV1DiscussionsDiscussionIdCommentsGetFx});
+const getRepliesFx = attach({effect: apiV1CommentsCommentIdRepliesGetFx});
 const getAvailableReactionsFx = attach({effect: apiV1LookupReactionsGetFx, mapParams: () => ({})});
-const commentDiscussionFx = attach({effect: apiV1CommentsPostFx});
-const getRepliesFx = attach({effect: apiV1CommentsParentCommentIdRepliesGetFx});
-const commentReplyFx = attach({effect: apiV1CommentsParentCommentIdRepliesPostFx});
+const commentDiscussionFx = attach({effect: apiV1DiscussionsDiscussionIdCommentsPostFx});
+const commentReplyFx = attach({effect: apiV1CommentsCommentIdRepliesPostFx});
 
 export const currentRoute = routes.discussion;
 
@@ -43,25 +43,36 @@ export const dataLoadedRoute = chainRoute({
   },
 });
 
+export const $isNotFound = createStore<boolean>(false);
+sample({
+  clock: getDiscussionFx.failData,
+  fn: (x) => x.status === 'not_found',
+  target: $isNotFound,
+});
+
 const $discussionId = currentRoute.$params.map((query) => query.discussionId);
 
 export const $discussion = createStore<typed.Get<typeof apiV1DiscussionsDiscussionIdGetOk> | null>(
   null,
 );
 
-export const $comments = createStore<typed.Get<typeof apiV1CommentsGetOk>['items']>([]);
+export const $comments = createStore<
+  typed.Get<typeof apiV1DiscussionsDiscussionIdCommentsGetOk>['items']
+>([]);
 export const $totalCommentsCount = createStore(0);
-export const commentFormSubmit = createEvent<ApiV1CommentsPost>();
+export const commentFormSubmit = createEvent<ApiV1DiscussionsDiscussionIdCommentsPost>();
 
-export type Replies = Record<
-  string,
-  typed.Get<typeof apiV1CommentsParentCommentIdRepliesGetOk>['items']
->;
+export type Replies = Record<string, typed.Get<typeof apiV1CommentsCommentIdRepliesGetOk>['items']>;
 export const $replies = createStore<Replies>({});
-export const replyClicked = createEvent<ApiV1CommentsParentCommentIdRepliesGet>();
-export const replyFormSubmit = createEvent<ApiV1CommentsParentCommentIdRepliesPost>();
+export const replyClicked = createEvent<ApiV1CommentsCommentIdRepliesGet>();
+export const replyFormSubmit = createEvent<ApiV1CommentsCommentIdRepliesPost>();
 
-const hub = signalRFactory<typed.Get<typeof apiV1CommentsGetOk>['items'][number]>('NewComment');
+const hub =
+  signalRFactory<typed.Get<typeof apiV1DiscussionsDiscussionIdCommentsGetOk>['items'][number]>(
+    'NewComment',
+  );
+
+export const newCommentReceived = hub.messageReceived;
 
 export const pagination = paginationFactory({
   route: currentRoute,
@@ -70,7 +81,7 @@ export const pagination = paginationFactory({
 });
 
 sample({
-  clock: [getDiscussionFx.doneData, pagination.pageChanged],
+  clock: [getDiscussionFx, pagination.pageChanged],
   target: getAvailableReactionsFx,
 });
 
@@ -88,15 +99,37 @@ sample({
 });
 
 sample({
-  clock: [getDiscussionFx.doneData, pagination.pageChanged],
+  source: {
+    params: currentRoute.$params,
+    offset: pagination.$offset,
+    limit: pagination.$limit,
+  },
+  fn: ({params, offset, limit}) => ({
+    path: {
+      discussionId: params.discussionId,
+    },
+    query: {
+      flatten: false,
+      offset,
+      count: limit,
+    },
+  }),
+  target: getCommentsFx,
+});
+
+sample({
+  clock: pagination.pageChanged,
   source: {
     discussionId: $discussionId,
     offset: pagination.$offset,
     count: pagination.$limit,
   },
   fn: ({discussionId, offset, count}) => ({
-    query: {
+    path: {
       discussionId,
+    },
+    query: {
+      flatten: false,
       offset,
       count,
     },
@@ -138,7 +171,7 @@ sample({
 });
 
 sample({
-  clock: hub.messageReceived,
+  clock: newCommentReceived,
   source: $totalCommentsCount,
   fn: (value) => value + 1,
   target: $totalCommentsCount,
@@ -160,7 +193,7 @@ sample({
   fn: (replies, {params, result}) =>
     produce(replies, (draft) => {
       // @ts-ignore
-      draft[params.path.parentCommentId] = result.answer.items;
+      draft[params.path.commentId] = result.answer.items;
     }),
   target: $replies,
 });
@@ -174,9 +207,10 @@ sample({
   clock: commentReplyFx.done,
   fn: ({params}) => ({
     path: {
-      parentCommentId: params.path.parentCommentId,
+      commentId: params.path.commentId,
     },
     query: {
+      flatten: true,
       offset: 0,
       count: 20,
     },

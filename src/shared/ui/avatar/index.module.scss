@@ -1,9 +1,4 @@
 .avatar {
-  $size: 40px;
-
-  width: $size;
-  height: $size;
-  border-radius: 6px;
   display: flex;
   flex: none;
   align-items: center;
@@ -29,7 +24,6 @@
 
   width: $size;
   height: $size;
-  display: block;
   border-radius: 50%;
   font-size: 12px;
   line-height: $size;

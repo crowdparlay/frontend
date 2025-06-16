@@ -9,8 +9,8 @@
   gap: 16px;
   align-items: center;
   font: var(--font-s);
-  border-bottom: 2px solid transparent;
-  margin-bottom: -2px;
+  border-bottom: 1px solid transparent;
+  margin-bottom: -1px;
 
   &.active {
     color: var(--color-white);

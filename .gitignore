@@ -32,3 +32,4 @@ dist-ssr
 # Yarn
 .yarn
 .yarnrc.yml
+/bun.lock

@@ -1,5 +1,5 @@
-import classNames from 'classnames';
 import {HTMLAttributes} from 'react';
+import {cn} from '~/lib/utils';
 
 import {Container, ContainerSize, Link, LinkVariant, Text, TextSize} from '~/shared/ui';
 
@@ -12,7 +12,13 @@ export const Footer = (props: FooterProps) => {
   const {className, ...otherProps} = props;
 
   return (
-    <footer className={classNames(cls.footer, className)} {...otherProps}>
+    <footer
+      className={cn(
+        'h-48 -mt-48 py-6 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 border-t',
+        className,
+      )}
+      {...otherProps}
+    >
       <Container size={ContainerSize.L} style={{padding: 0}} className={cls.row}>
         <Container className={cls.column}>
           <Text size={TextSize.S} accent={true} Component="h4">

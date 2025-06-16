@@ -1,18 +1,11 @@
 import {useForm} from 'effector-forms';
 import {useUnit} from 'effector-react';
 
-import {ProfilePreview} from '~/features/profile-preview';
+import {Profile} from '~/features/profile';
 
-import {
-  Container,
-  ContainerSize,
-  CustomButton,
-  Form,
-  Input,
-  Page,
-  Text,
-  TextSize,
-} from '~/shared/ui';
+import {UserEntity} from '~/entities/types';
+
+import {Container, ContainerSize, CustomButton, Input, Page, Text, TextSize} from '~/shared/ui';
 
 import {$form, avatarFileChanged} from './model';
 import cls from './page.module.scss';
@@ -28,7 +21,7 @@ export const EditProfilePage = () => {
           Profile
         </Text>
 
-        <Form className={cls.grid} onSubmit={submit}>
+        <form className={cls.grid} onSubmit={() => submit()}>
           <Input
             label="Display name"
             placeholder="Display name"
@@ -80,18 +73,23 @@ export const EditProfilePage = () => {
             onFileChanged={onAvatarFileChanged}
           />
           <div className={cls.row}>
-            <ProfilePreview
-              username={fields.username?.value}
-              displayName={fields.displayName?.value}
-              avatarUrl={fields.avatarUrl?.value}
-              style={{maxWidth: 165}}
+            <Profile
+              variant="md"
+              user={
+                new UserEntity({
+                  id: '',
+                  username: fields.username.value,
+                  displayName: fields.displayName.value,
+                  avatarUrl: fields.avatarUrl.value,
+                })
+              }
             />
 
             <CustomButton type="submit" disabled={!eachValid} style={{whiteSpace: 'nowrap'}}>
               Apply changes
             </CustomButton>
           </div>
-        </Form>
+        </form>
       </Container>
     </Page>
   );

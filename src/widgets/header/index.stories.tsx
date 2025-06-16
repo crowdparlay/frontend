@@ -1,5 +1,7 @@
 import {Meta, StoryObj} from '@storybook/react';
 
+import {UserEntity} from '~/entities/types';
+
 import {RouterDecorator} from '~/shared/decorators';
 
 import {Header} from '.';
@@ -20,10 +22,10 @@ export const Unauthorized: Story = {
 
 export const Authorized: Story = {
   args: {
-    forceUser: {
+    forceUser: new UserEntity({
       id: '1',
       username: 'compartmental',
       displayName: 'Степной ишак',
-    },
+    }),
   },
 };

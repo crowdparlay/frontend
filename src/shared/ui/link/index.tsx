@@ -48,15 +48,24 @@ export const Link = (props: LinkProps) => {
   return (
     <AtomicLink
       to={to}
-      className={classNames(cls.link, mods, className)}
+      className={classNames(
+        cls.link,
+        mods,
+        className,
+        'text-foreground hover:text-muted-foreground',
+      )}
       activeClassName={classNames(cls.link, mods, activeMods, activeClassName)}
       {...otherProps}
     >
-      {Icon !== undefined && <Icon />}
+      {Icon && <Icon />}
 
       <div className={cls.wrapper}>
         {children}
-        {badge !== undefined && <Badge>{badge}</Badge>}
+        {badge !== undefined && (
+          <Badge className="absolute rounded-full px-[0.3rem] py-0.5 border-2 border-background leading-none bottom-[-0.6rem] right-[-0.8rem]">
+            {badge}
+          </Badge>
+        )}
       </div>
     </AtomicLink>
   );

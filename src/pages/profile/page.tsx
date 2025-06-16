@@ -1,4 +1,6 @@
-import {useList, useUnit} from 'effector-react';
+import {useUnit} from 'effector-react';
+
+import {Discussion, DiscussionSkeleton} from '~/widgets/discussion';
 
 import {
   Avatar,
@@ -11,7 +13,6 @@ import {
   Text,
   TextSize,
 } from '~/shared/ui';
-import {Card, CardSize} from '~/shared/ui/card';
 
 import * as model from './model';
 import ChatIcon from './assets/chat.svg';
@@ -23,31 +24,17 @@ import cls from './page.module.scss';
 export const ProfilePage = () => {
   const user = useUnit(model.$user);
 
-  const discussions = useList(model.$discussions, (discussion) => (
-    <a href={`/d/${discussion.id}`}>
-      <Card size={CardSize.L} style={{display: 'flex', flexDirection: 'column', gap: 10}}>
-        <Text size={TextSize.L}>{discussion.title!}</Text>
-        <Text size={TextSize.M}>{discussion.description!}</Text>
-      </Card>
-    </a>
-  ));
+  const discussions = useUnit(model.$discussions);
 
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
 
   return (
     <Page>
       <Container size={ContainerSize.M} className={cls.head}>
-        <Avatar
-          className={cls.avatar}
-          avatarUrl={user.avatar_url!}
-          username={user.username!}
-          displayName={user.display_name!}
-        />
+        <Avatar user={user} className={cls.avatar} />
         <div className={cls.column}>
           <Text className={cls.displayName} size={TextSize.XL}>
-            {user.display_name!}
+            {user.displayName}
           </Text>
           <Text size={TextSize.M}>@{user.username!}</Text>
         </div>
@@ -73,9 +60,21 @@ export const ProfilePage = () => {
         </div>
       </Container>
 
-      <Container size={ContainerSize.M} className={cls.discussions}>
-        {discussions}
-      </Container>
+      <div className="flex-1 w-full mt-6 sm:max-w-xl md:max-w-3xl">
+        <div className="sm:space-y-6 sm:mb-6">
+          {discussions === 'loading' &&
+            [...Array(5).keys()].map((i) => <DiscussionSkeleton key={i} />)}
+          {discussions !== 'loading' &&
+            discussions.map((discussion) => (
+              <Discussion
+                key={discussion.id}
+                className="rounded-none sm:rounded-xl border-x-0 border-b-0 border-t sm:border"
+                discussion={discussion}
+                preview={true}
+              />
+            ))}
+        </div>
+      </div>
     </Page>
   );
 };

@@ -8,11 +8,15 @@ export const signalRFactory = <Message>(methodName: string) => {
 
   const startFx = createEffect((connection: HubConnection) => {
     connection.on(methodName, messageReceived);
-
     return connection.start();
   });
 
+  const stopFx = createEffect((connection: HubConnection) => {
+    return connection.stop();
+  });
+
   const start = createEvent<{url: string}>();
+  const stop = createEvent();
 
   const messageReceived = createEvent<Message>();
 
@@ -36,11 +40,19 @@ export const signalRFactory = <Message>(methodName: string) => {
     target: startFx,
   });
 
+  sample({
+    clock: stop,
+    source: $connection,
+    filter: Boolean,
+    target: stopFx,
+  });
+
   startFx.doneData.watch(() => console.log('started'));
   startFx.failData.watch((err) => console.error('failed', err));
 
   return {
     start,
+    stop,
     messageReceived,
   };
 };

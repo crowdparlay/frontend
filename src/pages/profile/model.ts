@@ -1,13 +1,10 @@
-import * as typed from 'typed-contracts';
 import {chainRoute} from 'atomic-router';
 import {attach, createStore, sample} from 'effector';
 
-import {
-  apiV1DiscussionsGetFx,
-  apiV1DiscussionsGetOk,
-  apiV1UsersResolveGetFx,
-  apiV1UsersResolveGetOk,
-} from '~/shared/api';
+import {DiscussionEntity} from '~/entities/types';
+import {UserEntity} from '~/entities/types';
+
+import {apiV1DiscussionsGetFx, apiV1UsersResolveGetFx} from '~/shared/api';
 import {routes} from '~/shared/routes';
 
 const getUserFx = attach({effect: apiV1UsersResolveGetFx});
@@ -29,13 +26,13 @@ export const dataLoadedRoute = chainRoute({
   },
 });
 
-export const $user = createStore<typed.Get<typeof apiV1UsersResolveGetOk> | null>(null);
+export const $user = createStore<UserEntity | null>(null);
 
-export const $discussions = createStore<typed.Get<typeof apiV1DiscussionsGetOk>['items']>([]);
+export const $discussions = createStore<DiscussionEntity[] | 'loading'>('loading');
 
 sample({
   clock: getUserFx.doneData,
-  fn: (x) => x.answer,
+  fn: (x) => UserEntity.fromResponse(x.answer) ?? null,
   target: $user,
 });
 
@@ -53,6 +50,6 @@ sample({
 
 sample({
   clock: getDiscussionsFx.doneData,
-  fn: (x) => x.answer.items,
+  fn: (x) => x.answer.items.map((discussion) => DiscussionEntity.fromResponse(discussion)),
   target: $discussions,
 });

@@ -1,7 +1,3 @@
-.line {
-  border-bottom: 1px solid rgba(255 255 255 / 7%);
-}
-
 .hover {
   opacity: 0;
   transition: opacity 150ms;
@@ -88,11 +84,6 @@
 
 .dislike {
   transform: rotate(180deg);
-}
-
-.replyContainer {
-  display: flex;
-  align-items: flex-start;
 }
 
 .circleContainer {

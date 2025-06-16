@@ -3,21 +3,21 @@ import {useUnit} from 'effector-react';
 
 import {ModeToggle} from '~/widgets/mode-toggle';
 
-import {User} from '~/shared/api/types';
+import {UserEntity} from '~/entities/types';
+
 import {routes} from '~/shared/routes';
 import {$user} from '~/shared/session';
-import {Input, Link, LinkVariant} from '~/shared/ui';
+import {Avatar, Input, Link, LinkVariant} from '~/shared/ui';
 import {Button} from '~/shared/ui/button';
 import ArrowIcon from '~/shared/ui/icon/assets/arrow.svg';
 
-import Avatar from './assets/avatar.png';
 import Logo from './assets/logo.svg';
 import NotificationIcon from './assets/notification.svg';
 import cls from './index.module.scss';
 import {$search, searchChange} from './model';
 
 export interface HeaderProps {
-  forceUser?: User;
+  forceUser?: UserEntity;
 }
 
 export const Header = (props: HeaderProps) => {
@@ -26,10 +26,10 @@ export const Header = (props: HeaderProps) => {
   const [user, search, onSearchChange] = useUnit([$user, $search, searchChange]);
 
   return (
-    <header className={cls.header}>
-      <div className={cls.row}>
+    <header className="fixed z-20 w-full h-16 flex flex-nowrap justify-between bg-background border-b overflow-hidden">
+      <div className="flex items-center">
         <Link className={cls.logo} variant={LinkVariant.CLEAR} to={routes.home}>
-          <Logo />
+          <Logo className="invert dark:filter-none" />
         </Link>
 
         <Input
@@ -39,7 +39,7 @@ export const Header = (props: HeaderProps) => {
           className={cls.search}
         />
 
-        <div className={cls.linksContainer}>
+        <div className="space-x-8 mx-8">
           <Link variant={LinkVariant.NAVIGATION} to={routes.explore}>
             Explore
           </Link>
@@ -55,34 +55,38 @@ export const Header = (props: HeaderProps) => {
         </div>
       </div>
 
-      {forceUser ?? user ? (
-        <div className="flex items-center gap-4">
-          <ModeToggle />
-          <Button variant="ghost" size="icon">
-            <NotificationIcon />
-          </Button>
-          <Link
-            to={routes.profile as RouteInstance<any>}
-            params={{
-              username: user!.username,
-            }}
-          >
-            <img src={Avatar} alt="avatar" className="rounded-full h-9" />
-          </Link>
-          <Button variant="ghost" size="icon">
-            <ArrowIcon />
-          </Button>
-        </div>
-      ) : (
-        <div className={cls.authorization}>
-          <Link to={routes.auth.signUp}>
-            <Button>Sign up</Button>
-          </Link>
-          <Link to={routes.auth.signIn}>
-            <Button variant="ghost">Sign in</Button>
-          </Link>
-        </div>
-      )}
+      <div className="flex items-center gap-4 pe-3">
+        <ModeToggle />
+        {(forceUser ?? user) ? (
+          <>
+            <Button variant="ghost" size="icon">
+              <NotificationIcon />
+            </Button>
+            <Link
+              to={routes.profile as RouteInstance<any>}
+              params={{
+                username: user!.username,
+              }}
+            >
+              <Avatar user={user} className="rounded-full size-8" />
+            </Link>
+            <Button variant="ghost" size="icon">
+              <ArrowIcon />
+            </Button>
+          </>
+        ) : (
+          <div className="flex gap-2">
+            <Link to={routes.auth.signUp}>
+              <Button className="rounded-lg bg-primary">Sign up</Button>
+            </Link>
+            <Link to={routes.auth.signIn}>
+              <Button className="rounded-lg text-foreground" variant="ghost">
+                Sign in
+              </Button>
+            </Link>
+          </div>
+        )}
+      </div>
     </header>
   );
 };

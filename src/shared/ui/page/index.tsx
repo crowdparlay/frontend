@@ -1,15 +1,18 @@
-import classNames from 'classnames';
-import {ReactNode} from 'react';
+import {HTMLAttributes} from 'react';
+import {cn} from '~/lib/utils';
 
-import cls from './index.module.scss';
+export const Page = (props: HTMLAttributes<HTMLElement>) => {
+  const {className, children, ...otherProps} = props;
 
-export interface PageProps {
-  className?: string;
-  children: ReactNode;
-}
-
-export const Page = (props: PageProps) => {
-  const {className, children} = props;
-
-  return <main className={classNames(cls.page, className)}>{children}</main>;
+  return (
+    <main
+      className={cn(
+        'flex flex-col justify-center items-center min-h-screen pt-24 pb-56',
+        className,
+      )}
+      {...otherProps}
+    >
+      {children}
+    </main>
+  );
 };

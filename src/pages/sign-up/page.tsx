@@ -1,7 +1,9 @@
 import {useForm} from 'effector-forms';
 import {useUnit} from 'effector-react';
 
-import {ProfilePreview} from '~/features/profile-preview';
+import {Profile} from '~/features/profile';
+
+import {UserEntity} from '~/entities/types';
 
 import {routes} from '~/shared/routes';
 import {
@@ -9,7 +11,6 @@ import {
   Container,
   ContainerSize,
   CustomButton,
-  Form,
   Input,
   Link,
   Page,
@@ -33,7 +34,7 @@ export const SignUpPage = () => {
           Sign up
         </Text>
 
-        <Form onSubmit={submit} className={cls.list}>
+        <form className={cls.list} onSubmit={() => submit()}>
           {provider === null && (
             <Input
               autoFocus={true}
@@ -90,9 +91,15 @@ export const SignUpPage = () => {
             />
           )}
 
-          <ProfilePreview
-            username={fields.username?.value}
-            displayName={fields.display_name?.value}
+          <Profile
+            variant="md"
+            user={
+              new UserEntity({
+                id: '',
+                username: fields.username.value,
+                displayName: fields.display_name.value,
+              })
+            }
           />
 
           {formError && <Attention>{formError}</Attention>}
@@ -100,7 +107,7 @@ export const SignUpPage = () => {
           <CustomButton disabled={loading || !eachValid} type="submit" center={true}>
             Join
           </CustomButton>
-        </Form>
+        </form>
 
         <div className={cls.list}>
           <Link center={true} to={routes.auth.signIn}>
