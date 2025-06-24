@@ -1,7 +1,8 @@
 import {RouteInstance, RouteParams} from 'atomic-router';
-import {Link} from 'atomic-router-react';
 import {HTMLAttributes} from 'react';
 import {cn} from '~/lib/utils';
+
+import {Link} from '~/shared/ui/link';
 
 import Logo from './assets/logo.svg';
 
@@ -85,14 +86,9 @@ export const Footer = (props: FooterProps) => {
         {columns.map(({title, items}) => (
           <div>
             <h3 className="leading-7 font-[Inter] font-bold mb-3">{title}</h3>
-            <div className="flex flex-col gap-2 text-muted-foreground">
+            <div className="flex flex-col gap-2">
               {items.map(({label, route, openInNewTab}, i) => (
-                <Link
-                  key={i}
-                  to={route}
-                  target={openInNewTab ? '_blank' : undefined}
-                  className="w-fit hover:text-foreground underline-offset-4 hover:underline transition-all duration-100"
-                >
+                <Link key={i} to={route} target={openInNewTab ? '_blank' : undefined}>
                   {label}
                 </Link>
               ))}

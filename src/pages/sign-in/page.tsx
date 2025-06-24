@@ -1,19 +1,10 @@
-import {Link} from 'atomic-router-react';
 import {useForm} from 'effector-forms';
 import {useUnit} from 'effector-react';
 
 import {routes} from '~/shared/routes';
-import {
-  Attention,
-  ButtonVariant,
-  Container,
-  ContainerSize,
-  CustomButton,
-  Input,
-  Page,
-  Text,
-  TextSize,
-} from '~/shared/ui';
+import {Attention, Input, Page} from '~/shared/ui';
+import {Button} from '~/shared/ui/button';
+import {Link} from '~/shared/ui/link';
 
 import GoogleIcon from './assets/google.svg';
 import {$form, $formError, $loading, signInWithGoogleClicked} from './model';
@@ -22,16 +13,12 @@ import cls from './page.module.scss';
 export const SignInPage = () => {
   const {fields, submit, eachValid} = useForm($form);
   const [loading, formError] = useUnit([$loading, $formError]);
-
   const [onSignInWithGoogleClicked] = useUnit([signInWithGoogleClicked]);
 
   return (
-    <Page>
-      <Container size={ContainerSize.S} className={cls.container}>
-        <Text center={true} size={TextSize.XL} className={cls.title} Component="h1">
-          Sign in
-        </Text>
-
+    <Page className="flex-1 py-16">
+      <div className="w-full max-w-xs text-center space-y-3">
+        <h1 className="text-5xl font-[Inter] font-bold mb-12">Sign in</h1>
         <form className={cls.list} onSubmit={() => submit()}>
           <Input
             autoFocus={true}
@@ -49,36 +36,23 @@ export const SignInPage = () => {
             value={fields.password?.value}
             onChange={(e) => fields.password?.onChange(e.target.value)}
           />
-
           {formError && <Attention>{formError}</Attention>}
-
-          <CustomButton disabled={loading || !eachValid} type="submit">
+          <Button disabled={loading || !eachValid} type="submit">
             Proceed
-          </CustomButton>
+          </Button>
         </form>
-
-        <div className={cls.external}>
-          <Text center={true} className={cls.or}>
-            or
-          </Text>
-
-          <div className={cls.list}>
-            <CustomButton
-              onClick={onSignInWithGoogleClicked}
-              variant={ButtonVariant.SECONDARY}
-              className={cls.button}
-            >
-              <GoogleIcon />
-              Proceed with Google
-            </CustomButton>
-          </div>
-
-          <div className={cls.list}>
-            <Link to={routes.auth.resetPassword}>Reset password</Link>
-            <Link to={routes.auth.signUp}>Sign up</Link>
-          </div>
+        <p className="text-muted-foreground">or</p>
+        <div className={cls.list}>
+          <Button onClick={onSignInWithGoogleClicked} variant="outline">
+            <GoogleIcon />
+            Sign in with Google
+          </Button>
         </div>
-      </Container>
+        <div className="flex flex-col items-center gap-3">
+          <Link to={routes.auth.resetPassword}>Reset password</Link>
+          <Link to={routes.auth.signUp}>Sign up</Link>
+        </div>
+      </div>
     </Page>
   );
 };
