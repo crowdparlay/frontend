@@ -90,14 +90,5 @@ export const getTimeSince = (timestamp: string | Date): string => {
 };
 
 export const hash = (input: string) => {
-  let hash = 0,
-    i,
-    chr;
-  if (input.length === 0) return hash;
-  for (i = 0; i < input.length; i++) {
-    chr = input.charCodeAt(i);
-    hash = (hash << 5) - hash + chr;
-    hash |= 0;
-  }
-  return hash;
+  return input.split('').reduce((a, b) => ((a << 5) - a + b.charCodeAt(0)) | 0, 0);
 };

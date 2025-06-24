@@ -1,3 +1,4 @@
+import {Link} from 'atomic-router-react';
 import {useForm} from 'effector-forms';
 import {useUnit} from 'effector-react';
 
@@ -9,7 +10,6 @@ import {
   ContainerSize,
   CustomButton,
   Input,
-  Link,
   Page,
   Text,
   TextSize,
@@ -78,12 +78,8 @@ export const SignInPage = () => {
           </div>
 
           <div className={cls.list}>
-            <Link center={true} to={routes.auth.resetPassword}>
-              Reset password
-            </Link>
-            <Link center={true} to={routes.auth.signUp}>
-              Sign up
-            </Link>
+            <Link to={routes.auth.resetPassword}>Reset password</Link>
+            <Link to={routes.auth.signUp}>Sign up</Link>
           </div>
         </div>
       </Container>

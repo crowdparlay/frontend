@@ -1216,6 +1216,64 @@ export const apiV1AuthenticationSignInGoogleCallbackGetFx = createEffect<ApiV1Au
 //#endregion apiV1AuthenticationSignInGoogleCallbackGet
 
 /* --- */
+//#region apiV1UsersGet
+export type ApiV1UsersGet = {
+  query?: {
+    order?: "newestFirst" | "oldestFirst";
+    offset?: number;
+    count?: number;
+  };
+};
+/* OK */
+export const apiV1UsersGetOk = typed.object({
+  total_count: typed.number.optional,
+  items: typed.array(typed.object({
+    id: typed.string.optional,
+    username: typed.string.optional,
+    display_name: typed.string.optional,
+    avatar_url: typed.string.maybe
+  })).optional
+});
+export type ApiV1UsersGetDone = {
+  status: "ok";
+  answer: typed.Get<typeof apiV1UsersGetOk>;
+};
+/* Bad Request */
+export const apiV1UsersGetBadRequest = typed.object({
+  error_description: typed.string.optional,
+  validation_errors: typed.object({}).optional
+});
+/* Internal Server Error */
+export const apiV1UsersGetInternalServerError = typed.object({
+  error_description: typed.string.optional
+});
+export type ApiV1UsersGetFail = {
+  status: "bad_request";
+  error: typed.Get<typeof apiV1UsersGetBadRequest>;
+} | {
+  status: "internal_server_error";
+  error: typed.Get<typeof apiV1UsersGetInternalServerError>;
+} | GenericErrors;
+export const apiV1UsersGetFx = createEffect<ApiV1UsersGet, ApiV1UsersGetDone, ApiV1UsersGetFail>({
+  async handler({
+    query
+  }) {
+    const name = "apiV1UsersGetFx.body";
+    const response = await requestFx({
+      path: "/api/v1/users",
+      method: "GET",
+      query
+    });
+    return parseByStatus(name, response, {
+      200: ["ok", apiV1UsersGetOk],
+      400: ["bad_request", apiV1UsersGetBadRequest],
+      500: ["internal_server_error", apiV1UsersGetInternalServerError]
+    });
+  }
+});
+//#endregion apiV1UsersGet
+
+/* --- */
 //#region apiV1UsersRegisterPost
 export type ApiV1UsersRegisterPost = {
   body?: {
