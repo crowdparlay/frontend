@@ -36,7 +36,7 @@ export class UserEntity {
   }
 
   getPersonalStyle() {
-    const hue = hash(this.displayName + ' ' + this.username);
+    const hue = hash([this.displayName, this.username].join('..'));
     const color = `hsl(${hue}deg 90% 40%)`;
     return {hue, color};
   }

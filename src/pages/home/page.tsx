@@ -21,7 +21,8 @@ import Fresco from './assets/fresco.webp';
 export const HomePage = () => {
   const repos = useUnit($repos);
   return (
-    <Page className="pt-16">
+    <Page>
+      <div className="fixed top-0 z-999 h-[100vh] w-[100vw] mix-blend-screen pointer-events-none"></div>
       <div className="min-h-screen w-full px-10 sm:px-0 sm:max-w-xl lg:max-w-2xl">
         <Link to="/explore" className="block w-fit mx-auto mt-16 mb-12">
           <motion.div
@@ -33,7 +34,7 @@ export const HomePage = () => {
             }}
             viewport={{once: true}}
           >
-            <Button className="rounded-full bg-primary group gap-0">
+            <Button className="rounded-full bg-foreground group gap-0">
               Discussions
               <ArrowRight className="w-0! group-hover:w-4! group-hover:ms-2 pt-px transition-all" />
             </Button>
@@ -67,7 +68,7 @@ export const HomePage = () => {
             <a href={repo.html_url} target="_blank" key={repo.id} className="w-full">
               <Card className="bg-background">
                 <CardHeader>
-                  <div className="flex justify-between items-center text-sm whitespace-nowrap">
+                  <div className="md:flex space-y-4 md:space-y-0 justify-between items-center text-sm whitespace-nowrap">
                     <Profile
                       user={
                         new UserEntity({

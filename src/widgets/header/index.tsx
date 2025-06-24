@@ -1,5 +1,7 @@
-import {RouteInstance} from 'atomic-router';
+import {Link} from 'atomic-router-react';
 import {useUnit} from 'effector-react';
+import {Bell, ChevronDown} from 'lucide-react';
+import {cn} from '~/lib/utils';
 
 import {ModeToggle} from '~/widgets/mode-toggle';
 
@@ -7,14 +9,11 @@ import {UserEntity} from '~/entities/types';
 
 import {routes} from '~/shared/routes';
 import {$user} from '~/shared/session';
-import {Avatar, Input, Link, LinkVariant} from '~/shared/ui';
+import {Avatar} from '~/shared/ui';
 import {Button} from '~/shared/ui/button';
-import ArrowIcon from '~/shared/ui/icon/assets/arrow.svg';
 
+import LogoMini from './assets/logo-mini.svg';
 import Logo from './assets/logo.svg';
-import NotificationIcon from './assets/notification.svg';
-import cls from './index.module.scss';
-import {$search, searchChange} from './model';
 
 export interface HeaderProps {
   forceUser?: UserEntity;
@@ -22,48 +21,37 @@ export interface HeaderProps {
 
 export const Header = (props: HeaderProps) => {
   const {forceUser} = props;
-
-  const [user, search, onSearchChange] = useUnit([$user, $search, searchChange]);
+  const user = useUnit($user);
 
   return (
-    <header className="fixed z-20 w-full h-16 flex flex-nowrap justify-between bg-background border-b overflow-hidden">
-      <div className="flex items-center">
-        <Link className={cls.logo} variant={LinkVariant.CLEAR} to={routes.home}>
-          <Logo className="invert dark:filter-none" />
+    <header className="fixed z-20 w-full h-16 flex flex-nowrap justify-between bg-background border-b">
+      <div className="flex grow-1 shrink-0">
+        <Link to={routes.home} className="flex items-center invert dark:filter-none">
+          <Logo className="hidden md:block ps-6 me-4" />
+          <LogoMini className="md:hidden h-full p-3 pe-4" />
         </Link>
-
-        <Input
-          value={search}
-          onChange={(e) => onSearchChange(e.target.value)}
-          placeholder="Search"
-          className={cls.search}
-        />
-
-        <div className="space-x-8 mx-8">
-          <Link variant={LinkVariant.NAVIGATION} to={routes.explore}>
-            Explore
-          </Link>
-          <Link variant={LinkVariant.NAVIGATION} badge={2} to={routes.bets}>
-            My bets
-          </Link>
-          <Link variant={LinkVariant.NAVIGATION} to={routes.events}>
-            My events
-          </Link>
-          <Link variant={LinkVariant.NAVIGATION} to={routes.bookmarks}>
-            Bookmarks
-          </Link>
-        </div>
       </div>
-
-      <div className="flex items-center gap-4 pe-3">
+      <div
+        className={cn(
+          'flex h-full font-medium text-sm',
+          'w-full sm:max-w-xl md:max-w-3xl',
+          '[&>*]:flex [&>*]:items-center [&>*]:h-full [&>*]:px-4 [&>*]:hover:opacity-80',
+          'xl:[&>*]:first:ps-0',
+        )}
+      >
+        <Link to={routes.explore}>Discussions</Link>
+        <Link to={routes.profiles}>Profiles</Link>
+      </div>
+      <div className="flex grow-1 shrink-0 justify-end overflow-hidden items-center gap-4 pe-3">
         <ModeToggle />
         {(forceUser ?? user) ? (
           <>
             <Button variant="ghost" size="icon">
-              <NotificationIcon />
+              <Bell />
             </Button>
             <Link
-              to={routes.profile as RouteInstance<any>}
+              className="shrink-0"
+              to={routes.profile}
               params={{
                 username: user!.username,
               }}
@@ -71,7 +59,7 @@ export const Header = (props: HeaderProps) => {
               <Avatar user={user} className="rounded-full size-8" />
             </Link>
             <Button variant="ghost" size="icon">
-              <ArrowIcon />
+              <ChevronDown />
             </Button>
           </>
         ) : (

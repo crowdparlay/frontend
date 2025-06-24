@@ -15,9 +15,9 @@ import {$discussions, $totalCount} from './model';
 export const ExplorePage = () => {
   const [discussions, totalCount] = useUnit([$discussions, $totalCount]);
   return (
-    <Page className="mx-auto w-full pt-16 pb-48">
+    <Page className="mx-auto w-full">
       <div className="flex-1 w-full mt-6 sm:max-w-xl md:max-w-3xl">
-        <div className="flex w-full mb-6 justify-between items-center px-6 sm:px-0 sm:ps-2">
+        <div className="flex w-full mb-6 justify-between items-center px-6 sm:pe-0 sm:ps-2">
           {discussions === 'loading' ? (
             <Skeleton className="w-24 h-3" />
           ) : (
@@ -30,9 +30,14 @@ export const ExplorePage = () => {
             </Button>
           </CreateDiscussionDialog>
         </div>
-        <div className="sm:space-y-6 sm:mb-6">
+        <div className="sm:space-y-6">
           {discussions === 'loading' &&
-            [...Array(5).keys()].map((i) => <DiscussionSkeleton key={i} />)}
+            [...Array(5).keys()].map((i) => (
+              <DiscussionSkeleton
+                key={i}
+                className="rounded-none sm:rounded-xl border-x-0 border-b-0 border-t sm:border"
+              />
+            ))}
           {discussions !== 'loading' &&
             discussions.map((discussion) => (
               <Discussion

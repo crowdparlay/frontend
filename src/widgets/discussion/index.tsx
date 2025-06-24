@@ -107,10 +107,10 @@ export const Discussion = (props: DiscussionProps) => {
             params={{discussionId: discussion.id}}
             className="hover:text-foreground"
           >
+            <h1 className="text-xl md:text-2xl mb-1 font-extrabold font-[Inter] text-balance text-foreground/90">
+              {title}
+            </h1>
             <div>
-              <h1 className="text-3xl font-extrabold font-[Inter] text-balance mt-2 mb-3 text-foreground/90">
-                {title}
-              </h1>
               <FormattedContent>{content}</FormattedContent>
             </div>
           </ConditionalLink>
@@ -136,7 +136,11 @@ export const Discussion = (props: DiscussionProps) => {
         >
           {expandComments && <Comments subject={discussion} />}
           {user && (expandComments || expandReplyFormSection) && (
-            <div className={cn('w-full h-full absolute top-0 pointer-events-none transition-all')}>
+            <div
+              className={cn(
+                'w-full h-full absolute top-0 overflow-x-clip sm:overflow-x-visible pointer-events-none transition-all',
+              )}
+            >
               <div
                 className={cn(
                   'pt-4 sm:pt-0 -mt-4 sm:mt-0 sticky ml-[0.5px] sm:rounded-b-xl w-full pointer-events-auto sm:ring ring-background sm:shadow-[1.25rem_1.25rem_0_1px_var(--background),-1.25rem_1.25rem_0_1px_var(--background)]',
@@ -145,7 +149,7 @@ export const Discussion = (props: DiscussionProps) => {
               >
                 <div
                   ref={replyFormSectionRef}
-                  className="bg-background/90 backdrop-blur-2xl outline outline-1 outline-border sm:rounded-b-xl overflow-hidden"
+                  className="bg-background/90 backdrop-blur-2xl border-t sm:border-none sm:outline outline-border sm:rounded-b-xl overflow-hidden"
                 >
                   <CommentForm
                     author={user}

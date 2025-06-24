@@ -6,10 +6,7 @@ export const Page = (props: HTMLAttributes<HTMLElement>) => {
 
   return (
     <main
-      className={cn(
-        'flex flex-col justify-center items-center min-h-screen pt-24 pb-56',
-        className,
-      )}
+      className={cn('flex flex-col justify-center items-center mt-10 py-6', className)}
       {...otherProps}
     >
       {children}

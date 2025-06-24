@@ -1,22 +1,16 @@
 import {useForm} from 'effector-forms';
 import {useUnit} from 'effector-react';
 
+import GoogleIcon from '~/pages/sign-in/assets/google.svg';
+
 import {Profile} from '~/features/profile';
 
 import {UserEntity} from '~/entities/types';
 
 import {routes} from '~/shared/routes';
-import {
-  Attention,
-  Container,
-  ContainerSize,
-  CustomButton,
-  Input,
-  Link,
-  Page,
-  Text,
-  TextSize,
-} from '~/shared/ui';
+import {Attention, Input, Page} from '~/shared/ui';
+import {Button} from '~/shared/ui/button';
+import {Link} from '~/shared/ui/link';
 
 import {$form, $formError, $loading, $provider} from './model';
 import cls from './page.module.scss';
@@ -28,12 +22,9 @@ export const SignUpPage = () => {
   const [provider] = useUnit([$provider]);
 
   return (
-    <Page>
-      <Container size={ContainerSize.S} className={cls.container}>
-        <Text center={true} size={TextSize.XL} className={cls.title} Component="h1">
-          Sign up
-        </Text>
-
+    <Page className="flex-1 py-16">
+      <div className="w-full max-w-xs text-center space-y-3">
+        <h1 className="text-5xl font-[Inter] font-bold mb-12">Sign up</h1>
         <form className={cls.list} onSubmit={() => submit()}>
           {provider === null && (
             <Input
@@ -44,28 +35,20 @@ export const SignUpPage = () => {
               name="email"
               value={fields.email?.value}
               onChange={(e) => fields.email?.onChange(e.target.value)}
-              isInvalid={fields.email?.hasError()}
-              errorMessage={fields.email?.errorText()}
             />
           )}
-
           <Input
             disabled={loading}
             placeholder="Username"
             value={fields.username?.value}
             onChange={(e) => fields.username?.onChange(e.target.value)}
-            isInvalid={fields.username?.hasError()}
-            errorMessage={fields.username?.errorText()}
           />
           <Input
             disabled={loading}
             placeholder="Display name"
             value={fields.display_name?.value}
             onChange={(e) => fields.display_name?.onChange(e.target.value)}
-            isInvalid={fields.display_name?.hasError()}
-            errorMessage={fields.display_name?.errorText()}
           />
-
           {provider === null && (
             <Input
               disabled={loading}
@@ -74,8 +57,6 @@ export const SignUpPage = () => {
               name="password"
               value={fields.password?.value}
               onChange={(e) => fields.password?.onChange(e.target.value)}
-              isInvalid={fields.password?.hasError()}
-              errorMessage={fields.password?.errorText()}
             />
           )}
           {provider === null && (
@@ -86,35 +67,34 @@ export const SignUpPage = () => {
               name="confirm_password"
               value={fields.confirm_password?.value}
               onChange={(e) => fields.confirm_password?.onChange(e.target.value)}
-              isInvalid={fields.confirm_password?.hasError()}
-              errorMessage={fields.confirm_password?.errorText()}
             />
           )}
-
           <Profile
+            className="text-start pointer-events-none"
             variant="md"
             user={
               new UserEntity({
                 id: '',
-                username: fields.username.value,
-                displayName: fields.display_name.value,
+                username: fields.username.value === '' ? 'username' : fields.username.value,
+                displayName:
+                  fields.display_name.value === '' ? 'Display name' : fields.display_name.value,
               })
             }
           />
-
           {formError && <Attention>{formError}</Attention>}
-
-          <CustomButton disabled={loading || !eachValid} type="submit" center={true}>
+          <Button disabled={loading || !eachValid} type="submit">
             Join
-          </CustomButton>
+          </Button>
         </form>
-
+        <p className="text-muted-foreground">or</p>
         <div className={cls.list}>
-          <Link center={true} to={routes.auth.signIn}>
-            I already have an account
-          </Link>
+          <Button variant="outline">
+            <GoogleIcon />
+            Sign up with Google
+          </Button>
         </div>
-      </Container>
+        <Link to={routes.auth.signIn}>I already have an account</Link>
+      </div>
     </Page>
   );
 };

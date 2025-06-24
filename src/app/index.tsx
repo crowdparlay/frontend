@@ -19,8 +19,8 @@ export const App = () => {
           <Header />
           <Pages />
           <Footer />
-          <Toaster />
         </div>
+        <Toaster />
       </RouterProvider>
     </ThemeProvider>
   );

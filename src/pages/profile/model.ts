@@ -19,7 +19,7 @@ export const dataLoadedRoute = chainRoute({
     mapParams: ({params}) => {
       return {
         query: {
-          username: params.username,
+          username: decodeURIComponent(params.username),
         },
       };
     },

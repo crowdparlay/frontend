@@ -56,13 +56,11 @@ export const Profile = memo((props: ProfileProps) => {
       {...otherProps}
     >
       <Avatar user={user} className={cn(variant === 'xs' && 'w-4 h-4')} />
-      <div className={cn('flex gap-1.5', variant === 'md' && 'flex-col')}>
-        <p className="text-sm font-medium leading-none">
+      <div className={cn('grid gap-1.5', variant === 'md' && 'flex-col')}>
+        <p className="text-sm font-medium leading-none -m-1 p-1 truncate">
           {user.displayName}
           {variant === 'xs' && (
-            <span className="ml-2 font-normal text-sm opacity-50 leading-none">
-              {user.username}
-            </span>
+            <span className="ml-2 font-normal text-muted-foreground">{user.username}</span>
           )}
           {isTopicStarter && (
             <span className="ml-2 text-muted-foreground font-normal">
