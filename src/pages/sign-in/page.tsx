@@ -40,8 +40,6 @@ export const SignInPage = () => {
             name="username_or_email"
             value={fields.username?.value}
             onChange={(e) => fields.username?.onChange(e.target.value)}
-            isInvalid={fields.username?.hasError()}
-            errorMessage={fields.username?.errorText()}
           />
           <Input
             disabled={loading}
@@ -50,8 +48,6 @@ export const SignInPage = () => {
             name="password"
             value={fields.password?.value}
             onChange={(e) => fields.password?.onChange(e.target.value)}
-            isInvalid={fields.password?.hasError()}
-            errorMessage={fields.password?.errorText()}
           />
 
           {formError && <Attention>{formError}</Attention>}

@@ -44,8 +44,6 @@ export const SignUpPage = () => {
               name="email"
               value={fields.email?.value}
               onChange={(e) => fields.email?.onChange(e.target.value)}
-              isInvalid={fields.email?.hasError()}
-              errorMessage={fields.email?.errorText()}
             />
           )}
 
@@ -54,16 +52,12 @@ export const SignUpPage = () => {
             placeholder="Username"
             value={fields.username?.value}
             onChange={(e) => fields.username?.onChange(e.target.value)}
-            isInvalid={fields.username?.hasError()}
-            errorMessage={fields.username?.errorText()}
           />
           <Input
             disabled={loading}
             placeholder="Display name"
             value={fields.display_name?.value}
             onChange={(e) => fields.display_name?.onChange(e.target.value)}
-            isInvalid={fields.display_name?.hasError()}
-            errorMessage={fields.display_name?.errorText()}
           />
 
           {provider === null && (
@@ -74,8 +68,6 @@ export const SignUpPage = () => {
               name="password"
               value={fields.password?.value}
               onChange={(e) => fields.password?.onChange(e.target.value)}
-              isInvalid={fields.password?.hasError()}
-              errorMessage={fields.password?.errorText()}
             />
           )}
           {provider === null && (
@@ -86,8 +78,6 @@ export const SignUpPage = () => {
               name="confirm_password"
               value={fields.confirm_password?.value}
               onChange={(e) => fields.confirm_password?.onChange(e.target.value)}
-              isInvalid={fields.confirm_password?.hasError()}
-              errorMessage={fields.confirm_password?.errorText()}
             />
           )}
 
